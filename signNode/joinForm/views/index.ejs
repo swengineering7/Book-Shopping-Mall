@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= title %></title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+  </head>
+  <body>
+    /*DB로부터 제대로 불러왔는지 확인하는 페이지*/
+    <br></br>
+    /*customer 성공, book 성공*/
+    <h1><%= title %></h1>
+    <p>Welcome to <%= title %></p>
+    <p><%= rows[0].cust_id %></p>
+    <p><%= rows[0].cust_pwd %></p>
+    <p><%= rows[0].cust_name %></p>
+    <p><%= rows[0].cust_email %></p>
+    <p><%= rows[0].zipcode %></p>
+  </body>
+</html>

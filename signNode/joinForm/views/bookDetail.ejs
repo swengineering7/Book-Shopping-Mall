@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title><%= title %></title>
+        <meta charset = 'utf-8'>
+        <link rel = 'stylesheet' href='/stylesheets/style.css'/>
+        <script src = "/javascripts/jquery-3.6.0.min.js"></script>
+    </head>
+    <body>
+        <h1><%=title %></h1>
+        <form id = "bookDetail" action = "/bookDetail" method = "post">
+            <table width = "1000" height = "500" border = "3">
+                <tr>
+                    <td rowspan = "6">표지</td>
+                    <td colspan = "5">제목</td>
+                </tr>
+                <tr>
+                    <td colspan = "3">저자</td>
+                    <td colspan = "2">출판사</td>
+                </tr>
+                <tr>
+                    <td colspan = "3">가격</td>
+                    <td rowspan = "2">
+                        <input type = "button" id = "구매" name = "구매" value = "구매" onclick="location.href = '/join/seller'">
+                    </td>
+                    <!-- oneclick 추가 -->
+                </tr>
+                <tr>
+                    <td colspan = "3" rowspan = "3">줄거리</td>
+                </tr>
+                <tr>
+                    <td rowspan = "2">
+                        <input type = "button" id = "장바구니" name = "장바구니" value = "장바구니" onclick="location.href = '/join/employee'">
+                    </td>
+                    <!-- oneclick 추가 -->
+                </tr>
+            </table>
+        </form>
+    </body>
+</html>
