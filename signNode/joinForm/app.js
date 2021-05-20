@@ -4,7 +4,7 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 // passport-local 설치
-// const passport = require('passport');
+//const passport = require('passport');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
@@ -18,11 +18,12 @@ var bookDetailPage = require('./routes/detail');
 //책 상세 페이지 (조회 페이지)
 var bookDetail = require('./routes/bookDetail');
 var board = require('./routes/board');
-// const passportConfig = require('./passport');
+
+//const passportConfig = require('./passport');
 
 var app = express();
 
-// passportConfig();
+//passportConfig();
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -44,8 +45,10 @@ app.use('/login',login);
 app.use('/book/detail',bookDetailPage);
 app.use('/bookDetail',bookDetail);
 app.use('/board', board);
-// app.use(passport.initialize());
-// app.use(passport.session());
+
+//app.use(passport.initialize());
+//app.use(passport.session());
+
 const multer = require('multer');
 const fs = require('fs');
 
