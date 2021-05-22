@@ -4,7 +4,8 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 // passport-local 설치
-//const passport = require('passport');
+
+var session = require("express-session");
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
@@ -19,11 +20,7 @@ var bookDetailPage = require('./routes/detail');
 var bookDetail = require('./routes/bookDetail');
 var board = require('./routes/board');
 
-//const passportConfig = require('./passport');
-
 var app = express();
-
-//passportConfig();
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -34,6 +31,16 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(session({
+  secret: "node-session",
+  resave:false,
+  saveUninitialized:true
+}))
+/* option 
+- secret : 필수, 세션 암호화에 사용 
+- resave : 세션이 변경되지 않아도 저장이 됨, false 권장 
+- saveUninitialized : 세션 초기화시 미리 만들지를 설정 
+*/
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
@@ -45,9 +52,6 @@ app.use('/login',login);
 app.use('/book/detail',bookDetailPage);
 app.use('/bookDetail',bookDetail);
 app.use('/board', board);
-
-//app.use(passport.initialize());
-//app.use(passport.session());
 
 const multer = require('multer');
 const fs = require('fs');
