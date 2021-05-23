@@ -53,7 +53,23 @@ router.post('/', function(req,res,next){
     }
     else if(division="seller")
     {
-
+        var sql = 'SELECT * FROM seller WHERE sell_id=?';
+        connection.query(sql, id, function(err,rows){
+          if(err) console.error("err : "+err);
+          console.log("rows : " + JSON.stringify(rows));
+  
+          if(!rows[0]) return res.send('가입되지 않은 아이디입니다.');
+  
+          var user = rows[0];
+  
+          console.log("passwd : ", JSON.stringify(user.cust_pwd));
+          //if(!user) return res.send('가입되지 않은 아이디입니다.');
+          if(user.cust_pwd!=passwd) return res.send('비밀번호가 일치하지 않습니다.');
+          else return res.send('로그인에 성공하였습니다!');
+          
+          res.redirect('/');
+          connection.release();
+        });
     }
     else if(division="manager")
     {
