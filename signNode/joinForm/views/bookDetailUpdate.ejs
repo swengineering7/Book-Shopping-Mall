@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script src = "/javascripts/jquery-3.6.0.min.js"></script>
+        <title><%= title %></title>
+        <link rel = 'stylesheet' href='/stylesheets/style.css'/>
+    </head>
+    <body>
+        <h1><%= title %></h1>
+        <form action = "/book/detail/update" method="post" onsubmit="return onWriteSubmit()" enctype="multipart/form-data">
+            <table border = "1">
+                <input type="hidden" name="book_num" value = "<%=row.book_num%>"/>
+                <tr>
+                    <th>제목</th>
+                    <td><input type = "text" name = "title" id = "title" value = "<%=row.book_title%>" required/> </td>
+                </tr>
+                <tr>
+                    <th>장르</th>
+                    <!-- <td>
+                        <input type = "hidden" name = "genre" id = "genre">
+                        <select name = "genre" id = "genre">
+                            <option value = "A">A</option>
+                            <option value = "B">B</option>
+                            <option value = "C">C</option>
+                            <option value = "D">D</option>
+                        </select>
+                    </td> -->
+                    <td><input type = "text" name = "genre" id = "genre" value = "<%=row.book_genre%>" required/> </td>
+                </tr>
+                <tr>
+                    <th>가격</th>
+                    <td><input type = "number" name = "price" id= "price" value = "<%=row.book_price%>" required/></td>
+                </tr>
+                <tr>
+                    <td>줄거리</td>
+                    <td><textarea type = "content" name="content" cols="30" rows="10" required><%=row.book_content%></textarea></td>
+                </tr>
+                <tr>
+                    <td>이미지</td>
+                    <td>
+                        <img src="/images/<%=row.image%>">
+                        <br>
+                        <input type="file" id="image" name="image" required/>
+                    </td>
+                </tr>
+                <tr>
+                    <th>저자</th>
+                    <td><input type = "text" name = "author" id = "author"  value = "<%=row.author%>" required/> </td>
+                </tr>
+                <tr>
+                    <th>출판사</th>
+                    <td><input type = "text" name = "publisher" id = "publisher"  value = "<%=row.publisher%>" required/> </td>
+                </tr>
+                <tr>
+                    <td colspan = "2">
+                        <button type = "submit">수정 완료!</button>
+                    </td>
+                </tr>
+            </table>
+        </form>
+        <script>
+            function onWriteSubmit(){
+                if($("#title").val().trim() == ""){
+                    var message = "제목을 입력해 주세요.";
+                    $("#title").val("");
+                    $("#title").focus();
+                    alert(message);
+                    return false;
+                }
+                if($("#genre").val().trim() == ""){
+                    var message = "장르를 입력해 주세요.";
+                    $("#genre").val("");
+                    $("#genre").focus();
+                    alert(message);
+                    return false;
+                }
+                if($("#content").val().trim() == ""){
+                    var message = "본문 내용을 입력하세요.";
+                    $("#content").val("");
+                    $("#content").focus();
+                    alert(message);
+                    return false;
+                }
+            }
+        </script>
+    </body>
+</html>

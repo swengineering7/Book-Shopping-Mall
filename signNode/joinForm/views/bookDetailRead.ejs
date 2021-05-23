@@ -8,10 +8,16 @@
     </head>
     <body>
         <h1><%=title %></h1>
-        <form id = "bookDetail" action = "/bookDetail" method = "post">
-            <table width = "1000" height = "500" border = "3">
+        <!-- id = "bookDetailRead" form에 추가? -->
+        <form action = "/book/detail/update" method = "get">
+            <table width = "500" height = "500" border = "3">
+                <input type="hidden" name="book_num" value = "<%=row.book_num %>"/>
                 <tr>
-                    <td rowspan = "6">표지</td>
+                    <td>장르 "<%=row.book_genre %>"</td>
+                </tr>
+                <tr>
+                    <!-- <td rowspan = "6">표지</td> -->
+                    <td rowspan = "6"><img src="/images/<%= row.image %>" alt=""></td>
                     <td colspan = "5">제목</td>
                 </tr>
                 <tr>
@@ -33,6 +39,13 @@
                         <input type = "button" id = "장바구니" name = "장바구니" value = "장바구니" onclick="location.href = '/join/employee'">
                     </td>
                     <!-- oneclick 추가 -->
+                </tr>
+                <br></br>
+                <tr>
+                    <td colspan = "2">
+                        <button type = "submit">수정</button>
+                        <button type = "submit">삭제</button>
+                    </td>
                 </tr>
             </table>
         </form>

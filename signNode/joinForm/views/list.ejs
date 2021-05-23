@@ -6,15 +6,17 @@
     </head>
     <body>
         <h1><%= title %></h1>
-        <a href="/board/write">글쓰기로 이동</a>
+        <a href="/book/detail/write">글쓰기로 이동</a>
         <br>
         <br>
         <table border = "1">
             <tr>
-                <td>번호</td>
-                <td>작성자</td>
-                <td>제목</td>
-                <td>조회수</td>
+                <td>책 번호</td>
+                <td>표지</td>
+                <td>책 제목</td>
+                <td>저자</td>
+                <td>출판사</td>
+                <td>가격</td>
             </tr>
 <%
                 for(var i=0; i<rows.length; i++){
@@ -22,10 +24,12 @@
 
 %>
                     <tr>
-                        <td><%=oneItem.idx%></td>
-                        <td><%=oneItem.creator_id%></td>
-                        <td><a href="/board/read/<%=oneItem.idx%>"><%=oneItem.title%></a></td>
-                        <td><%=oneItem.hit%></td>
+                        <td><%=oneItem.book_num%></td>
+                        <td><%=oneItem.image%></td>
+                        <td><a href="/book/detail/read/<%=oneItem.book_num%>"><%=oneItem.book_title%></a></td>
+                        <td><%=oneItem.author%></td>
+                        <td><%=oneItem.publisher%></td>
+                        <td><%=oneItem.book_price%></td>
                     </tr>
 <%
                 }

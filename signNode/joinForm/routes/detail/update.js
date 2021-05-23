@@ -3,7 +3,7 @@ var router = express.Router();
 
 /* GET users listing. */
 router.get('/', function(req, res, next) {
-  res.render('bookDetailPage', {title: '책 상세 페이지'});
+  res.render('bookDetailUpdate', {title: '책 상세 수정 페이지'});
 });
 
 router.post('/', function(req, res, next) {
