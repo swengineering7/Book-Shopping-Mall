@@ -12,7 +12,7 @@ var join = require('./routes/joinForm');
 var customerJoin = require('./routes/customerJoin');
 var sellerJoin = require('./routes/sellerJoin');
 var employeeJoin = require('./routes/employeeJoin');
-var login = require('./routes/login');
+//var login = require('./routes/login');
 //책 업로드 페이지
 var bookDetailWrite = require('./routes/detail/write');
 //책 상세 페이지 (조회 페이지)
@@ -20,6 +20,8 @@ var bookDetailRead = require('./routes/detail/read');
 var bookDetailUpdate = require('./routes/detail/update');
 var board = require('./routes/board');
 // const passportConfig = require('./passport');
+
+var login = require('./routes/loginForm');
 
 var app = express();
 
@@ -46,6 +48,7 @@ app.use('/book/detail/write',bookDetailWrite);
 app.use('/book/detail/read',bookDetailRead);
 app.use('/book/detail/update',bookDetailUpdate);
 app.use('/board', board);
+
 // app.use(passport.initialize());
 // app.use(passport.session());
 

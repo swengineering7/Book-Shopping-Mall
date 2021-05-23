@@ -215,27 +215,38 @@ router.get('/book/detail/update', function(req,res,next) {
 });
 
 router.post('/book/detail/update', upload.single("image"), function(req,res,next){
-  var datas = {
-    "book_num" : req.body.book_num,
-    "book_title" : req.body.title,
-    "book_genre" : req.body.genre,
-    "book_price" : req.body.price,
-    "book_content" : req.body.content,
-    "image" : req.file.originalname,
-    "author" : req.body.author,
-    "publisher" : req.body.publisher
+  var book_num = req.body.book_num;
+  var book_title = req.body.title;
+  var book_genre = req.body.genre;
+  var book_price = req.body.price;
+  var book_content = req.body.content;
+  var image = req.file.originalname;
+  var author = req.body.author;
+  var publisher = req.body.publisher;
+  var datas = [book_title, book_genre, book_price, book_content, image, author, publisher];
+  
+  //var datas = {
+    //"book_num" : req.body.book_num,
+    //"book_title" : req.body.title,
+    //"book_genre" : req.body.genre,
+    //"book_price" : req.body.price,
+    //"book_content" : req.body.content,
+    //"image" : req.file.originalname,
+    //"author" : req.body.author,
+    //"publisher" : req.body.publisher
     // "book_count" : req.body.book_count,
     // "book_sellcount" : req.body.book_sellcount,
     // "book_reviewcount" : req.body.book_reviewcount,
     // "book_score" : req.body.book_score
-}
+//}
 
-console.log(datas.book_num);
-console.log(datas.book_genre);
+console.log(book_num);
+console.log(book_genre);
+
+var sql = "UPDATE book SET book_title=?, book_genre=?, book_price = ?, book_content = ?, image = ?, author=?, publisher=? WHERE book_num";
 
 pool.getConnection(function(err,connection){
-  var sql = "UPDATE book SET book_title=?, book_genre=?, book_price=?, book_content=?, image=?, author=?, publisher=? WHERE book_num=?";
-  connection.query(sql, datas,function(err,row){
+  connection.query(sql, datas, function(err,row){
       if(err) console.error("err : "+err);
       console.log("row : " + JSON.stringify(row));
 
