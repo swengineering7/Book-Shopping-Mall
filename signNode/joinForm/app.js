@@ -22,6 +22,10 @@ var bookDetailWrite = require('./routes/detail/write');
 //책 상세 페이지 (조회 페이지)
 var bookDetailRead = require('./routes/detail/read');
 var bookDetailUpdate = require('./routes/detail/update');
+
+//구매 페이지
+var order = require('./routes/orders');
+
 var board = require('./routes/board');
 // const passportConfig = require('./passport');
 
@@ -53,6 +57,9 @@ app.use('/login',login);
 app.use('/book/detail/write',bookDetailWrite);
 app.use('/book/detail/read',bookDetailRead);
 app.use('/book/detail/update',bookDetailUpdate);
+
+app.use('/orders', order);
+
 app.use('/board', board);
 
 // app.use(passport.initialize());

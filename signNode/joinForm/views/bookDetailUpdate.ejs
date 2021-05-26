@@ -16,16 +16,16 @@
                 </tr>
                 <tr>
                     <th>장르</th>
-                    <!-- <td>
-                        <input type = "hidden" name = "genre" id = "genre">
-                        <select name = "genre" id = "genre">
+                    <td>
+                    <!-- <input type = "hidden" name = "genre" id = "genre"> -->
+                        <select name = "genre" id = "genre"  value = "<%=row.book_genre%>">
                             <option value = "A">A</option>
                             <option value = "B">B</option>
                             <option value = "C">C</option>
                             <option value = "D">D</option>
                         </select>
-                    </td> -->
-                    <td><input type = "text" name = "genre" id = "genre" value = "<%=row.book_genre%>" required/> </td>
+                    </td>
+                    <!-- <td><input type = "text" name = "genre" id = "genre" value = "<%=row.book_genre%>" required/> </td> -->
                 </tr>
                 <tr>
                     <th>가격</th>
@@ -36,7 +36,7 @@
                     <td><textarea type = "content" name="content" cols="30" rows="10" required><%=row.book_content%></textarea></td>
                 </tr>
                 <tr>
-                    <td>이미지</td>
+                    <th>이미지</th>
                     <td>
                         <img src="/images/<%=row.image%>">
                         <br>
@@ -67,13 +67,13 @@
                     alert(message);
                     return false;
                 }
-                if($("#genre").val().trim() == ""){
-                    var message = "장르를 입력해 주세요.";
-                    $("#genre").val("");
-                    $("#genre").focus();
-                    alert(message);
-                    return false;
-                }
+                // if($("#genre").val().trim() == ""){
+                //     var message = "장르를 입력해 주세요.";
+                //     $("#genre").val("");
+                //     $("#genre").focus();
+                //     alert(message);
+                //     return false;
+                // }
                 if($("#content").val().trim() == ""){
                     var message = "본문 내용을 입력하세요.";
                     $("#content").val("");

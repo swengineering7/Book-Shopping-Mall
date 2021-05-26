@@ -10,9 +10,11 @@ var pool = mysql.createPool({
   database: 'sw_project_table'
 });
 var path = require('path');
+var fs = require('fs');
 
 //multer loading
 var multer = require('multer');
+const { route } = require('./users');
 var upload = multer({
   storage: multer.diskStorage({
     destination: function (req, file, cb) {
@@ -131,7 +133,7 @@ router.get('/book', function(req,res,next) {
       if(err) console.error("err : "+err);
       console.log("rows : " + JSON.stringify(rows));
 
-      res.render('list', { title: 'test',rows: rows});
+      res.render('list', { title: '상품 리스트!',rows: rows});
       //url창에 book을 입력하면 list.ejs로 이동
       connection.release();
     });
@@ -149,7 +151,7 @@ router.get('/book/detail/write', function(req, res, next) {
 
 router.post('/book/detail/write', upload.single("image"), function(req,res,next){
   var datas = {
-    "book_num" : req.body.book_num,
+    //"book_num" : req.body.book_num,
     "book_title" : req.body.title,
     "book_genre" : req.body.genre,
     "book_price" : req.body.price,
@@ -163,7 +165,7 @@ router.post('/book/detail/write', upload.single("image"), function(req,res,next)
     // "book_score" : req.body.book_score
 }
 
-console.log(datas.book_num);
+console.log(datas.book_num);//undefined가 정상
 console.log(datas.book_title);
   
 pool.getConnection(function(err,connection){
@@ -223,34 +225,20 @@ router.post('/book/detail/update', upload.single("image"), function(req,res,next
   var image = req.file.originalname;
   var author = req.body.author;
   var publisher = req.body.publisher;
-  var datas = [book_title, book_genre, book_price, book_content, image, author, publisher];
+  var datas = [book_title, book_genre, book_price, book_content, image, author, publisher, book_num];
   
-  //var datas = {
-    //"book_num" : req.body.book_num,
-    //"book_title" : req.body.title,
-    //"book_genre" : req.body.genre,
-    //"book_price" : req.body.price,
-    //"book_content" : req.body.content,
-    //"image" : req.file.originalname,
-    //"author" : req.body.author,
-    //"publisher" : req.body.publisher
-    // "book_count" : req.body.book_count,
-    // "book_sellcount" : req.body.book_sellcount,
-    // "book_reviewcount" : req.body.book_reviewcount,
-    // "book_score" : req.body.book_score
-//}
-
 console.log(book_num);
 console.log(book_genre);
-
-var sql = "UPDATE book SET book_title=?, book_genre=?, book_price = ?, book_content = ?, image = ?, author=?, publisher=? WHERE book_num";
+console.log(publisher);
+console.log(datas);
 
 pool.getConnection(function(err,connection){
+  var sql = "UPDATE book SET book_title=?, book_genre=?, book_price = ?, book_content = ?, image = ?, author=?, publisher=? WHERE book_num = ?";
   connection.query(sql, datas, function(err,row){
       if(err) console.error("err : "+err);
       console.log("row : " + JSON.stringify(row));
 
-      res.redirect('/book');//1. 검색결과 페이지 2. 조회 페이지
+      res.redirect('/book');//후보 1. 검색결과 페이지 2. 조회 페이지
       //res.redirect('/book/detail/read/' + book_num);
       connection.release();
     });
@@ -261,5 +249,26 @@ pool.getConnection(function(err,connection){
 //   console.log('req.body: ' + JSON.stringify(req.body));
 //   res.json(req.body);
 // });
+
+router.post('/book/detail/delete', function(req, res, next) {
+  var book_num = req.body.book_num;
+  var path = req.body.image;
+
+  console.log(book_num, path);
+
+  pool.getConnection(function(err, connection) {
+      var sql = "DELETE FROM book WHERE book_num=?";
+      connection.query(sql, [book_num], function(err, row) {
+          if (err) console.error("글 삭제 중 에러 발생 err : ", err);
+
+          console.log("row : " + JSON.stringify(row));
+
+          fs.unlink("public/images/"+path, function(){
+              res.redirect('/book');
+          });
+          connection.release();
+      });    
+  });
+});
 
 module.exports = router;
