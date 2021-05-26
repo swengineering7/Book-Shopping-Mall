@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= title %></title>
+    <meta charset='utf-8'>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <style>
+      body{margin:0px; padding:0px;background-color:white;}
+
+      .header{background-color:black; position:fixed; width:100%; top:0; left:0; z-index:1;}
+      ul.nav{float:right; list-style:none; width:45%; height:20px;}
+      ul.nav li{float:left; color:white;}
+      ul.nav a{line-height:20px; color:#ffffff; padding:0 15px; text-decoration:none;}
+
+
+      .bottom{line-height:50px; height:50px; width:100%; background-repeat:repeat; background-attachment: scroll; background-position:0% 0%; background-color:black;position:fixed; bottom:0pt; left:0pt;}
+    </style>
+    <script src="/javascripts/jquery-3.6.0.min.js"></script>
+    <script>
+      $(function(){
+
+        $("#btnJoin").click(
+          function(){
+
+            if($("#cust_id").val() == "")
+            {
+              alert("아이디를 꼭 입력 하세요");
+              $("#cust_id").focus();
+              return;              
+            }
+            if($("#cust_pwd").val() == "")
+            {
+              alert("비밀번호를 꼭 입력 하세요");
+              $("#cust_pwd").focus();
+              return;              
+            }
+            if($("#cust_name").val() == "")
+            {
+              alert("이름을 꼭 입력 하세요");
+              $("#cust_name").focus();
+              return;              
+            }
+            if($("#cust_email").val() == "")
+            {
+              alert("이메일을 꼭 입력 하세요");
+              $("#cust_email").focus();
+              return;              
+            }
+            if($("#tel2").val() == "")
+            {
+              alert("전화번호 두번째 자리를 확인해 주세요");
+              $("#tel2").focus();
+              return;              
+            }
+            if($("#tel3").val() == "")
+            {
+              alert("전화번호 세번째 자리를 확인해 주세요");
+              $("#tel3").focus();
+              return;              
+            }
+
+            var cust_phone_num=$("#tel1").val()+ $("#tel2").val()+ $("#tel3").val();
+            $("#cust_phone_num").val(cust_phone_num);
+
+            if($("#birth1").val() == "")
+            {
+              alert("생년월일 첫번째 자리를 확인해 주세요");
+              $("#birth1").focus();
+              return;              
+            }
+            if($("#birth2").val() == "")
+            {
+              alert("생년월일 첫번째 자리를 확인해 주세요");
+              $("#birth2").focus();
+              return;              
+            }
+            if($("#birth3").val() == "")
+            {
+              alert("생년월일 첫번째 자리를 확인해 주세요");
+              $("#birth3").focus();
+              return;              
+            }
+            if($("#birth1").val().length != 4)
+            {
+              alert("연도는 4글자로 입력하세요");
+              $("#birth1").focus();
+              return;              
+            }
+            /*if(isNaN($("#birthday").val()))
+            {
+              alert("생일은 숫자만 입력하세요");
+              $("birthbday").focus();
+              return;              
+            }*/
+            var birthday=$("#birth1").val()+'-'+$("#birth2").val()+'-'+$("#birth3").val();
+            $("#birthday").val(birthday);
+            /*if($("#birthday").val() == "")
+            {
+              alert("생일을 꼭 입력하세요");
+              $("#birthday").focus();
+              return;              
+            }
+            if($("#birthday").val().length != 8)
+            {
+              alert("생일은 8글자로 입력하세요");
+              $("#birthday").focus();
+              return;              
+            }*/
+            if($("#address").val() == "")
+            {
+              alert("주소를 꼭 입력하세요");
+              $("#address").focus();
+              return;              
+            }
+            if($("#zipcode").val()=="")
+            {
+              alert("우편번호를 꼭 입력하세요");
+              $("#zipcode").focus();
+              return;
+            }
+            $("#joinForm").submit();
+            });
+        });
+    </script>
+  </head>
+  <body>
+    <div class="header">
+      <div>
+        <ul class="nav">
+          <li style="float:right; margin-right:20px;"><a href='/'>메인페이지</a></li>
+        </ul>
+      </div>
+    </div>
+    <div style="width:100%;margin-top:80px; text-align:center; font-size:25px;">
+      <strong>구매자</strong>
+    </div>
+    <table style="width:100%;margin-top:10px; text-align:center;">
+      <tr>
+        <td>원하는 가입 경로를 선택하세요!</td>
+      </tr>          
+      <tr>
+        <td>
+          <button type="button" onClick="location.href='customer'">구매자</button>
+          <button type="button" onClick="location.href='seller'">판매자</button>
+          <button type="button" onClick="location.href='employee'">관리자</button>
+        </td>
+      </tr>
+    </table>
+    <div style="position:absolute; width:400px; margin:-120px 0px 0px -200px; top: 50%; left: 50%; padding: 5px;">
+      <strong>아이디</strong>&ensp;&ensp;&ensp;
+      <input type="text" name="cust_id" id="cust_id" size="12" maxlength="12" style="width:240px;">&ensp;
+      <input type="button" value="중복확인">
+    </div>
+    <div style="position:absolute; width:400px; margin:-85px 0px 0px -200px; top: 50%; left: 50%; padding: 5px;">
+      <strong>비밀번호</strong>&ensp;
+      <input type="password" name="cust_pwd" id="cust_pwd" size="12" maxlength="12" style="width:320px;">
+    </div>
+    <div style="position:absolute; width:400px; margin:-50px 0px 0px -200px; top: 50%; left: 50%; padding: 5px;">
+      <strong>이름</strong>&ensp;&ensp;&ensp;&ensp;&ensp;
+      <input type="text" name="cust_name" id="cust_name" size="10" maxlength="10" style="width:320px;">
+    </div>
+    <div style="position:absolute; width:400px; margin:-15px 0px 0px -200px; top: 50%; left: 50%; padding: 5px;">
+      <strong>이메일</strong>&ensp;&ensp;&ensp;
+      <input type="email" name="cust_email" id="cust_email" size="30" maxlength="50" style="width:320px;">
+    </div>
+    <div style="position:absolute; width:400px; margin:20px 0px 0px -200px; top: 50%; left: 50%; padding: 5px;">
+      <strong>전화번호</strong>&ensp;
+      <input type="hidden" name="cust_phone_num" id="cust_phone_num" style="width:320px;">
+      <select name="tel1" id="tel1" style="width:100px;">
+        <option value="010">010</option>
+        <option value="011">011</option>
+        <option value="016">016</option>
+        <option value="017">017</option>
+        <option value="018">018</option>
+        <option value="019">019</option>
+      </select>
+      <input type="text" name="tel2" id="tel2" size="4" maxlength="4" style="width:102px;">
+      <input type="text" name="tel3" id="tel3" size="4" maxlength="4" style="width:102px;">
+    </div>
+    <div style="position:absolute; width:400px; margin:55px 0px 0px -200px; top: 50%; left: 50%; padding: 5px;">
+      <strong>주소</strong>&ensp;&ensp;&ensp;&ensp;&ensp;
+      <input type="text" name="address" id="address" size="30" maxlength="50" style="width:320px;">
+    </div>
+    <div style="position:absolute; width:400px; margin:90px 0px 0px -200px; top: 50%; left: 50%; padding: 5px;">
+      <strong>우편번호</strong>&ensp;
+      <input type="text" name="zipcode" id="zipcode" size="5" maxlength="5" style="width:320px;">
+    </div>
+    <div style="position:absolute; width:400px; margin:125px 0px 0px -200px; top: 50%; left: 50%; padding: 5px;">
+      <strong>성별</strong>&ensp;&ensp;&ensp;&ensp;&ensp;
+      <input type="radio" name="gender" value="남" checked="checked">남
+      <input type="radio" name="gender" value="여">여
+    </div>
+    <div style="position:absolute; width:400px; margin:160px 0px 0px -200px; top: 50%; left: 50%; padding: 5px;">
+      <strong>생일</strong>&ensp;&ensp;&ensp;&ensp;&ensp;
+      <input type="hidden" name="birthday" id="birthday">
+          <input type="text" name="birth1" id="birth1" size="4" maxlength="4" style="width:98px;">
+          <input type="text" name="birth2" id="birth2" size="2" maxlength="2" style="width:98px;">
+          <input type="text" name="birth3" id="birth3" size="2" maxlength="2" style="width:98px;">
+    </div>
+    <div style="position:absolute; width:400px; margin:195px 0px 0px -200px; top: 50%; left: 50%; padding: 5px; padding-left:308px;">
+      <button type="submit" id="btnJoin" name="join" value="가입">가입</button>
+      <input type="reset" name="cancel" value="취소">
+    </div>
+    <div class="bottom" style="color:white;">
+      <div style="float:left; margin-left:25px;"><strong>CONTACT</strong>&emsp;031-909-9999</div>
+      <div style="float:right; margin-right:30px;"><strong>주소</strong>&emsp;서울특별시 노원구 월계3동 광운대학교</div>
+    </div>
+  </body>
+</html>
