@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= title %></title>
+    <meta charset='utf-8'>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+  </head>
+    <body>
+      <h1><%= title %></h1>
+      <form id="findid" action="/findid" method="post">
+        <table width="400" border="1">
+          <tr>
+            <td>분류</td>
+            <td>
+              <select name="division" id="division">
+                <option value ="customer">구매자</option>
+                <option value ="seller">판매자</option>
+                <option value ="manager">관리자</option>
+              </select>
+            </td>
+          </tr>
+          <tr>
+            <td>이름</td>
+            <td><input type="text" name="name" id="name" size="20" value=""></td>
+          </tr>
+          <tr>
+            <td>이메일</td>
+            <td><input type="text" name="email" id="email" size="30" value=""></td>
+          </tr>
+          <tr>
+            <td colspan="2">
+              <button type="submit">확인</button>
+            </td>
+          </tr>
+        </table>
+      </form>
+    </body>
+</html>
