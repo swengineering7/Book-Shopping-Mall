@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= title %></title>
+    <meta charset='utf-8'>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <style>
+        body{margin:0px; padding:0px;background-color:white;}
+  
+        .header{background-color:black; position:fixed; width:100%; top:0; left:0; z-index:1;}
+        ul.nav{float:right; list-style:none; width:45%; height:20px;}
+        ul.nav li{float:left; color:white;}
+        ul.nav a{line-height:20px; color:#ffffff; padding:0 15px; text-decoration:none;}
+  
+        .bottom{line-height:50px; height:50px; width:100%; background-repeat:repeat; background-attachment: scroll; background-position:0% 0%; background-color:black;position:fixed; bottom:0pt; left:0pt;}
+        .button{background-color:white; border:0px; color:black;text-decoration:underline;}
+        .button:hover{font-weight:bold;}
+        .log-but{border:1px solid black; width:95px; height:50px;}
+        .log-but:hover{font-weight:bold;}
+      </style>
+  </head>
+    <body>
+      <div class="header">
+        <div>
+          <ul class="nav">
+            <li style="float:right; margin-right:20px;"><a href='/'>메인페이지</a></li>
+          </ul>
+        </div>
+      </div>
+      <div style="width:100%;margin-top:170px; text-align:center; font-size:25px;">
+        <strong>로그인</strong>
+      </div>
+      <table style="width:100%;margin-top:10px; text-align:center;">  
+        <tr>
+          <td>
+            <input type="radio" name="who" value="customer" checked="checked">구매자
+            <input type="radio" name="who" value="seller">판매자
+            <input type="radio" name="who" value="manager">관리자
+          </td>
+        </tr>
+      </table>
+      <div style="position:absolute; width:400px; height:50px; margin:-50px 0px 0px -200px; top: 50%; left: 50%; padding: 5px;">
+        <div style="float:left; width:290px; height:60px;">
+            <div>
+                <strong>아이디</strong>&ensp;&ensp;&ensp;
+                <input type="text" name="cust_id" id="cust_id" size="12" maxlength="12" style="width:200px;">&ensp;
+            </div>
+            <div style="margin-top:5px;">
+                <strong>비밀번호</strong>&ensp;
+                <input type="password" name="cust_pwd" id="cust_pwd" size="12" maxlength="12" style="width:200px;">
+            </div>
+        </div>
+        <div style="float:left; width:100px; height:51px;">
+            <button type="submit" id="btnJoin" name="join" value="가입" class="log-but">로그인</button>
+        </div>
+      </div>
+      <div style="position:absolute; width:400px; margin:20px 0px 0px -350px; top: 50%; left: 50%; padding: 5px; padding-left:220px;">
+        <button type="button" class="button" onClick="location.href='/join/customer'">회원가입</button>
+        <button type="button" class="button" onClick="location.href='/findid'">아이디 찾기</button>
+        <button type="button" class="button" onClick="location.href='/findpwd'">비밀번호 찾기</button>
+      </div>
+      <div class="bottom" style="color:white;">
+        <div style="float:left; margin-left:25px;"><strong>CONTACT</strong>&emsp;031-909-9999</div>
+        <div style="float:right; margin-right:30px;"><strong>주소</strong>&emsp;서울특별시 노원구 월계3동 광운대학교</div>
+      </div>
+    </body>
+</html>
