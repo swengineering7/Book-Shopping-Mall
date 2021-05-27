@@ -30,6 +30,12 @@
                 // 결과 출력
                 resultElement.innerText = number;
             }
+
+            const handleclick = useCallback((item) => {
+                axios
+                .post('http://localhost:3000/orders/cart', {params: {...item}})
+                .then(res => console.log(item));
+            },[]);
         </script>
     </head>
     <body>
@@ -56,6 +62,7 @@
                     <td rowspan = "2">
                         <input type='button'onclick='count("plus")'value='+'/>
                         <input type='button'onclick='count("minus")'value='-'/>
+                    
                         <!-- 이 부분에 form을 적어야 하는가? -->
                         <input type = "button" id = "구매" name = "구매" value = "구매" onclick="location.href = '/orders/buy'">
                         <div id='quantity'>0</div>
@@ -78,6 +85,20 @@
                     </td>
                 </tr>
             </table>
+        </form>
+        <form action = "/orders/buy" method = "post">
+            <input type="hidden" name="book_num" value = "<%=row.book_num %>"/>
+            <input type='button'onclick='count("plus")'value='+'/>
+            <input type='button'onclick='count("minus")'value='-'/>
+        
+            <!-- 이 부분에 form을 적어야 하는가? -->
+            <input type = "button" id = "구매" name = "구매" value = "구매">
+            <div id='quantity'>0</div>
+        </form>
+        <form action = "/orders/cart" method = "post">
+            <input type="hidden" name="book_num" value = "<%=row.book_num %>"/>
+            <!--<input type = "button" id = "장바구니" name = "장바구니" value = "장바구니" onclick="location.href = '/join/employee'">-->
+            <button type = "submit" onClick= "location.href = '{() => handleclick(item)}'">장바구니</button>                       
         </form>
         <form action="/book/detail/delete" method="post">
             <input type="hidden" name="book_num" value="<%= row.book_num %>"/>
