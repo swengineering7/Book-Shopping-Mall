@@ -191,7 +191,7 @@ router.get('/book/detail/read/:book_num', function(req,res,next) {
       connection.query(sql, [book_num], function(err,row){
           if(err) console.error(err);
           console.log("1개 글 조회 결과 확인 : ",row);
-  
+          
           res.render('bookDetailRead', { title: '글 조회',row:row[0]});
           connection.release();
       });

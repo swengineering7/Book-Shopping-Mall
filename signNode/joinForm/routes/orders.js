@@ -39,8 +39,10 @@ router.get('/', function(req,res,next) {
 
 //구매 페이지
 router.get('/buy', function(req,res,next) {
+  var order_num = req.query.order_num;
+
   pool.getConnection(function(err,connection){
-    connection.query('SELECT orders.*,book.*  FROM orders,book WHERE orders.book_num = book.book_num',function(err,rows){
+    connection.query('SELECT orders.*,book.*  FROM orders,book WHERE orders.book_num = book.book_num', [order_num], function(err,rows){
       // SELECT orders.*,book.*  FROM orders,book WHERE orders.book_num = book.book_num
       // '/orders/buy'에서 불러오기 성공!!! //SELECT * FROM orders
       if(err) console.error("err : "+err);
@@ -53,6 +55,9 @@ router.get('/buy', function(req,res,next) {
 });
 
 router.post('/buy', function(req,res,next){
+  const datas = JSON.parse(req.body.params);
+  console.log("datas>>>", datas["book_price"]);
+  /*
   var datas = {
     "order_num" : req.body.order_num,
     "cust_id" : req.body.cust_id,
@@ -61,22 +66,41 @@ router.post('/buy', function(req,res,next){
 
     "book_num": req.body.book_num,
     "quantity": req.body.quantity
-    /* book_num, qunatity? */
-  }
+    book_num, qunatity?
+  }*/
+  // book_num: 3,
+  // image: {
+  //   type: 'Buffer',
+  //   data: [
+  //     108, 111, 103,
+  //     111,  46, 106,
+  //     112, 103
+  //   ]
+  // },
+  // book_title: 'Node.js!!!',
+  // book_genre: 'B',
+  // author: 'user',
+  // publisher: 'user',
+  // book_price: 28500,
+  // book_content: 'user'
 
-  console.log(datas.order_num);
-  console.log(datas.cust_id);
-  console.log(datas.order_date);
-  console.log(datas.order_price);
-  console.log(datas.book_num);
-  console.log(datas.quantity);
+  // console.log(rows);
+  // console.log(datas.order_num);
+  // console.log(datas.cust_id);
+  // console.log(datas.order_date);
+  // console.log(datas.order_price);
+  // console.log(datas.book_num);
+  // console.log(datas.quantity);
 
   pool.getConnection(function(err,connection){
-        connection.query('INSERT INTO orders SET ?', datas,function(err,rows){
+        connection.query("INSERT INTO orders SET order_num=1, cust_id='sonshn', order_date=NOW(), order_price = ?, book_num = ?, quantity = ?",
+           [datas["book_price"], datas["book_num"], 1 ],
+           function(err,rows){
+          //INSERT INTO orders SET ?
             if(err) console.error("err : "+err);
-            console.log("rows : " + JSON.stringify(rows));
+            console.log("rowsfjdkjslkfkjsdlsdjjklfskljkljs : " + JSON.stringify(rows));
 
-            res.redirect('/book');
+            res.redirect('/orders/cart');
             connection.release();
         });
     });

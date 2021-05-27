@@ -5,38 +5,7 @@
         <meta charset = 'utf-8'>
         <link rel = 'stylesheet' href='/stylesheets/style.css'/>
         <script src = "/javascripts/jquery-3.6.0.min.js"></script>
-        <script>
-            //버튼을 클릭해서 구매 수량을 +/-하는 함수
-            //구매자 페이지에서만 나타나게 해야함?
-            function count(type)  {
-                // 결과를 표시할 element
-                const resultElement = document.getElementById('quantity');
-                
-                // 현재 화면에 표시된 값
-                let number = resultElement.innerText;
-                
-                // 더하기/빼기
-                if(type === 'plus'){
-                number = parseInt(number) + 1;
-                }else if(type === 'minus'){
-                number = parseInt(number) - 1;
-                }//수량이 음수면 경고 메세지 출력하기
-
-                // if(number < 0){
-                //     alert('수량은 음수가 될 수 없습니다.');
-                //     //근데 화면에는 여전히 -1이 출력됨!
-                // }
-                
-                // 결과 출력
-                resultElement.innerText = number;
-            }
-
-            const handleclick = useCallback((item) => {
-                axios
-                .post('http://localhost:3000/orders/cart', {params: {...item}})
-                .then(res => console.log(item));
-            },[]);
-        </script>
+        <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     </head>
     <body>
         <h1><%=title %></h1>
@@ -92,7 +61,7 @@
             <input type='button'onclick='count("minus")'value='-'/>
         
             <!-- 이 부분에 form을 적어야 하는가? -->
-            <input type = "button" id = "구매" name = "구매" value = "구매">
+            <input type = "button" id = "구매" name = "구매" value = "구매" onclick="handleInsert('<%= JSON.stringify(row) %>')">
             <div id='quantity'>0</div>
         </form>
         <form action = "/orders/cart" method = "post">
@@ -112,5 +81,46 @@
                 <div id='result'>0</div>
             </td>
         </form> -->
+        <script>
+
+            //버튼을 클릭해서 구매 수량을 +/-하는 함수
+            //구매자 페이지에서만 나타나게 해야함?
+            function count(type)  {
+                // 결과를 표시할 element
+                const resultElement = document.getElementById('quantity');
+                
+                // 현재 화면에 표시된 값
+                let number = resultElement.innerText;
+                
+                // 더하기/빼기
+                if(type === 'plus'){
+                number = parseInt(number) + 1;
+                }else if(type === 'minus'){
+                number = parseInt(number) - 1;
+                }//수량이 음수면 경고 메세지 출력하기
+
+                // if(number < 0){
+                //     alert('수량은 음수가 될 수 없습니다.');
+                //     //근데 화면에는 여전히 -1이 출력됨!
+                // }
+                
+                // 결과 출력
+                resultElement.innerText = number;
+            }
+
+            const handleInsert = (row) => {
+
+                axios.post('http://localhost:3000/orders/buy',{params: row})
+                .then(() => location.href = '/orders/buy').then(() => console.log('fdsfasd'));
+                
+            }
+
+            const handleclick = (item) => {
+                axios
+                .post('http://localhost:3000/orders/cart', {params: {...item}})
+                .then(res => console.log(item));
+            };
+            
+        </script>
     </body>
 </html>
