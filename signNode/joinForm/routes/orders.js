@@ -42,7 +42,7 @@ router.get('/buy', function(req,res,next) {
   var order_num = req.query.order_num;
 
   pool.getConnection(function(err,connection){
-    connection.query('SELECT orders.*,book.*  FROM orders,book WHERE orders.book_num = book.book_num', [order_num], function(err,rows){
+    connection.query('SELECT orders.*,book.*,customer.* FROM orders,book,customer WHERE orders.book_num = book.book_num AND orders.cust_id = customer.cust_id', [order_num], function(err,rows){
       // SELECT orders.*,book.*  FROM orders,book WHERE orders.book_num = book.book_num
       // '/orders/buy'에서 불러오기 성공!!! //SELECT * FROM orders
       if(err) console.error("err : "+err);
@@ -55,7 +55,7 @@ router.get('/buy', function(req,res,next) {
 });
 
 router.post('/buy', function(req,res,next){
-  const datas = JSON.parse(req.body.params);
+  const datas = JSON.parse(req.body.params);//Json 'u' unexpected token 오류 이곳에서 발생
   console.log("datas>>>", datas["book_price"]);
   /*
   var datas = {
@@ -93,8 +93,9 @@ router.post('/buy', function(req,res,next){
   // console.log(datas.quantity);
 
   pool.getConnection(function(err,connection){
-        connection.query("INSERT INTO orders SET order_num=1, cust_id='sonshn', order_date=NOW(), order_price = ?, book_num = ?, quantity = ?",
-           [datas["book_price"], datas["book_num"], 1 ],
+    //order_date = ? 로 바꾸면 같은 오류 발생(book_num만 console에 출력)
+        connection.query("INSERT INTO orders SET order_num=?, cust_id=?, order_date=NOW(), order_price = ?, book_num = ?, quantity = ?",
+           [datas["order_num"], datas["cust_id"], datas["book_price"], datas["book_num"], 1 ],
            function(err,rows){
           //INSERT INTO orders SET ?
             if(err) console.error("err : "+err);
@@ -120,6 +121,7 @@ router.get('/cart', function(req,res,next) {
   });
 });
 
+//post.buy처럼 post.cart 고칠 것!
 router.post('/cart', function(req,res,next){
   var datas = {
     "order_num" : req.body.order_num,
@@ -148,6 +150,47 @@ router.post('/cart', function(req,res,next){
             connection.release();
         });
     });
+});
+
+router.post('/delete/cart', function(req,res,next){
+  var order_num = req.body.order_num;
+  //var passwd = req.body.passwd;
+  //var datas = [idx, passwd];
+
+  var sql = "DELETE FROM orders WHERE order_num=?";
+
+  pool.query(sql,[order_num],function(err,result){
+      console.log(result);
+      if(err) console.error("장바구니 비우는 중 에러 발생 err : ",err);
+
+      if(result.affectedRows == 0){
+          res.send("<script>alert('장바구니가 비어있습니다.^^');history.back();</script>");
+      }
+      else{
+          res.redirect('/orders/cart');
+      }
+      //connection.release();
+  });
+});
+
+router.get('/orderList', function(req,res,next) {
+  var order_num = req.query.order_num;
+
+  pool.getConnection(function(err,connection){
+    connection.query('SELECT orders.*,customer.*  FROM orders,customer WHERE orders.cust_id = customer.cust_id', [order_num], function(err,rows){
+      // SELECT orders.*,book.*  FROM orders,book WHERE orders.book_num = book.book_num
+      // '/orders/buy'에서 불러오기 성공!!! //SELECT * FROM orders
+      if(err) console.error("err : "+err);
+      console.log("rows : " + JSON.stringify(rows));
+
+      res.render('orderList', { title: '구매 내역 페이지',rows: rows});
+      connection.release();
+    });
+  });
+});
+
+router.get('/cart',function(req,res,next){
+  res.render('cart',{title: "결제방법 선택하기"});
 });
 
 module.exports = router;

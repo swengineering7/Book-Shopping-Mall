@@ -29,6 +29,14 @@
                 // 결과 출력
                 resultElement.innerText = number;
             }
+
+            function button_event(){
+                if (confirm("정말 삭제하시겠습니까??") == true){    //확인
+                    document.form.submit();
+                }else{   //취소
+                    return;
+                }
+            }
         </script>
     </head>
     <body>
@@ -43,6 +51,7 @@
                     <td>수량</td>
                     <td>합계</td>
                     <td colspan = "2">선택</td>
+                </tr>
 <%              if(rows.length == 0) { %>
 					<tr>
 						<td colspan="6">
@@ -71,7 +80,6 @@
                     <td><%= oneItem.order_price = (oneItem.book_price * oneItem.quantity) %></td>
                     <!-- 이 밑부분도 구매/장바구니 페이지 여부에 따라 다름 -->
                     <td colspan = "2">
-                        <input type = "button" id = "구매화면으로 이동" name = "구매화면으로 이동" value = "구매화면으로 이동" onclick="location.href = '/orders/buy'">
                         <button type = "submit">삭제</button>
                     </td>
                 </tr>
@@ -81,15 +89,27 @@
 <%
                 }
 %>
-                </tr>
             </table>
-            <input type='reset'>
             <tr>
                 <td colspan = "2">
-                    <button type = "submit">결제방식</button>
-                    <button type = "submit">장바구니로 이동</button>
+                    <input type = "button" id = "구매화면으로 이동" name = "구매화면으로 이동" value = "구매화면으로 이동" onclick="location.href = '/orders/buy'">
+                    <button type = "submit">취소하기</button>
                 </td>
             </tr>
+        </form>
+        <!--아래 부분: 제대로 삭제되는 것이 맞지?, value 부분 추가하면 정상적으로 MySQL에서 삭제!-->
+        <form action="/orders/delete/cart" method="post">
+            <table border="1">
+                <input type="hidden" name="order_num" value = "<%=oneItem.order_num%>">
+                <tr>
+                    <td colspan = "1">
+                        <button type = "submit">삭제</button>
+                        <!-- 이 밑에는 alert 메세지는 뜨나 삭제는 안됨 -->
+                        <!-- <input type = "button" value="담은 상품 삭제" onclick="button_event()"> -->
+                        <!-- <input type = "button" id = "삭제" name = "삭제" value = "삭제" onclick="location.href = button_event()"> -->
+                    </td>
+                </tr>
+            </table>
         </form>
     </body>
 </html>

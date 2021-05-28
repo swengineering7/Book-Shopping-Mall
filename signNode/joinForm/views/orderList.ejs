@@ -4,6 +4,7 @@
         <title><%= title %></title>
         <meta charset='utf-8'>
         <link rel='stylesheet' href='/stylesheets/style.css' />
+        <script src = "/javascripts/jquery-3.6.0.min.js"></script>
         <script>
             //버튼을 클릭해서 구매 수량을 +/-하는 함수
             //구매자 페이지에서만 나타나게 해야함?
@@ -30,6 +31,11 @@
                 resultElement.innerText = number;
             }
 
+            // function newPage()  {
+            //     window.open('https://hianna.tistory.com');
+            //     //결제 화면 창 출력
+            // }
+
             function popupOpen(){
                 var popUrl = "payment.html";	//팝업창에 출력될 페이지 URL
                 var popOption = "width=370, height=360, resizable=no, scrollbars=no, status=no;";    //팝업창 옵션(optoin)
@@ -41,15 +47,14 @@
     </head>
     <body>
         <h1><%= title %></h1>
-        <form action = "/orders/buy" method="post">
+        <form action = "/orders/orderList" method="post">
             <table border = "1" width = "1200" height = "400" border = "3">
                 <tr>
                     <td>번호</td>
                     <!-- <td>주문날짜</td> -->
                     <td>상품정보</td>
-                    <td>판매가</td>
-                    <td>수량</td>
-                    <td>합계</td>
+                    <td>결제시간</td>
+                    <td>결제금액</td>
                     <td colspan = "2">선택</td>
                 </tr>
 <%              if(rows.length == 0) { %>
@@ -69,17 +74,11 @@
                     <td><%=oneItem.order_num%></td>
                     <!-- <td><%=oneItem.order_date%></td> -->
                     <td><a href="/book/detail/read/<%=oneItem.book_num%>"><%=oneItem.book_title%></a></td>
-                    <td><%=oneItem.book_price%></td>
-                    <td><%=oneItem.quantity%>
-                        <input type='button'onclick='count("plus")'value='+'/>
-                        <input type='button'onclick='count("minus")'value='-'/>
-                        <div id='quantity'>0</div>
-                    </td>
-                    <!-- <%=oneItem.order_price%> -->
-                    <td><%= oneItem.order_price = (oneItem.book_price * oneItem.quantity) %></td>
+                    <td><%=oneItem.order_date%></td>
+                    <td><%= oneItem.order_price%></td>
                     <!-- 이 밑부분도 구매/장바구니 페이지 여부에 따라 다름 -->
                     <td colspan = "2">
-                        <button type = "submit"><a href= "/orders/orderList">구매</button>
+                        <button type = "submit">영수증 출력</button>
                         <button type = "submit">삭제</button>
                     </td>
                 </tr>
