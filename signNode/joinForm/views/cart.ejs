@@ -20,7 +20,6 @@
                 }else if(type === 'minus'){
                 number = parseInt(number) - 1;
                 }//수량이 음수면 경고 메세지 출력하기
-
                 // if(number < 0){
                 //     alert('수량은 음수가 될 수 없습니다.');
                 //     //근데 화면에는 여전히 -1이 출력됨!
@@ -29,7 +28,6 @@
                 // 결과 출력
                 resultElement.innerText = number;
             }
-
             function button_event(){
                 if (confirm("정말 삭제하시겠습니까??") == true){    //확인
                     document.form.submit();
@@ -41,7 +39,6 @@
     </head>
     <body>
         <h1><%= title %></h1>
-        <form action = "/orders/buy" method="post">
             <table border = "1" width = "1200" height = "400" border = "3">
                 <tr>
                     <td>번호</td>
@@ -59,7 +56,6 @@
 						</td>
 					</tr>
 <% }else{ %>
-
     <%
                 for(var i=0; i<rows.length; i++){
                     var oneItem = rows[i];
@@ -80,7 +76,10 @@
                     <td><%= oneItem.order_price = (oneItem.book_price * oneItem.quantity) %></td>
                     <!-- 이 밑부분도 구매/장바구니 페이지 여부에 따라 다름 -->
                     <td colspan = "2">
-                        <button type = "submit">삭제</button>
+                        <form action="/orders/delete/cart" method="post">
+                            <input type="hidden" name="order_num" value = "<%=oneItem.order_num%>">
+                            <button type = "submit" onclick='button_event()'>삭제</button>
+                        </form>
                     </td>
                 </tr>
     <%
@@ -90,26 +89,13 @@
                 }
 %>
             </table>
+        <form action = "/orders/buy" method="post">
             <tr>
                 <td colspan = "2">
                     <input type = "button" id = "구매화면으로 이동" name = "구매화면으로 이동" value = "구매화면으로 이동" onclick="location.href = '/orders/buy'">
                     <button type = "submit">취소하기</button>
                 </td>
             </tr>
-        </form>
-        <!--아래 부분: 제대로 삭제되는 것이 맞지?, value 부분 추가하면 정상적으로 MySQL에서 삭제!-->
-        <form action="/orders/delete/cart" method="post">
-            <table border="1">
-                <input type="hidden" name="order_num" value = "<%=oneItem.order_num%>">
-                <tr>
-                    <td colspan = "1">
-                        <button type = "submit">삭제</button>
-                        <!-- 이 밑에는 alert 메세지는 뜨나 삭제는 안됨 -->
-                        <!-- <input type = "button" value="담은 상품 삭제" onclick="button_event()"> -->
-                        <!-- <input type = "button" id = "삭제" name = "삭제" value = "삭제" onclick="location.href = button_event()"> -->
-                    </td>
-                </tr>
-            </table>
         </form>
     </body>
 </html>

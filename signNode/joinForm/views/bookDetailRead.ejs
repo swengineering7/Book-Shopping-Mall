@@ -94,7 +94,6 @@
                 }else if(type === 'minus'){
                 number = parseInt(number) - 1;
                 }//수량이 음수면 경고 메세지 출력하기
-
                 // if(number < 0){
                 //     alert('수량은 음수가 될 수 없습니다.');
                 //     //근데 화면에는 여전히 -1이 출력됨!
@@ -103,14 +102,11 @@
                 // 결과 출력
                 resultElement.innerText = number;
             }
-
             const handleInsert = (row) => {
-
                 axios.post('http://localhost:3000/orders/buy',{params: row})
                 .then(() => location.href = '/orders/buy').then(() => console.log('fdsfasd'));
                 
             }
-
             const handleclick = (item) => {
                 axios
                 .post('http://localhost:3000/orders/cart', {params: {...item}})

@@ -63,7 +63,6 @@ router.post('/buy', function(req,res,next){
     "cust_id" : req.body.cust_id,
     "order_date" : req.body.order_date,
     "order_price" : req.body.order_price,
-
     "book_num": req.body.book_num,
     "quantity": req.body.quantity
     book_num, qunatity?
@@ -94,8 +93,8 @@ router.post('/buy', function(req,res,next){
 
   pool.getConnection(function(err,connection){
     //order_date = ? 로 바꾸면 같은 오류 발생(book_num만 console에 출력)
-        connection.query("INSERT INTO orders SET order_num=?, cust_id=?, order_date=NOW(), order_price = ?, book_num = ?, quantity = ?",
-           [datas["order_num"], datas["cust_id"], datas["book_price"], datas["book_num"], 1 ],
+        connection.query("INSERT INTO orders SET order_num=?, cust_id='sonshn', order_date=NOW(), order_price = ?, book_num = ?, quantity = ?",
+           [datas["order_num"], datas["book_price"], datas["book_num"], 1 ],
            function(err,rows){
           //INSERT INTO orders SET ?
             if(err) console.error("err : "+err);
@@ -110,7 +109,7 @@ router.post('/buy', function(req,res,next){
 //장바구니 페이지
 router.get('/cart', function(req,res,next) {
   pool.getConnection(function(err,connection){
-    connection.query('SELECT orders.*,book.*  FROM orders,book WHERE orders.book_num = book.book_num',function(err,rows){
+    connection.query('SELECT orders.*,book.* FROM orders,book WHERE orders.book_num = book.book_num',function(err,rows){
       // '/orders/buy'에서 불러오기 성공!!! //SELECT * FROM orders
       if(err) console.error("err : "+err);
       console.log("rows : " + JSON.stringify(rows));

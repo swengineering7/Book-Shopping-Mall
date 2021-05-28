@@ -20,7 +20,6 @@
                 }else if(type === 'minus'){
                 number = parseInt(number) - 1;
                 }//수량이 음수면 경고 메세지 출력하기
-
                 // if(number < 0){
                 //     alert('수량은 음수가 될 수 없습니다.');
                 //     //근데 화면에는 여전히 -1이 출력됨!
@@ -29,23 +28,25 @@
                 // 결과 출력
                 resultElement.innerText = number;
             }
-
             function popupOpen(){
                 var popUrl = "payment.html";	//팝업창에 출력될 페이지 URL
                 var popOption = "width=370, height=360, resizable=no, scrollbars=no, status=no;";    //팝업창 옵션(optoin)
-
                 window.open(popUrl,"",popOption);
-
+            }
+            function button_event(){
+                if (confirm("정말 삭제하시겠습니까??") == true){    //확인
+                    document.form.submit();
+                }else{   //취소
+                    return;
+                }
             }
         </script>
     </head>
     <body>
         <h1><%= title %></h1>
-        <form action = "/orders/buy" method="post">
             <table border = "1" width = "1200" height = "400" border = "3">
                 <tr>
                     <td>번호</td>
-                    <!-- <td>주문날짜</td> -->
                     <td>상품정보</td>
                     <td>판매가</td>
                     <td>수량</td>
@@ -59,7 +60,6 @@
 						</td>
 					</tr>
 <% }else{ %>
-
     <%
                 for(var i=0; i<rows.length; i++){
                     var oneItem = rows[i];
@@ -67,20 +67,24 @@
                 <!-- <input type = "hidden" name="order_num" value = "<%=rows.order_num%>"/> -->
                 <tr>
                     <td><%=oneItem.order_num%></td>
-                    <!-- <td><%=oneItem.order_date%></td> -->
                     <td><a href="/book/detail/read/<%=oneItem.book_num%>"><%=oneItem.book_title%></a></td>
                     <td><%=oneItem.book_price%></td>
                     <td><%=oneItem.quantity%>
-                        <input type='button'onclick='count("plus")'value='+'/>
+                        <!-- <input type='button'onclick='count("plus")'value='+'/>
                         <input type='button'onclick='count("minus")'value='-'/>
-                        <div id='quantity'>0</div>
+                        <div id='quantity'>0</div> -->
+                        <input type = "number" name = "quantity" id= "quantity" size="10" maxlength="10">
+                        <br><br>
+                        <button type = "submit">구매 수량 결정</button>
                     </td>
                     <!-- <%=oneItem.order_price%> -->
                     <td><%= oneItem.order_price = (oneItem.book_price * oneItem.quantity) %></td>
-                    <!-- 이 밑부분도 구매/장바구니 페이지 여부에 따라 다름 -->
                     <td colspan = "2">
                         <button type = "submit"><a href= "/orders/orderList">구매</button>
-                        <button type = "submit">삭제</button>
+                        <form action="/orders/delete/cart" method="post">
+                            <input type="hidden" name="order_num" value = "<%=oneItem.order_num%>">
+                            <button type = "submit" onclick='button_event()'>삭제</button>
+                        </form>
                     </td>
                 </tr>
     <%
@@ -98,6 +102,5 @@
                     <button type = "submit"><a href = "/book">상품 목록 페이지로 이동</button>
                 </td>
             </tr>
-        </form>
     </body>
 </html>
