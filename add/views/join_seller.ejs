@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= title %></title>
+    <meta charset='utf-8'>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <style>
+      body{margin:0px; padding:0px;background-color:white;}
+
+      .header{background-color:black; position:fixed; width:100%; top:0; left:0; z-index:1;}
+      ul.nav{float:right; list-style:none; width:45%; height:20px;}
+      ul.nav li{float:left; color:white;}
+      ul.nav a{line-height:20px; color:#ffffff; padding:0 15px; text-decoration:none;}
+
+
+      .bottom{line-height:50px; height:50px; width:100%; background-repeat:repeat; background-attachment: scroll; background-position:0% 0%; background-color:black;position:fixed; bottom:0pt; left:0pt;}
+    </style>
+    <script src="/javascripts/jquery-3.6.0.min.js"></script>
+    <script>
+      $(function(){
+
+        $("#btnJoin").click(
+          function(){
+
+            if($("#sell_id").val() == "")
+            {
+              alert("아이디를 꼭 입력 하세요");
+              $("#sell_id").focus();
+              return false;              
+            }
+            if($("#sell_pwd").val() == "")
+            {
+              alert("비밀번호를 꼭 입력 하세요");
+              $("#sell_pwd").focus();
+              return false;              
+            }
+            if($("#sell_name").val() == "")
+            {
+              alert("이름을 꼭 입력 하세요");
+              $("#sell_name").focus();
+              return false;              
+            }
+            if($("#sell_email").val() == "")
+            {
+              alert("이메일을 꼭 입력 하세요");
+              $("#sell_email").focus();
+              return false;              
+            }
+            if($("#tel2").val() == "")
+            {
+              alert("전화번호 두번째 자리를 확인해 주세요");
+              $("#tel2").focus();
+              return false;              
+            }
+            if($("#tel3").val() == "")
+            {
+              alert("전화번호 세번째 자리를 확인해 주세요");
+              $("#tel3").focus();
+              return false;              
+            }
+            var sell_phone_num=$("#tel1").val()+ $("#tel2").val()+ $("#tel3").val();
+            $("#sell_phone_num").val(sell_phone_num);
+            $("#joinForm").submit();
+            });
+        });
+    </script>
+  </head>
+  <body>
+    <div class="header">
+      <div>
+        <ul class="nav">
+          <li style="float:right; margin-right:20px;"><a href='/'>메인페이지</a></li>
+        </ul>
+      </div>
+    </div>
+    <div style="width:100%;margin-top:90px; text-align:center; font-size:25px;">
+      <strong>판매자</strong>
+    </div>
+    <table style="width:100%;margin-top:10px; text-align:center;">
+      <tr>
+        <td>원하는 가입 경로를 선택하세요!</td>
+      </tr>          
+      <tr>
+        <td>
+          <button type="button" onClick="location.href='customer'">구매자</button>
+          <button type="button" onClick="location.href='seller'">판매자</button>
+          <button type="button" onClick="location.href='employee'">관리자</button>
+        </td>
+      </tr>
+    </table>
+    <form id="joinForm" action="/join/seller" method="post">
+      <table width="400" style="margin:0px auto; margin-top:10px;">
+        <tr style="height:30px;">
+          <th>아이디</th>
+          <td><input type="text" name="sell_id" id="sell_id" size="12" maxlength="12" style="width:240px;"></td>
+          <td><button type="submit" style="width:70px; height:25px; border:1px solid black;">중복확인</button></td>
+        </tr>
+        <tr style="height:30px;">
+          <th>비밀번호</th>
+          <td colspan="2"><input type="password" name="sell_pwd" id="sell_pwd" size="12" maxlength="12" style="width:320px;"></td>
+        </tr>
+        <tr style="height:30px;">
+          <th>이름</th>
+          <td colspan="2"><input type="text" name="sell_name" id="sell_name" size="10" maxlength="10" style="width:320px;"></td>
+        </tr>
+        <tr style="height:30px;">
+          <th>이메일</th>
+          <td colspan="2"><input type="email" name="sell_email" id="sell_email" size="30" maxlength="50" style="width:320px;"></td>
+        </tr>
+        <tr style="height:30px;">
+          <th>전화번호</th>
+          <td colspan="2"><input type="hidden" name="sell_phone_num" id="sell_phone_num" style="width:320px;">
+          <select name="tel1" id="tel1" style="width:100px;">
+            <option value="010">010</option>
+            <option value="011">011</option>
+            <option value="016">016</option>
+            <option value="017">017</option>
+            <option value="018">018</option>
+            <option value="019">019</option>
+          </select>
+          <input type="text" name="tel2" id="tel2" size="4" maxlength="4" style="width:102px;">
+          <input type="text" name="tel3" id="tel3" size="4" maxlength="4" style="width:102px;">
+          </td>
+        </tr>    
+        <tr style="height:50px; text-align:right;">
+          <td colspan="3">
+            <button type="submit" id="btnJoin" name="join" value="가입" style="width:70px;">가입</button>
+            <input type="reset" name="cancel" value="취소" style="width:70px;">&ensp;
+          </td>
+        </tr>
+      </table>
+    </form>
+    <div class="bottom" style="color:white;">
+      <div style="float:left; margin-left:25px;"><strong>CONTACT</strong>&emsp;031-909-9999</div>
+      <div style="float:right; margin-right:30px;"><strong>주소</strong>&emsp;서울특별시 노원구 월계3동 광운대학교</div>
+    </div>
+
+  </body>
+</html>
