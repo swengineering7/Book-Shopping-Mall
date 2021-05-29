@@ -57,40 +57,9 @@ router.get('/buy', function(req,res,next) {
 router.post('/buy', function(req,res,next){
   const datas = JSON.parse(req.body.params);//Json 'u' unexpected token 오류 이곳에서 발생
   console.log("datas>>>", datas);
-  /*
-  var datas = {
-    "order_num" : req.body.order_num,
-    "cust_id" : req.body.cust_id,
-    "order_date" : req.body.order_date,
-    "order_price" : req.body.order_price,
-    "book_num": req.body.book_num,
-    "quantity": req.body.quantity
-    book_num, qunatity?
-  }*/
-  // book_num: 3,
-  // image: {
-  //   type: 'Buffer',
-  //   data: [
-  //     108, 111, 103,
-  //     111,  46, 106,
-  //     112, 103
-  //   ]
-  // },
-  // book_title: 'Node.js!!!',
-  // book_genre: 'B',
-  // author: 'user',
-  // publisher: 'user',
-  // book_price: 28500,
-  // book_content: 'user'
 
-  // console.log(rows);
-  // console.log(datas.order_num);
-  // console.log(datas.cust_id);
-  // console.log(datas.order_date);
-  // console.log(datas.order_price);
-  // console.log(datas.book_num);
-  // console.log(datas.quantity);
-
+  //이 부분에 주석 처리
+  
   pool.getConnection(function(err,connection){
     //order_date = ? 로 바꾸면 같은 오류 발생(book_num만 console에 출력)
         connection.query("INSERT INTO orders SET order_num=?, cust_id='sonshn', order_date=NOW(), order_price = ?, book_num = ?, quantity = ?",
@@ -146,6 +115,27 @@ router.post('/cart', function(req,res,next){
 });
 
 router.post('/delete/cart', function(req,res,next){
+  var cart_num = req.body.cart_num;
+  //var passwd = req.body.passwd;
+  //var datas = [idx, passwd];
+
+  var sql = "DELETE FROM cart WHERE cart_num=?";
+
+  pool.query(sql,[cart_num],function(err,result){
+      console.log(result);
+      if(err) console.error("장바구니 비우는 중 에러 발생 err : ",err);
+
+      if(result.affectedRows == 0){
+          res.send("<script>alert('장바구니가 비어있습니다.^^');history.back();</script>");
+      }
+      else{
+          res.redirect('/orders/cart');
+      }
+      //connection.release();
+  });
+});
+
+router.post('/delete/order', function(req,res,next){
   var order_num = req.body.order_num;
   //var passwd = req.body.passwd;
   //var datas = [idx, passwd];
@@ -160,7 +150,7 @@ router.post('/delete/cart', function(req,res,next){
           res.send("<script>alert('장바구니가 비어있습니다.^^');history.back();</script>");
       }
       else{
-          res.redirect('/orders/cart');
+          res.redirect('/orders/buy');
       }
       //connection.release();
   });

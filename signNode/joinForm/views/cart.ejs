@@ -78,7 +78,7 @@
                     <!-- 이 밑부분도 구매/장바구니 페이지 여부에 따라 다름 -->
                     <td colspan = "2">
                         <form action="/orders/delete/cart" method="post">
-                            <input type="hidden" name="order_num" value = "<%=oneItem.order_num%>">
+                            <input type="hidden" name="cart_num" value = "<%=oneItem.cart_num%>">
                             <button type = "submit" onclick='button_event()'>삭제</button>
                         </form>
                     </td>
@@ -92,7 +92,7 @@
             </table>
         <form action = "/orders/buy" method="post">
             <tr>
-                <td colspan = "2">
+                <td colspan = "2"> 
                     <input type = "button" id = "구매화면으로 이동" name = "구매화면으로 이동" value = "구매화면으로 이동" onclick="location.href = '/orders/buy'">
                     <button type = "submit">취소하기</button>
                 </td>

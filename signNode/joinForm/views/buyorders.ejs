@@ -78,7 +78,7 @@
                     <td><%= oneItem.order_price = (oneItem.book_price * oneItem.quantity) %></td>
                     <td colspan = "2">
                         <button type = "submit"><a href= "/orders/orderList">구매</button>
-                        <form action="/orders/delete/cart" method="post">
+                        <form action="/orders/delete/order" method="post">
                             <input type="hidden" name="order_num" value = "<%=oneItem.order_num%>">
                             <button type = "submit" onclick='button_event()'>삭제</button>
                         </form>
