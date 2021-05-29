@@ -8,7 +8,7 @@ var pool = mysql.createPool({
     host:'localhost',
     user : 'root',
     password:'1234',
-    database: 'sw_project',
+    database: 'sw_project_table',
     dataStrings : 'date'
   });
 
