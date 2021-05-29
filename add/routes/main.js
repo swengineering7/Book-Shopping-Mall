@@ -37,6 +37,8 @@ router.use(session({
 
 //multer loading
 var multer = require('multer');
+var fs = require('fs');
+
 const { route } = require('./users');
 var upload = multer({
   storage: multer.diskStorage({
