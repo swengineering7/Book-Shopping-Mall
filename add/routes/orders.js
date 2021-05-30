@@ -41,80 +41,106 @@ router.get('/', function(req,res,next) {
 
 //구매 페이지
 router.get('/buy', function(req,res,next) {
+    if(!req.session.userid)
+  {
+    res.send('<script type="text/javascript">alert("로그인이 필요합니다.");location.href="/login";</script>');
+  }else{
   var order_num = req.query.order_num;
 
   pool.getConnection(function(err,connection){
-    connection.query('SELECT orders.*,book.*,customer.* FROM orders,book,customer WHERE orders.book_num = book.book_num AND orders.cust_id = customer.cust_id', [order_num], function(err,rows){
+    var sql="SELECT orders.*,book.* FROM orders,book WHERE cust_id=? AND orders.book_num = book.book_num ORDER BY order_num ASC";
+    connection.query(sql,req.session.userid, function(err,rows){
       // SELECT orders.*,book.*  FROM orders,book WHERE orders.book_num = book.book_num
       // '/orders/buy'에서 불러오기 성공!!! //SELECT * FROM orders
       if(err) console.error("err : "+err);
-      console.log("rows : " + JSON.stringify(rows));
+      //console.log("rows : " + JSON.stringify(rows));
 
       res.render('buyorders', { title: '상품 구매 페이지',rows: rows});
       connection.release();
     });
   });
+}
 });
 
 router.post('/buy', function(req,res,next){
+    if(!req.session.userid)
+  {
+    res.send('<script type="text/javascript">alert("로그인이 필요합니다.");location.href="/login";</script>');
+  }else{
   const datas = JSON.parse(req.body.params);//Json 'u' unexpected token 오류 이곳에서 발생
   console.log("datas>>>", datas);
 
   //이 부분에 주석 처리
-  
+  var sql="insert into orders(order_num, cust_id, order_date, order_price, book_num, quantity) values(?,?,NOW(),?,?,?);"
+  //var sql="INSERT INTO orders SET order_num=?, cust_id='?', order_date=NOW(), order_price = ?, book_num = ?, quantity = ?";s
   pool.getConnection(function(err,connection){
     //order_date = ? 로 바꾸면 같은 오류 발생(book_num만 console에 출력)
-        connection.query("INSERT INTO orders SET order_num=?, cust_id='user1', order_date=NOW(), order_price = ?, book_num = ?, quantity = ?",
-           [datas["order_num"], datas["book_price"], datas["book_num"], 1],
+        connection.query(sql,[datas["order_num"], req.session.userid, datas["book_price"], datas["book_num"], 1],
            function(err,rows){
           //INSERT INTO orders SET ?
             if(err) console.error("err : "+err);
-            console.log("rowsfjdkjslkfkjsdlsdjjklfskljkljs : " + JSON.stringify(rows));
+            //console.log("rowsfjdkjslkfkjsdlsdjjklfskljkljs : " + JSON.stringify(rows));
 
             res.redirect('/orders/cart');
             connection.release();
         });
     });
+}
 });
 
 //장바구니 페이지
 router.get('/cart', function(req,res,next) {
+  if(!req.session.userid)
+  {
+    res.send('<script type="text/javascript">alert("로그인이 필요합니다.");location.href="/login";</script>');
+  }else{
   var cart_num = req.query.cart_num;
 
   pool.getConnection(function(err,connection){
-    connection.query('SELECT cart.*, customer.*,book.* FROM cart,customer,book WHERE cart.cust_id = customer.cust_id AND cart.book_num = book.book_num', [cart_num], function(err,rows){
+      var sql="SELECT cart.*,book.* FROM cart,book WHERE cart.cust_id = ? AND cart.book_num = book.book_num ORDER BY cart_num ASC";
+    //connection.query('SELECT cart.*, customer.*,book.* FROM cart,book WHERE cart.cust_id = customer.cust_id AND cart.book_num = book.book_num', [cart_num], function(err,rows){
+    connection.query(sql, req.session.userid, function(err,rows){
       // '/orders/buy'에서 불러오기 성공!!! //SELECT * FROM orders
       if(err) console.error("err : "+err);
-      console.log("rows : " + JSON.stringify(rows));
+      //console.log("rows : " + JSON.stringify(rows));
 
       res.render('cart', { title: '장바구니 페이지',rows: rows});
       connection.release();
     });
   });
+}
 });
 
 router.post('/cart', function(req,res,next){
+    if(!req.session.userid)
+  {
+    res.send('<script type="text/javascript">alert("로그인이 필요합니다.");location.href="/login";</script>');
+  }
+  else{
   const datas = JSON.parse(req.body.params);//Json 'u' unexpected token 오류 이곳에서 발생
   console.log("datas>>>", datas);
-  console.log("session : ", req.session.name);
-
-  // var datas = {
-  //   "cart_num" : req.body.cart_num,
-  //   "cust_id" : req.body.cust_id,
-  //   "book_num": req.body.book_num,
-  //   "quantity": req.body.quantity
-  // }
-
+  console.log("cart session id : ", req.session.userid);
+  var userid=req.session.userid;
+  //var datas=[cart_num, userid, book_num, 1];
   pool.getConnection(function(err,connection){
-        connection.query("INSERT INTO cart SET cart_num=?, cust_id='user1', book_num = ?, quantity = ?", 
-        [datas["cart_num"], datas["book_num"] , 1],function(err,rows){
+      var sql="insert into cart(cart_num, cust_id, book_num, quantity) values(?,?,?,?);"
+        /*connection.query("INSERT INTO cart SET cart_num=?, cust_id='?', book_num = ?, quantity = ?", 
+        [datas["cart_num"], datas[id], datas["book_num"] , 1],function(err,rows){
             if(err) console.error("err : "+err);
-            console.log("rows : " + JSON.stringify(rows));
+            //console.log("rows : " + JSON.stringify(rows));
+
+            res.redirect('/orders/cart');
+            connection.release();
+        });*/
+        connection.query(sql, [datas["cart_num"], userid, datas["book_num"] , 1], function(err,rows){
+            if(err) console.error("err : "+err);
+            //console.log("rows : " + JSON.stringify(rows));
 
             res.redirect('/orders/cart');
             connection.release();
         });
     });
+}
 });
 
 router.post('/delete/cart', function(req,res,next){
@@ -167,7 +193,7 @@ router.get('/orderList', function(req,res,next) {
       // SELECT orders.*,book.*  FROM orders,book WHERE orders.book_num = book.book_num
       // '/orders/buy'에서 불러오기 성공!!! //SELECT * FROM orders
       if(err) console.error("err : "+err);
-      console.log("rows : " + JSON.stringify(rows));
+      //console.log("rows : " + JSON.stringify(rows));
 
       res.render('orderList', { title: '구매 내역 페이지',rows: rows});
       connection.release();
