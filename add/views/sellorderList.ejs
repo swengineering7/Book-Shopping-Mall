@@ -42,11 +42,12 @@
     </head>
     <body>
         <h1><%= title %></h1>
-        <form action = "/orders/orderList" method="post">
+        <form action = "/orders/sellorderList" method="post">
             <table border = "1" width = "1200" height = "400" border = "3">
                 <tr>
                     <td>번호</td>
-                    <!-- <td>주문날짜</td> -->
+                    <td>구매자 아이디</td>
+                    <td>주문수량</td>
                     <td>상품정보</td>
                     <td>결제시간</td>
                     <td>결제금액</td>
@@ -67,7 +68,8 @@
                 <!-- <input type = "hidden" name="order_num" value = "<%=rows.order_num%>"/> -->
                 <tr>
                     <td><%=oneItem.order_num%></td>
-                    <!-- <td><%=oneItem.order_date%></td> -->
+                    <td><%=oneItem.cust_id%></td>
+                    <td><%=oneItem.quantity%></td>
                     <td><a href="/book/detail/read/<%=oneItem.book_num%>"><%=oneItem.book_title%></a></td>
                     <td><%=oneItem.order_date%></td>
                     <td><%= oneItem.total_price%></td>

@@ -280,7 +280,7 @@ router.get('/orderList', function(req,res,next) {
     var order_num = req.query.order_num;
     var id=req.session.userid;
     pool.getConnection(function(err,connection){
-      connection.query('SELECT orders.*,customer.*  FROM orders,customer WHERE orders.cust_id=? AND orders.cust_id = customer.cust_id', id, function(err,rows){
+      connection.query('SELECT orders.*,customer.*,book.*  FROM orders,customer,book WHERE orders.cust_id=? AND orders.cust_id = customer.cust_id', id, function(err,rows){
         if(err) console.error("err : "+err);
         //console.log("rows : " + JSON.stringify(rows));
   
@@ -290,6 +290,94 @@ router.get('/orderList', function(req,res,next) {
     });
   }
   });
+
+router.post('/orderList', function(req,res,next){
+    if(!req.session.userid)
+  {
+    res.send('<script type="text/javascript">alert("로그인이 필요합니다.");location.href="/login";</script>');
+  }
+  else{
+  const datas = JSON.parse(req.body.params);//Json 'u' unexpected token 오류 이곳에서 발생
+  console.log("datas>>>", datas);
+  console.log("orderList session id : ", req.session.userid);
+  var userid=req.session.userid;
+  //var datas=[cart_num, userid, book_num, 1];
+  pool.getConnection(function(err,connection){
+      var sql="insert into order_detail(order_num, sell_id, book_num, quantity) values(?,?,?,?);"
+        /*connection.query("INSERT INTO cart SET cart_num=?, cust_id='?', book_num = ?, quantity = ?", 
+        [datas["cart_num"], datas[id], datas["book_num"] , 1],function(err,rows){
+            if(err) console.error("err : "+err);
+            //console.log("rows : " + JSON.stringify(rows));
+
+            res.redirect('/orders/cart');
+            connection.release();
+        });*/
+        connection.query(sql, [datas["order_num"], userid, datas["book_num"] , '?'], function(err,rows){
+            if(err) console.error("err : "+err);
+            //console.log("rows : " + JSON.stringify(rows));
+
+            res.redirect('/orders/orderList');
+            connection.release();
+        });
+    });
+}
+});
+
+router.get('/sellorderList', function(req,res,next) {
+  if(!req.session.userid)
+  {
+    res.send('<script type="text/javascript">alert("로그인이 필요합니다.");location.href="/login";</script>');
+  }
+  else if(req.session.division!="seller")
+  {
+    res.send('<script type="text/javascript">alert("판매자가 아닙니다.");hitory.back();</script>');
+  }
+  else{
+    var order_num = req.query.order_num;
+    var id=req.session.userid;
+    pool.getConnection(function(err,connection){
+      connection.query('SELECT orders.*,seller.*,order_detail.*,book.* FROM orders,seller,order_detail,book WHERE order_detail.sell_id=? AND order_detail.order_num = orders.order_num', id, function(err,rows){
+        if(err) console.error("err : "+err);
+        //console.log("rows : " + JSON.stringify(rows));
+  
+        res.render('sellorderList', { title: '(판매자)구매 내역 페이지',rows: rows});
+        connection.release();
+      });
+    });
+  }
+  });
+
+router.post('/sellorderList', function(req,res,next){
+    if(!req.session.userid)
+  {
+    res.send('<script type="text/javascript">alert("로그인이 필요합니다.");location.href="/login";</script>');
+  }
+  else{
+  const datas = JSON.parse(req.body.params);//Json 'u' unexpected token 오류 이곳에서 발생
+  console.log("datas>>>", datas);
+  console.log("Transmit orderList session id : ", req.session.userid);
+  var userid=req.session.userid;
+  //var datas=[cart_num, userid, book_num, 1];
+  pool.getConnection(function(err,connection){
+      var sql="insert into order_detail(order_num, sell_id, book_num, quantity) values(?,?,?,?);"
+        /*connection.query("INSERT INTO cart SET cart_num=?, cust_id='?', book_num = ?, quantity = ?", 
+        [datas["cart_num"], datas[id], datas["book_num"] , 1],function(err,rows){
+            if(err) console.error("err : "+err);
+            //console.log("rows : " + JSON.stringify(rows));
+
+            res.redirect('/orders/cart');
+            connection.release();
+        });*/
+        connection.query(sql, [datas["order_num"], userid, datas["book_num"] , datas["quantity"]], function(err,rows){
+            if(err) console.error("err : "+err);
+            //console.log("rows : " + JSON.stringify(rows));
+
+            res.redirect('/orders/sellorderList');
+            connection.release();
+        });
+    });
+}
+});
 
 // router.get('/payment',function(req,res,next){
 //   res.render('payment',{title: "결제방법 선택하기"});

@@ -65,7 +65,9 @@
                         </form>
                     </td> -->
                     <td colspan = "2">
-                        <button type = "submit"><a href= "/orders/orderList">구매</button>
+                        <form action = "/orders/sellorderList" method = "POST">
+                            <button type = "submit" onclick="handleInsert('<%= JSON.stringify(oneItem) %>')"><a href= "/orders/orderList">구매</button>                       
+                        </form>
                         <form action="/orders/delete/order" method="post">
                             <input type="hidden" name="order_num" value = "<%=oneItem.order_num%>">
                             <button type = "submit" onclick='button_event()'>삭제</button>
@@ -131,6 +133,13 @@
                 inputSelector.addEventListener('change', handleChange);
                 inputSelector.addEventListener('click', handleClick);
 
+            </script>
+            <script>
+                const handleInsert = (row) => {
+                    axios.post('http://localhost:3000/orders/sellorderList',{params: row})
+                    .then(() => location.href = '/orders/orderList').then(() => console.log('fdsfasd'));
+                            
+                    }
             </script>
     </body>
 </html>
