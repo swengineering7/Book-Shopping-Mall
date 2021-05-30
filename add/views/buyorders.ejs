@@ -13,24 +13,6 @@
                 console.log(rows);
             }
         </script>
-        <script>
-            $(document).ready(function () {
-                var $cnts = $('.cnt'); // cnt 배열
-                $cnts.change(function () { // input값이 변화가 있을 때 발생하는 이벤트
-                    for (var i = 0; i < $cnts.length; i++) {
-                        // input 값 가져오기
-                        console.log(i + ' index input - ' + $cnts.eq(i).val());
-                    }
-                });
-         
-                var $btn = $('.btn'); // btn
-                $btn.click(function () { // 클릭 이벤트
-                    for (var i = 0; i < $cnts.length; i++) {
-                        $cnts.eq(i).val(2); // input 값 선택하기
-                    }
-                });
-            });
-        </script>
         <h1><%= title %></h1>
             <table border = "1" width = "1200" height = "400" border = "3">
                 <tr>
@@ -58,20 +40,29 @@
                     <td><%=oneItem.order_num%></td>
                     <td><a href="/book/detail/read/<%=oneItem.book_num%>"><%=oneItem.book_title%></a></td>
                     <td><%=oneItem.book_price%></td>
-                                <td>
-                                    <%=oneItem.quantity%>
-                                    <form action = "/orders/quantity/update" method="post">
-                                        <input type="hidden" name="order_date" value = "<%=oneItem.order_date%>">
-                                        <input type="hidden" name="book_num" value = "<%=oneItem.book_num%>">
-                                        <input type="hidden" name="order_num" value = "<%=oneItem.order_num%>">
-                                        <input type="hidden" name= "order_price" value = "<%= oneItem.order_price = (oneItem.book_price * oneItem.quantity) %>">
-                                        <input id="input" name = "quantity" type="number" val = "<%=oneItem.book_price%>"><!--원래는 type="text"-->
-                                        <a id="val"><%=oneItem.quantity%></a>
-                                        <button type = "submit">구매 수량 결정</button>
-                                    </form>
-                                </td>
-                    <td><%= oneItem.order_price = (oneItem.book_price * oneItem.quantity) %></td>
-
+                    <td>
+                        <%=oneItem.quantity%>
+                        <form action = "/orders/quantity/update" method="post">
+                            <input type="hidden" name="order_date" value = "<%=oneItem.order_date%>">
+                            <input type="hidden" name="book_num" value = "<%=oneItem.book_num%>">
+                            <input type="hidden" name="order_num" value = "<%=oneItem.order_num%>">
+                            <input type="hidden" name= "order_price" value = "<%= oneItem.order_price = (oneItem.book_price * oneItem.quantity) %>">
+                            <input id="input" name = "quantity" type="number"><!--원래는 type="text"-->
+                            <a id="val"><%=oneItem.quantity%></a>
+                            <button type = "submit">구매 수량 결정</button>                            
+                        </form>
+                    </td>
+                    <td>
+                        <%= oneItem.order_price = (oneItem.book_price * oneItem.quantity) %>
+                        <form action = "/orders/price/update" method = "post">
+                            <input type="hidden" name="order_date" value = "<%=oneItem.order_date%>">
+                            <input type="hidden" name="book_num" value = "<%=oneItem.book_num%>">
+                            <input type="hidden" name="order_num" value = "<%=oneItem.order_num%>">
+                            <input type="hidden" name= "quantity" value = "<%=oneItem.quantity%>">
+                            <input type="hidden" name= "order_price" value = "<%= oneItem.order_price = (oneItem.book_price * oneItem.quantity) %>">
+                            <button type = "submit">예상 금액 보기</button>                            
+                        </form>
+                    </td>
                     <td colspan = "2">
                         <button type = "submit"><a href= "/orders/orderList">구매</button>
                         <form action="/orders/delete/order" method="post">
@@ -96,6 +87,8 @@
     <%
                     }
     %>
+                    
+
 <%
                 }
 %>
@@ -108,31 +101,7 @@
                     <button type = "submit"><a href = "/book">상품 목록 페이지로 이동</button>
                 </td>
             </tr>
-                <script>
-                //버튼을 클릭해서 구매 수량을 +/-하는 함수
-                //구매자 페이지에서만 나타나게 해야함?
-                function count(type)  {
-                    // 결과를 표시할 element
-                    const resultElement = document.getElementById('quantity');
-                    
-                    // 현재 화면에 표시된 값
-                    let number = resultElement.innerText;
-                    
-                    // 더하기/빼기
-                    if(type === 'plus'){
-                    number = parseInt(number) + 1;
-                    }else if(type === 'minus'){
-                    number = parseInt(number) - 1;
-                    }
-                    //수량이 음수면 경고 메세지 출력하기
-                    // if(number < 0){
-                    //     alert('수량은 음수가 될 수 없습니다.');
-                    //     //근데 화면에는 여전히 -1이 출력됨!
-                    // }
-                    
-                    // 결과 출력
-                    resultElement.innerText = number;
-                }
+            <script>
                 function popupOpen(){
                     var popUrl = "payment.html";	//팝업창에 출력될 페이지 URL
                     var popOption = "width=370, height=360, resizable=no, scrollbars=no, status=no;";    //팝업창 옵션(optoin)
