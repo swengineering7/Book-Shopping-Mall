@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= title %></title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+  </head>
+    <body>
+      <h1><%= title %></h1>
+      <a href="/welcome_emp">메인 페이지로 이동</a><br>
+      <a href="/empage">관리자 마이페이지로 이동</a><br>
+      <br>
+      <br>
+      <table border="1">
+        <tr>
+          <td>아이디</td>
+          <td>이름</td>
+          <td>삭제</td>
+        </tr>
+<%
+        for(var i=0; i<rows.length; i++){
+          var oneItem=rows[i];
+%>
+        <tr>
+          <td><%=oneItem.cust_id%></td>
+          <td><%=oneItem.cust_name%></td>
+          <td>
+            <form action="/delete/customer" method="post" onsubmit="return confirm('<%=oneItem.cust_id%> 를 삭제하시겠습니까?');">
+              <input type="hidden" name="delete_id" value = "<%=oneItem.cust_id%>">
+              <button type = "submit" >삭제</button>
+            </form>
+          </td>
+        </tr>
+<%
+      }
+%>
+      </table>
+    </body>
+</html>
