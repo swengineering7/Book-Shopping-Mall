@@ -44,11 +44,10 @@
             <table border = "1" width = "1200" height = "400" border = "3">
                 <tr>
                     <td>번호</td>
-                    <!-- <td>주문날짜</td> -->
+                    <td>표지</td>
                     <td>상품정보</td>
                     <td>판매가</td>
                     <td>수량</td>
-                    <td>합계</td>
                     <td colspan = "2">선택</td>
                 </tr>
 <%              if(rows.length == 0) { %>
@@ -65,7 +64,7 @@
                 <!-- <input type = "hidden" name="cart_num" value = "<%=rows.cart_num%>"/> -->
                 <tr>
                     <td><%=oneItem.cart_num%></td>
-                    <!-- <td><%=oneItem.order_date%></td> -->
+                    <td><img src="/images/<%= oneItem.image %>" alt="" width="100px" height="50px"></td>
                     <td><a href="/book/detail/read/<%=oneItem.book_num%>"><%=oneItem.book_title%></a></td>
                     <td><%=oneItem.book_price%></td>
                     <td><%=oneItem.quantity%>
@@ -73,13 +72,14 @@
                         <input type='button'onclick='count("minus")'value='-'/>
                         <div id='quantity'>0</div>
                     </td>
-                    <!-- <%=oneItem.order_price%> -->
-                    <td><%= oneItem.order_price = (oneItem.book_price * oneItem.quantity) %></td>
                     <!-- 이 밑부분도 구매/장바구니 페이지 여부에 따라 다름 -->
                     <td colspan = "2">
+                        <form action = "/orders/buy" method = "post">
+                            <input type = "button" id = "즉시구매" name = "즉시구매" value = "즉시구매" onclick="handleInsert('<%= JSON.stringify(oneItem) %>')">
+                        </form>
                         <form action="/orders/delete/cart" method="post">
                             <input type="hidden" name="cart_num" value = "<%=oneItem.cart_num%>">
-                            <button type = "submit" onclick='button_event()'>삭제</button>
+                            <button type = "submit" onclick='button_event()'>장바구니에서 삭제</button>
                         </form>
                     </td>
                 </tr>
@@ -90,13 +90,19 @@
                 }
 %>
             </table>
-        <form action = "/orders/buy" method="post">
+        <!-- <form action = "/orders/buy" method="post">
             <tr>
                 <td colspan = "2"> 
                     <input type = "button" id = "구매화면으로 이동" name = "구매화면으로 이동" value = "구매화면으로 이동" onclick="location.href = '/orders/buy'">
-                    <button type = "submit">취소하기</button>
                 </td>
             </tr>
-        </form>
+        </form> -->
+        <script>
+            const handleInsert = (row) => {
+                axios.post('http://localhost:3000/orders/buy',{params: row})
+                .then(() => location.href = '/orders/buy').then(() => console.log('fdsfasd'));
+                
+            }
+        </script>
     </body>
 </html>

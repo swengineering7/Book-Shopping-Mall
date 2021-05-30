@@ -20,12 +20,12 @@
                     <td>상품정보</td>
                     <td>판매가</td>
                     <td>수량</td>
-                    <td>합계</td>
+                    <!-- <td>합계</td> -->
                     <td colspan = "2">선택</td>
                 </tr>
 <%              if(rows.length == 0) { %>
 					<tr>
-						<td colspan="6">
+						<td colspan="5">
 							<center>장바구니에 담으신 상품이 없습니다.</center>
 						</td>
 					</tr>
@@ -41,20 +41,18 @@
                     <td><a href="/book/detail/read/<%=oneItem.book_num%>"><%=oneItem.book_title%></a></td>
                     <td><%=oneItem.book_price%></td>
                     <td>
-                        <%=oneItem.quantity%>
                         <form action = "/orders/quantity/update" method="post">
                             <input type="hidden" name="order_date" value = "<%=oneItem.order_date%>">
                             <input type="hidden" name="book_num" value = "<%=oneItem.book_num%>">
                             <input type="hidden" name="order_num" value = "<%=oneItem.order_num%>">
                             <input type="hidden" name="order_price" value = "<%=oneItem.book_price%>">
-                            <input id="input" name = "quantity" type="number"><!--원래는 type="text"-->
-                            <a id="val"><%=oneItem.quantity%></a>
+                            <input id="input" name = "quantity" type="number" value = "<%=oneItem.quantity%>"><!--원래는 type="text"-->
+                            <a id="val"></a><!--원래는 <a> 태그 사이에 <%=oneItem.quantity%> 있었음(확인용)-->
                             <button type = "submit">구매 수량 결정</button>
-                            <input type="hidden" name= "total_price" value = "<%= oneItem.total_price = (oneItem.book_price * oneItem.quantity) %>">                            
+                            <input type="hidden" name= "total_price" value = "<%= oneItem.total_price%>">                            
                         </form>
                     </td>
-                    <td>
-                        <!-- <%= oneItem.order_price = (oneItem.book_price * oneItem.quantity) %> -->
+                    <!-- <td>
                         <form action = "/orders/price/update" method = "post">
                             <input type="hidden" name="order_date" value = "<%=oneItem.order_date%>">
                             <input type="hidden" name="book_num" value = "<%=oneItem.book_num%>">
@@ -62,9 +60,10 @@
                             <input type="hidden" name="order_price" value = "<%=oneItem.book_price%>">
                             <input type="hidden" name= "quantity" value = "<%=oneItem.quantity%>">
                             <input type="hidden" name= "total_price" value = "<%= oneItem.total_price%>">
-                            <button type = "submit">예상 금액 보기</button>                            
+                            <button type = "submit">예상 금액 보기</button>
+                            value = "<%= oneItem.total_price = (oneItem.book_price * oneItem.quantity) %>"                            
                         </form>
-                    </td>
+                    </td> -->
                     <td colspan = "2">
                         <button type = "submit"><a href= "/orders/orderList">구매</button>
                         <form action="/orders/delete/order" method="post">
@@ -75,27 +74,23 @@
                 </tr>
                 <script>
                     var oldVal = Number('<%=oneItem.quantity%>');
-                    //propertychange change keyup paste input: 다섯가지의 이벤트가 모두 리슨 상태
+
                     $("#input").on("input", function() {
-                        //var currentVal = Number($(this).val());
                         var newVal = oldVal + 1;
                         if(oldVal == newVal) {
                             return;
                         }
-                        $("#val").text(newVal-1);
+                        //$("#val").text(newVal-1);
                         oldVal = newVal;    
                     });
                 </script>
     <%
                     }
     %>
-                    
-
 <%
                 }
 %>
             </table>
-            <input type='reset'>
             <tr>
                 <td colspan = "2">
                     <!-- <button type = "submit">결제방식</button> -->
