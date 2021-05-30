@@ -71,11 +71,11 @@ router.post('/buy', function(req,res,next){
   console.log("datas>>>", datas);
 
   //이 부분에 주석 처리
-  var sql="insert into orders(order_num, cust_id, order_date, order_price, book_num, quantity) values(?,?,NOW(),?,?,?);"
+  var sql="insert into orders(order_num, cust_id, order_date, order_price, book_num, quantity, total_price) values(?,?,NOW(),?,?,?,?);"
   //var sql="INSERT INTO orders SET order_num=?, cust_id='?', order_date=NOW(), order_price = ?, book_num = ?, quantity = ?";s
   pool.getConnection(function(err,connection){
     //order_date = ? 로 바꾸면 같은 오류 발생(book_num만 console에 출력)
-        connection.query(sql,[datas["order_num"], req.session.userid, datas["book_price"], datas["book_num"], 1],
+        connection.query(sql,[datas["order_num"], req.session.userid, datas["book_price"], datas["book_num"], 1, datas["book_price"]],
            function(err,rows){
           //INSERT INTO orders SET ?
             if(err) console.error("err : "+err);
@@ -95,7 +95,7 @@ router.get('/quantity/update', function(req,res,next) {
   pool.getConnection(function(err,connection){
       if(err) console.error("커넥션 객체 얻어오기 에러 : ",err);
 
-      var sql ="SELECT order_num, cust_id, order_date, order_price, book_num, quantity FROM orders WHERE order_num=?";
+      var sql ="SELECT order_num, cust_id, order_date, order_price, book_num, quantity, total_price FROM orders WHERE order_num=?";
       
       connection.query(sql, [order_num], function(err,rows){
           if(err) console.error(err);
@@ -114,17 +114,14 @@ router.post('/quantity/update', function(req,res,next){
   var order_price = req.body.order_price;
   var book_num = req.body.book_num;
   var quantity = req.body.quantity;
-  var datas = [req.session.userid,order_price,book_num,quantity,order_num];
+  var total_price = req.body.order_price * req.body.quantity;
 
-  var order_price = req.body.order_price * req.body_quantity;
-  var total_price;//total 변수
+  var datas = [req.session.userid,order_price,book_num,quantity,total_price,order_num];
 
   pool.getConnection(function(err,connection){
-      //INSERT INTO board(creator_id, title, content, passwd, image) values(?,?,?,?,?)
-      //"INSERT INTO orders(cust_id,order_date,order_price,book_num,quantity,order_num) VALUES(?,NOW(),?,?,?,?) ON DUPLICATE KEY UPDATE order_price = quantity * order_price"
-      var sql = "UPDATE orders SET cust_id = ?, order_date=NOW(), order_price=?, book_num=?, quantity=? WHERE order_num=?";
-      //INSERT INTO SAMPLE_TABLE VALUES ('',5,1,2) ON DUPLICATE KEY UPDATE value1 = value1 + 1;
-      //UPDATE orders SET cust_id = ?, order_date=?, order_price=?, book_num=?, quantity=? WHERE order_num=?
+      
+      var sql = "UPDATE orders SET cust_id = ?, order_date=NOW(), order_price=?, book_num=?, quantity=?, total_price=? WHERE order_num=?";
+
       connection.query(sql,datas,function(err,row){
           if(err) console.error("글 수정 중 에러 발생 err : ", err);
           console.log("row : " + JSON.stringify(row));
@@ -141,14 +138,13 @@ router.post('/price/update', function(req,res,next){
   var order_price = req.body.order_price;
   var book_num = req.body.book_num;
   var quantity = req.body.quantity;
-  var datas = [req.session.userid,order_price,book_num,quantity,order_num];
+  var total_price = req.body.total_price;
+  var datas = [req.session.userid,order_price,book_num,quantity,total_price,order_num];
 
   pool.getConnection(function(err,connection){
-      //INSERT INTO board(creator_id, title, content, passwd, image) values(?,?,?,?,?)
-      //"INSERT INTO orders(cust_id,order_date,order_price,book_num,quantity,order_num) VALUES(?,NOW(),?,?,?,?) ON DUPLICATE KEY UPDATE order_price = quantity * order_price"
-      var sql = "UPDATE orders SET cust_id = ?, order_date=NOW(), order_price=?, book_num=?, quantity=? WHERE order_num=?";
-      //INSERT INTO SAMPLE_TABLE VALUES ('',5,1,2) ON DUPLICATE KEY UPDATE value1 = value1 + 1;
-      //UPDATE orders SET cust_id = ?, order_date=?, order_price=?, book_num=?, quantity=? WHERE order_num=?
+
+      var sql = "UPDATE orders SET cust_id = ?, order_date=NOW(), order_price=?, book_num=?, quantity=?, total_price=? WHERE order_num=?";
+
       connection.query(sql,datas,function(err,row){
           if(err) console.error("글 수정 중 에러 발생 err : ", err);
           console.log("row : " + JSON.stringify(row));
@@ -255,21 +251,45 @@ router.post('/delete/order', function(req,res,next){
   });
 });
 
+// router.get('/orderList', function(req,res,next) {
+//   var order_num = req.query.order_num;
+
+//   pool.getConnection(function(err,connection){
+//     connection.query('SELECT orders.*,customer.*  FROM orders,customer WHERE orders.cust_id = customer.cust_id', [order_num], function(err,rows){
+//       // SELECT orders.*,book.*  FROM orders,book WHERE orders.book_num = book.book_num
+//       // '/orders/buy'에서 불러오기 성공!!! //SELECT * FROM orders
+//       if(err) console.error("err : "+err);
+//       //console.log("rows : " + JSON.stringify(rows));
+
+//       res.render('orderList', { title: '구매 내역 페이지',rows: rows});
+//       connection.release();
+//     });
+//   });
+// });
+
 router.get('/orderList', function(req,res,next) {
-  var order_num = req.query.order_num;
-
-  pool.getConnection(function(err,connection){
-    connection.query('SELECT orders.*,customer.*  FROM orders,customer WHERE orders.cust_id = customer.cust_id', [order_num], function(err,rows){
-      // SELECT orders.*,book.*  FROM orders,book WHERE orders.book_num = book.book_num
-      // '/orders/buy'에서 불러오기 성공!!! //SELECT * FROM orders
-      if(err) console.error("err : "+err);
-      //console.log("rows : " + JSON.stringify(rows));
-
-      res.render('orderList', { title: '구매 내역 페이지',rows: rows});
-      connection.release();
+  if(!req.session.userid)
+  {
+    res.send('<script type="text/javascript">alert("로그인이 필요합니다.");location.href="/login";</script>');
+  }
+  else if(req.session.division!="customer")
+  {
+    res.send('<script type="text/javascript">alert("구매자가 아닙니다.");hitory.back();</script>');
+  }
+  else{
+    var order_num = req.query.order_num;
+    var id=req.session.userid;
+    pool.getConnection(function(err,connection){
+      connection.query('SELECT orders.*,customer.*  FROM orders,customer WHERE orders.cust_id=? AND orders.cust_id = customer.cust_id', id, function(err,rows){
+        if(err) console.error("err : "+err);
+        //console.log("rows : " + JSON.stringify(rows));
+  
+        res.render('orderList', { title: '구매 내역 페이지',rows: rows});
+        connection.release();
+      });
     });
+  }
   });
-});
 
 // router.get('/payment',function(req,res,next){
 //   res.render('payment',{title: "결제방법 선택하기"});

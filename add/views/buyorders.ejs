@@ -46,20 +46,22 @@
                             <input type="hidden" name="order_date" value = "<%=oneItem.order_date%>">
                             <input type="hidden" name="book_num" value = "<%=oneItem.book_num%>">
                             <input type="hidden" name="order_num" value = "<%=oneItem.order_num%>">
-                            <input type="hidden" name= "order_price" value = "<%= oneItem.order_price = (oneItem.book_price * oneItem.quantity) %>">
+                            <input type="hidden" name="order_price" value = "<%=oneItem.book_price%>">
                             <input id="input" name = "quantity" type="number"><!--원래는 type="text"-->
                             <a id="val"><%=oneItem.quantity%></a>
-                            <button type = "submit">구매 수량 결정</button>                            
+                            <button type = "submit">구매 수량 결정</button>
+                            <input type="hidden" name= "total_price" value = "<%= oneItem.total_price = (oneItem.book_price * oneItem.quantity) %>">                            
                         </form>
                     </td>
                     <td>
-                        <%= oneItem.order_price = (oneItem.book_price * oneItem.quantity) %>
+                        <!-- <%= oneItem.order_price = (oneItem.book_price * oneItem.quantity) %> -->
                         <form action = "/orders/price/update" method = "post">
                             <input type="hidden" name="order_date" value = "<%=oneItem.order_date%>">
                             <input type="hidden" name="book_num" value = "<%=oneItem.book_num%>">
                             <input type="hidden" name="order_num" value = "<%=oneItem.order_num%>">
+                            <input type="hidden" name="order_price" value = "<%=oneItem.book_price%>">
                             <input type="hidden" name= "quantity" value = "<%=oneItem.quantity%>">
-                            <input type="hidden" name= "order_price" value = "<%= oneItem.order_price = (oneItem.book_price * oneItem.quantity) %>">
+                            <input type="hidden" name= "total_price" value = "<%= oneItem.total_price%>">
                             <button type = "submit">예상 금액 보기</button>                            
                         </form>
                     </td>
