@@ -51,9 +51,16 @@
         </form>
         <form action="/book/detail/delete" method="post">
             <input type="hidden" name="book_num" value="<%= row.book_num %>"/>
-            <button type="submit">글 삭제</button>
+            <button type="submit" onclick='button_event()'>글 삭제</button>
         </form>
         <script>
+            function button_event(){
+                if (confirm("정말 삭제하시겠습니까??") == true){    //확인
+                    document.form.submit();
+                }else{   //취소
+                    return;
+                }
+            }
             //버튼을 클릭해서 구매 수량을 +/-하는 함수
             //구매자 페이지에서만 나타나게 해야함?
             function count(type)  {

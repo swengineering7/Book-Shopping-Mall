@@ -58,33 +58,18 @@
                     <td><%=oneItem.order_num%></td>
                     <td><a href="/book/detail/read/<%=oneItem.book_num%>"><%=oneItem.book_title%></a></td>
                     <td><%=oneItem.book_price%></td>
-                        <!-- <input type='button'onclick='count("plus")'value='+'/>
-                        <input type='button'onclick='count("minus")'value='-'/>
-                        <div id='quantity'>0</div>
-                    
-                        <%=parseInt(oneItem.quantity)%>-->
-                            <!-- <input type = "number" name = "quantity" id= "quantity" size="10" maxlength="10">
-                            <br><br>
-                            <button type = "submit" id="submitBtn">구매 수량 결정</button>                         -->
                                 <td>
                                     <%=oneItem.quantity%>
                                     <form action = "/orders/quantity/update" method="post">
                                         <input type="hidden" name="order_date" value = "<%=oneItem.order_date%>">
                                         <input type="hidden" name="book_num" value = "<%=oneItem.book_num%>">
                                         <input type="hidden" name="order_num" value = "<%=oneItem.order_num%>">
+                                        <input type="hidden" name= "order_price" value = "<%= oneItem.order_price = (oneItem.book_price * oneItem.quantity) %>">
                                         <input id="input" name = "quantity" type="number" val = "<%=oneItem.book_price%>"><!--원래는 type="text"-->
                                         <a id="val"><%=oneItem.quantity%></a>
                                         <button type = "submit">구매 수량 결정</button>
                                     </form>
-                                    <!-- id="submitBtn"                           -->
                                 </td>
-                        <!-- <script>
-                            $("#quantity").click(function () {
-                            alert($("#quantity").val());
-                            });
-                            //return $("#quantity").val();
-                        </script> -->
-                    <!-- <%=oneItem.order_price%> -->
                     <td><%= oneItem.order_price = (oneItem.book_price * oneItem.quantity) %></td>
 
                     <td colspan = "2">

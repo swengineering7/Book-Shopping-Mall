@@ -114,10 +114,14 @@ router.post('/quantity/update', function(req,res,next){
   var order_price = req.body.order_price;
   var book_num = req.body.book_num;
   var quantity = req.body.quantity;
-  var datas = [req.session.userid,order_date,order_price,book_num,quantity,order_num];
+  var datas = [req.session.userid,order_price,book_num,quantity,order_num];
 
   pool.getConnection(function(err,connection){
-      var sql = "UPDATE orders SET cust_id = ?, order_date=?, order_price=?, book_num=?, quantity=? WHERE order_num=?";
+      //INSERT INTO board(creator_id, title, content, passwd, image) values(?,?,?,?,?)
+      //"INSERT INTO orders(cust_id,order_date,order_price,book_num,quantity,order_num) VALUES(?,NOW(),?,?,?,?) ON DUPLICATE KEY UPDATE order_price = quantity * order_price"
+      var sql = "UPDATE orders SET cust_id = ?, order_date=NOW(), order_price=?, book_num=?, quantity=? WHERE order_num=?";
+      //INSERT INTO SAMPLE_TABLE VALUES ('',5,1,2) ON DUPLICATE KEY UPDATE value1 = value1 + 1;
+      //UPDATE orders SET cust_id = ?, order_date=?, order_price=?, book_num=?, quantity=? WHERE order_num=?
       connection.query(sql,datas,function(err,row){
           if(err) console.error("글 수정 중 에러 발생 err : ", err);
           console.log("row : " + JSON.stringify(row));
