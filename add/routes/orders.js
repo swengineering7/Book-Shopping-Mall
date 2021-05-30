@@ -88,6 +88,45 @@ router.post('/buy', function(req,res,next){
 }
 });
 
+//수량 수정 화면 표시 GET
+router.get('/quantity/update', function(req,res,next) {
+  var order_num = req.query.order_num;
+  
+  pool.getConnection(function(err,connection){
+      if(err) console.error("커넥션 객체 얻어오기 에러 : ",err);
+
+      var sql ="SELECT order_num, cust_id, order_date, order_price, book_num, quantity FROM orders WHERE order_num=?";
+      
+      connection.query(sql, [order_num], function(err,rows){
+          if(err) console.error(err);
+          //console.log("update에서 1개 글 조회 결과 확인 : ",rows);
+          res.render('buyorders', { title: '상품 구매 페이지',rows: rows});
+          connection.release();
+      });
+  });
+});
+
+//수량 수정 로직 처리 POST
+router.post('/quantity/update', function(req,res,next){
+  var order_num = req.body.order_num;
+  var cust_id = req.body.cust_id;
+  var order_date = req.body.order_date;
+  var order_price = req.body.order_price;
+  var book_num = req.body.book_num;
+  var quantity = req.body.quantity;
+  var datas = [req.session.userid,order_date,order_price,book_num,quantity,order_num];
+
+  pool.getConnection(function(err,connection){
+      var sql = "UPDATE orders SET cust_id = ?, order_date=?, order_price=?, book_num=?, quantity=? WHERE order_num=?";
+      connection.query(sql,datas,function(err,row){
+          if(err) console.error("글 수정 중 에러 발생 err : ", err);
+          console.log("row : " + JSON.stringify(row));
+          res.redirect('/orders/buy');
+          connection.release();
+      });
+  });
+});
+
 //장바구니 페이지
 router.get('/cart', function(req,res,next) {
   if(!req.session.userid)

@@ -54,6 +54,7 @@
     %>
                 <!-- <input type = "hidden" name="order_num" value = "<%=rows.order_num%>"/> -->
                 <tr>
+                    <input type="hidden" name="order_num" value = "<%=oneItem.order_num%>">
                     <td><%=oneItem.order_num%></td>
                     <td><a href="/book/detail/read/<%=oneItem.book_num%>"><%=oneItem.book_title%></a></td>
                     <td><%=oneItem.book_price%></td>
@@ -67,9 +68,15 @@
                             <button type = "submit" id="submitBtn">구매 수량 결정</button>                         -->
                                 <td>
                                     <%=oneItem.quantity%>
-                                    <input id="input" type="number"><!--원래는 type="text"-->
-                                    <a id="val"><%=oneItem.quantity%></a>
-                                    <button type = "submit" id="submitBtn">구매 수량 결정</button>                          
+                                    <form action = "/orders/quantity/update" method="post">
+                                        <input type="hidden" name="order_date" value = "<%=oneItem.order_date%>">
+                                        <input type="hidden" name="book_num" value = "<%=oneItem.book_num%>">
+                                        <input type="hidden" name="order_num" value = "<%=oneItem.order_num%>">
+                                        <input id="input" name = "quantity" type="number" val = "<%=oneItem.book_price%>"><!--원래는 type="text"-->
+                                        <a id="val"><%=oneItem.quantity%></a>
+                                        <button type = "submit">구매 수량 결정</button>
+                                    </form>
+                                    <!-- id="submitBtn"                           -->
                                 </td>
                         <!-- <script>
                             $("#quantity").click(function () {
@@ -79,6 +86,7 @@
                         </script> -->
                     <!-- <%=oneItem.order_price%> -->
                     <td><%= oneItem.order_price = (oneItem.book_price * oneItem.quantity) %></td>
+
                     <td colspan = "2">
                         <button type = "submit"><a href= "/orders/orderList">구매</button>
                         <form action="/orders/delete/order" method="post">

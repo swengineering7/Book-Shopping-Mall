@@ -269,11 +269,20 @@ router.post('/login', function(req,res,next){
 
 // logout 처리
 router.get('/logout', function(req,res,next){
-	delete req.session;
-  //delete req.session.userid;
-  //delete req.session.division;
-	res.redirect('/');
+  req.session.destroy(function(){ 
+   req.session;
+   });
+ //delete req.session.userid;
+ //delete req.session.division;
+  res.redirect('/');
 });
+
+// router.get('/logout', function(req,res,next){
+// 	delete req.session;
+//   //delete req.session.userid;
+//   //delete req.session.division;
+// 	res.redirect('/login');
+// });
 
 /* POST findid page */
 router.post('/findid', function(req,res,next){
