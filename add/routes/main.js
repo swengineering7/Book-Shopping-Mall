@@ -619,7 +619,7 @@ router.post('/book/detail/write', upload.single("image"), function(req,res,next)
 
 console.log(datas.book_num);//undefined가 정상
 console.log(datas.book_title);
-  
+
 pool.getConnection(function(err,connection){
       connection.query('INSERT INTO book SET ?', datas,function(err,rows){
           if(err) console.error("err : "+err);

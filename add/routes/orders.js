@@ -163,7 +163,7 @@ router.get('/cart', function(req,res,next) {
   var cart_num = req.query.cart_num;
 
   pool.getConnection(function(err,connection){
-      var sql="SELECT cart.*,book.* FROM cart,book WHERE cart.cust_id = ? AND cart.book_num = book.book_num ORDER BY cart_num ASC";
+      var sql="SELECT cart.*,book.* FROM cart,book WHERE cart.book_num = book.book_num ORDER BY cart_num ASC;"
     //connection.query('SELECT cart.*, customer.*,book.* FROM cart,book WHERE cart.cust_id = customer.cust_id AND cart.book_num = book.book_num', [cart_num], function(err,rows){
     connection.query(sql, req.session.userid, function(err,rows){
       // '/orders/buy'에서 불러오기 성공!!! //SELECT * FROM orders
@@ -279,7 +279,7 @@ router.get('/orderList', function(req,res,next) {
     var order_num = req.query.order_num;
     var id=req.session.userid;
     pool.getConnection(function(err,connection){
-      connection.query('SELECT orders.*,customer.*,book.*  FROM orders,customer,book WHERE orders.cust_id=? AND orders.cust_id = customer.cust_id', id, function(err,rows){
+      connection.query('SELECT orders.*,customer.*,book.*  FROM orders,customer,book WHERE orders.cust_id = customer.cust_id AND orders.book_num = book.book_num;', id, function(err,rows){
         if(err) console.error("err : "+err);
         //console.log("rows : " + JSON.stringify(rows));
   
