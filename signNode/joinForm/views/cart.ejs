@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title><%= title %></title>
+        <meta charset='utf-8'>
+        <link rel='stylesheet' href='/stylesheets/style.css' />
+        <script src = "/javascripts/jquery-3.6.0.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+        <script>
+            //버튼을 클릭해서 구매 수량을 +/-하는 함수
+            //구매자 페이지에서만 나타나게 해야함?
+            function count(type)  {
+                // 결과를 표시할 element
+                const resultElement = document.getElementById('quantity');
+                
+                // 현재 화면에 표시된 값
+                let number = resultElement.innerText;
+                
+                // 더하기/빼기
+                if(type === 'plus'){
+                number = parseInt(number) + 1;
+                }else if(type === 'minus'){
+                number = parseInt(number) - 1;
+                }//수량이 음수면 경고 메세지 출력하기
+                // if(number < 0){
+                //     alert('수량은 음수가 될 수 없습니다.');
+                //     //근데 화면에는 여전히 -1이 출력됨!
+                // }
+                
+                // 결과 출력
+                resultElement.innerText = number;
+            }
+            function button_event(){
+                if (confirm("정말 삭제하시겠습니까??") == true){    //확인
+                    document.form.submit();
+                }else{   //취소
+                    return;
+                }
+            }
+        </script>
+    </head>
+    <body>
+        <h1><%= title %></h1>
+            <table border = "1" width = "1200" height = "400" border = "3">
+                <tr>
+                    <td>번호</td>
+                    <!-- <td>주문날짜</td> -->
+                    <td>상품정보</td>
+                    <td>판매가</td>
+                    <td>수량</td>
+                    <td>합계</td>
+                    <td colspan = "2">선택</td>
+                </tr>
+<%              if(rows.length == 0) { %>
+					<tr>
+						<td colspan="6">
+							<center>장바구니에 담으신 상품이 없습니다.</center>
+						</td>
+					</tr>
+<% }else{ %>
+    <%
+                for(var i=0; i<rows.length; i++){
+                    var oneItem = rows[i];
+    %>
+                <!-- <input type = "hidden" name="cart_num" value = "<%=rows.cart_num%>"/> -->
+                <tr>
+                    <td><%=oneItem.cart_num%></td>
+                    <!-- <td><%=oneItem.order_date%></td> -->
+                    <td><a href="/book/detail/read/<%=oneItem.book_num%>"><%=oneItem.book_title%></a></td>
+                    <td><%=oneItem.book_price%></td>
+                    <td><%=oneItem.quantity%>
+                        <input type='button'onclick='count("plus")'value='+'/>
+                        <input type='button'onclick='count("minus")'value='-'/>
+                        <div id='quantity'>0</div>
+                    </td>
+                    <!-- <%=oneItem.order_price%> -->
+                    <td><%= oneItem.order_price = (oneItem.book_price * oneItem.quantity) %></td>
+                    <!-- 이 밑부분도 구매/장바구니 페이지 여부에 따라 다름 -->
+                    <td colspan = "2">
+                        <form action="/orders/delete/cart" method="post">
+                            <input type="hidden" name="cart_num" value = "<%=oneItem.cart_num%>">
+                            <button type = "submit" onclick='button_event()'>삭제</button>
+                        </form>
+                    </td>
+                </tr>
+    <%
+                    }
+    %>
+<%
+                }
+%>
+            </table>
+        <form action = "/orders/buy" method="post">
+            <tr>
+                <td colspan = "2"> 
+                    <input type = "button" id = "구매화면으로 이동" name = "구매화면으로 이동" value = "구매화면으로 이동" onclick="location.href = '/orders/buy'">
+                    <button type = "submit">취소하기</button>
+                </td>
+            </tr>
+        </form>
+    </body>
+</html>

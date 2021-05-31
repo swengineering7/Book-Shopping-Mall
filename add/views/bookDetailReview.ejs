@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title><%= title %></title>
+        <meta charset = 'utf-8'>
+        <link rel = 'stylesheet' href='/stylesheets/style.css'/>
+        <script src = "/javascripts/jquery-3.6.0.min.js"></script>
+        <style type="text/css">
+            textarea{ resize: none; }
+        </style>
+    <script>
+        $(function(){
+          $("#btnJoin").click(
+            function(){
+  
+              if($("#review_content").val() =="")
+              {
+                alert("리뷰 내용을 입력 하세요");
+                $("#review_content").focus();
+                return false;              
+              }
+
+              $("#bookDetailReview").submit();
+              });
+          });
+      </script>
+
+    </head>
+    <body>
+
+        <h1><%= title %></h1>
+
+        <form id="bookDetailReview" action="/book/detail/review" method="post">
+        <input type="hidden" name="book_num" value = "<%=row.book_num %>"/>
+        <p><img src="/images/<%= row.image %>" alt="" width="300px" height="300px"></p>
+        <p>제목 - <%=row.book_title %></p>
+
+        <br>
+
+        <h2>평점 선택</h2>
+        <input type="radio" name="review_star" value="1">별1개
+        <input type="radio" name="review_star" value="2">별2개
+        <input type="radio" name="review_star" value="3">별3개
+        <input type="radio" name="review_star" value="4">별4개
+        <input type="radio" name="review_star" value="5" checked="checked">별5개
+        
+        <h2>리뷰 내용</h2>
+        <textarea type = "content" name="review_content" cols="40" rows="10" required></textarea>
+        <br><br>
+        <button type="submit" id="btnJoin" name="review" value="리뷰등록">등록</button>
+
+        </form>
+    </body>
+</html>
