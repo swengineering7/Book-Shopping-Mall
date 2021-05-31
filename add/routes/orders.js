@@ -154,6 +154,59 @@ router.post('/price/update', function(req,res,next){
   });
 });
 
+router.post('/coupon/update', function(req,res,next){
+  var order_num = req.body.order_num;
+  var cust_id = req.body.cust_id;
+  var order_date = req.body.order_date;
+  var order_price = req.body.order_price;
+  var book_num = req.body.book_num;
+  var quantity = req.body.quantity;
+  var total_price = req.body.total_price-10000;
+  var datas = [req.session.userid,order_price,book_num,quantity,total_price,order_num];
+
+  pool.getConnection(function(err,connection){
+
+      var sql = "UPDATE orders SET cust_id = ?, order_date=NOW(), order_price=?, book_num=?, quantity=?, total_price=? WHERE order_num=?";
+
+      connection.query(sql,datas,function(err,row){
+          if(err) console.error("쿠폰 중 에러 발생 err : ", err);
+          console.log("row : " + JSON.stringify(row));
+          res.redirect('/orders/buy');
+          connection.release();
+      });
+  });
+});
+
+router.post('/mileage/update', function(req,res,next){
+  var order_num = req.body.order_num;
+  var cust_id = req.body.cust_id;
+  var order_date = req.body.order_date;
+  var order_price = req.body.order_price;
+  var book_num = req.body.book_num;
+  var quantity = req.body.quantity;
+  var total_price = req.body.total_price;
+  var datas = [order_num, req.session.userid, req.session.userid];
+
+  pool.getConnection(function(err,connection){
+
+      var sql ="SELECT customer.*, orders.* FROM customer, orders WHERE orders.order_num=? and orders.cust_id =? AND customer.cust_id = ? AND customer.cust_point >= orders.total_price"; 
+
+      //"UPDATE orders SET cust_id = ?, order_date=NOW(), order_price=?, book_num=?, quantity=?, total_price=? WHERE order_num=?"
+      connection.query(sql,datas,function(err,row){
+          if(err) console.error("마일리지 결제 중 에러 발생(잔액 부족) : ", err);
+          console.log("row : " + JSON.stringify(row));
+          console.log(row[0]);
+                if(row[0]==undefined){
+                  res.send('<script type="text/javascript">alert("마일리지가 부족합니다!!! 충전을 진행해주세요!!!.");location.href="/orders/buy";</script>');
+                }
+          else{
+            res.redirect('/orders/buy');//결제 완료페이지로 redirect!
+          }
+          connection.release();
+      });
+  });
+});
+
 //장바구니 페이지
 router.get('/cart', function(req,res,next) {
   if(!req.session.userid)

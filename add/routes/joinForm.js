@@ -81,7 +81,7 @@ router.post('/customer', function(req,res,next){
   var address=req.body.address;
   var cust_phone_num=req.body.cust_phone_num;
   var cust_secession=0;
-  var cust_point=10000;
+  var cust_point=50000;
   var birthday=req.body.birthday;
   var gender;
   if(req.body.gender=="남") gender=1;

@@ -20,8 +20,8 @@
                     <td>상품정보</td>
                     <td>판매가</td>
                     <td>수량</td>
-                    <!-- <td>합계</td> -->
-                    <td colspan = "2">선택</td>
+                    <td>합계</td>
+                    <td colspan = "3">선택</td>
                 </tr>
 <%              if(rows.length == 0) { %>
 					<tr>
@@ -49,24 +49,30 @@
                             <input id="input" name = "quantity" type="number" value = "<%=oneItem.quantity%>"><!--원래는 type="text"-->
                             <a id="val"></a><!--원래는 <a> 태그 사이에 <%=oneItem.quantity%> 있었음(확인용)-->
                             <button type = "submit">구매 수량 결정</button>
-                            <input type="hidden" name= "total_price" value = "<%= oneItem.total_price%>">                            
+                            <input type="hidden" name= "total_price" value = "<%= oneItem.total_price%>">
+                            <td><%=oneItem.total_price%></td>                        
                         </form>
                     </td>
-                    <!-- <td>
-                        <form action = "/orders/price/update" method = "post">
+                    <td colspan = "3">
+                        <form action = "/orders/mileage/update" method = "POST">
                             <input type="hidden" name="order_date" value = "<%=oneItem.order_date%>">
                             <input type="hidden" name="book_num" value = "<%=oneItem.book_num%>">
                             <input type="hidden" name="order_num" value = "<%=oneItem.order_num%>">
                             <input type="hidden" name="order_price" value = "<%=oneItem.book_price%>">
-                            <input type="hidden" name= "quantity" value = "<%=oneItem.quantity%>">
-                            <input type="hidden" name= "total_price" value = "<%= oneItem.total_price%>">
-                            <button type = "submit">예상 금액 보기</button>
-                            value = "<%= oneItem.total_price = (oneItem.book_price * oneItem.quantity) %>"                            
+                            <input type="hidden" name = "quantity" value = "<%=oneItem.quantity%>">
+                            <button type = "submit">구매</button>
+                            <input type="hidden" name= "total_price" value = "<%= oneItem.total_price%>"> 
+                            <!-- <button type = "submit" onclick="handleInsert('<%= JSON.stringify(oneItem) %>')"><a href= "/orders/orderList">구매</button>                        -->
                         </form>
-                    </td> -->
-                    <td colspan = "2">
-                        <form action = "/orders/sellorderList" method = "POST">
-                            <button type = "submit" onclick="handleInsert('<%= JSON.stringify(oneItem) %>')"><a href= "/orders/orderList">구매</button>                       
+                        <!--쿠폰 버튼-->
+                        <form action = "/orders/coupon/update" method="post">
+                            <input type="hidden" name="order_date" value = "<%=oneItem.order_date%>">
+                            <input type="hidden" name="book_num" value = "<%=oneItem.book_num%>">
+                            <input type="hidden" name="order_num" value = "<%=oneItem.order_num%>">
+                            <input type="hidden" name="order_price" value = "<%=oneItem.book_price%>">
+                            <input type="hidden" name = "quantity" value = "<%=oneItem.quantity%>">
+                            <button type = "submit" onclick='coupon_event()''>쿠폰 적용</button>
+                            <input type="hidden" name= "total_price" value = "<%= oneItem.total_price%>">                         
                         </form>
                         <form action="/orders/delete/order" method="post">
                             <input type="hidden" name="order_num" value = "<%=oneItem.order_num%>">
@@ -112,6 +118,13 @@
                         return;
                     }
                 }
+                function coupon_event(){
+                    if (confirm("정말 보유하신 포인트를 사용하여 결제하시겠습니까??") == true){    //확인
+                        document.form.submit();
+                    }else{   //취소
+                        return;
+                    }
+                }
                 const inputSelector = document.querySelector('#quantity');
                 let stateValue = "";
                 function handleChange (e) {
@@ -131,8 +144,8 @@
             </script>
             <script>
                 const handleInsert = (row) => {
-                    axios.post('http://localhost:3000/orders/sellorderList',{params: row})
-                    .then(() => location.href = '/orders/orderList').then(() => console.log('fdsfasd'));
+                    axios.post('http://localhost:3000/orders/mileage/update',{params: row})
+                    .then(() => location.href = '/orders/buy').then(() => console.log('fdsfasd'));
                             
                     }
             </script>
