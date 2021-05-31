@@ -54,7 +54,23 @@ var upload = multer({
 /* GET main page */
 router.get('/', function(req, res, next) {
   if(!req.session.name){
-  res.render('main', { title: 'Main page', name:req.session.name}); //main.ejs
+    var book_num = req.params.book_num;
+
+    pool.getConnection(function(err,connection){
+        //use the connection
+  
+        var sql ="SELECT b.book_num, b.book_title, b.image, SUM(quantity) FROM orders AS O inner join book AS B on b.book_num = o.book_num GROUP BY book_num ORDER BY SUM(quantity) DESC";
+  
+        connection.query(sql, [book_num], function(err,row){
+            if(err) console.error(err);
+            console.log("베스트셀러 결과 확인 : ",row);
+            
+            res.render('main', { title: 'Main page',row:row});
+            //일단은 bestseller가 아닌 main으로 render
+            connection.release();
+        });
+    });
+  //res.render('main', { title: 'Main page', name:req.session.name}); //main.ejs
   }
   else{
     if(req.session.division=="customer")
@@ -79,19 +95,74 @@ router.get('/login',function(req, res, next){
 /* GET welcome custoemr page */
 router.get('/welcome_cus',function(req, res, next){
   if(!req.session.name) return res.redirect('/login');
-  else res.render('welcome_cus', {title:'welcome customer', name:req.session.name});
+  else{
+  var book_num = req.params.book_num;
+
+  pool.getConnection(function(err,connection){
+      //use the connection
+
+      var sql ="SELECT b.book_num, b.book_title, b.image, SUM(quantity) FROM orders AS O inner join book AS B on b.book_num = o.book_num GROUP BY book_num ORDER BY SUM(quantity) DESC";
+
+      connection.query(sql, [book_num], function(err,row){
+          if(err) console.error(err);
+          console.log("베스트셀러 결과 확인 : ",row);
+          
+          res.render('welcome_cus', {title:'welcome customer',row:row,name:req.session.name});
+          //일단은 bestseller가 아닌 main으로 render
+          connection.release();
+      });
+    });
+  }
+  //res.render('welcome_cus', {title:'welcome customer', name:req.session.name});
 });
 
 /* GET welcome seller page */
 router.get('/welcome_sell',function(req, res, next){
   if(!req.session.name) return res.redirect('/login');
-  else res.render('welcome_sell', {title:'welcome seller', name:req.session.name});
+  else{
+    var book_num = req.params.book_num;
+  
+    pool.getConnection(function(err,connection){
+        //use the connection
+  
+        var sql ="SELECT b.book_num, b.book_title, b.image, SUM(quantity) FROM orders AS O inner join book AS B on b.book_num = o.book_num GROUP BY book_num ORDER BY SUM(quantity) DESC";
+  
+        connection.query(sql, [book_num], function(err,row){
+            if(err) console.error(err);
+            console.log("베스트셀러 결과 확인 : ",row);
+            
+            res.render('welcome_sell', {title:'welcome seller',row:row,name:req.session.name});
+            //일단은 bestseller가 아닌 main으로 render
+            connection.release();
+        });
+      });
+    }
+  //res.render('welcome_sell', {title:'welcome seller', name:req.session.name});
 });
 
 /* GET welcome employee page */
 router.get('/welcome_emp',function(req, res, next){
   if(!req.session.name) return res.redirect('/login');
-  else res.render('welcome_emp', {title:'welcome employee', name:req.session.name});
+  else{
+    var book_num = req.params.book_num;
+  
+    pool.getConnection(function(err,connection){
+        //use the connection
+  
+        var sql ="SELECT b.book_num, b.book_title, b.image, SUM(quantity) FROM orders AS O inner join book AS B on b.book_num = o.book_num GROUP BY book_num ORDER BY SUM(quantity) DESC";
+  
+        connection.query(sql, [book_num], function(err,row){
+            if(err) console.error(err);
+            console.log("베스트셀러 결과 확인 : ",row);
+            
+            res.render('welcome_emp', {title:'welcome employee',row:row,name:req.session.name});
+            //일단은 bestseller가 아닌 main으로 render
+            connection.release();
+        });
+      });
+    }
+  
+  //res.render('welcome_emp', {title:'welcome employee', name:req.session.name});
 });
 
 /* GET findid page */
@@ -652,23 +723,23 @@ router.post('/book/detail/delete', function(req, res, next) {
   });
 });
 
-router.get('/bestseller', function(req,res,next) {
-  var book_num = req.params.book_num;
+// router.get('/bestseller', function(req,res,next) {
+//   var book_num = req.params.book_num;
 
-  pool.getConnection(function(err,connection){
-      //use the connection
+//   pool.getConnection(function(err,connection){
+//       //use the connection
 
-      var sql ="SELECT b.book_num, b.book_title, b.image, SUM(quantity) FROM orders AS O inner join book AS B on b.book_num = o.book_num GROUP BY book_num";
+//       var sql ="SELECT b.book_num, b.book_title, b.image, SUM(quantity) FROM orders AS O inner join book AS B on b.book_num = o.book_num GROUP BY book_num ORDER BY SUM(quantity) DESC";
 
-      connection.query(sql, [book_num], function(err,row){
-          if(err) console.error(err);
-          console.log("베스트셀러 결과 확인 : ",row);
+//       connection.query(sql, [book_num], function(err,row){
+//           if(err) console.error(err);
+//           console.log("베스트셀러 결과 확인 : ",row);
           
-          res.render('main', { title: '베스트셀러 조회!',row:row});
-          //일단은 bestseller가 아닌 main으로 render
-          connection.release();
-      });
-  });
-});
+//           res.render('main', { title: '베스트셀러 조회!',row:row});
+//           //일단은 bestseller가 아닌 main으로 render
+//           connection.release();
+//       });
+//   });
+// });
 
 module.exports = router;
