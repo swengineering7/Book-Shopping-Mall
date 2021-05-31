@@ -76,7 +76,6 @@
                 </tr>
                 <script>
                     var oldVal = Number('<%=oneItem.quantity%>');
-
                     $("#input").on("input", function() {
                         var newVal = oldVal + 1;
                         if(oldVal == newVal) {
@@ -115,11 +114,9 @@
                 }
                 const inputSelector = document.querySelector('#quantity');
                 let stateValue = "";
-
                 function handleChange (e) {
                     stateValue = e.target.value;
                 }
-
                 function handleClick () {
                     // axios.post('http://localhost:3000/orders/buy',{params: })
                     // {
@@ -129,10 +126,8 @@
                         // quantity: stateValue
                     // }
                 }
-
                 inputSelector.addEventListener('change', handleChange);
                 inputSelector.addEventListener('click', handleClick);
-
             </script>
             <script>
                 const handleInsert = (row) => {

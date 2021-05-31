@@ -22,11 +22,13 @@ var bookDetail = require('./routes/detail');
 var order = require('./routes/orders');
 var board = require('./routes/board');
 
-
 //var login = require('./routes/loginForm');
 //var mypage = require('./routes/mypage');
 
 var app = express();
+
+var moment = require('moment');//cmd에 'npm install --save moment'로 설치
+app.locals.moment = require('moment');
 
 /*app.use(session({
   secret:'!@#$%^&*',

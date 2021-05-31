@@ -194,7 +194,6 @@ router.post('/cart', function(req,res,next){
         [datas["cart_num"], datas[id], datas["book_num"] , 1],function(err,rows){
             if(err) console.error("err : "+err);
             //console.log("rows : " + JSON.stringify(rows));
-
             res.redirect('/orders/cart');
             connection.release();
         });*/
@@ -291,38 +290,6 @@ router.get('/orderList', function(req,res,next) {
   }
   });
 
-router.post('/orderList', function(req,res,next){
-    if(!req.session.userid)
-  {
-    res.send('<script type="text/javascript">alert("로그인이 필요합니다.");location.href="/login";</script>');
-  }
-  else{
-  const datas = JSON.parse(req.body.params);//Json 'u' unexpected token 오류 이곳에서 발생
-  console.log("datas>>>", datas);
-  console.log("orderList session id : ", req.session.userid);
-  var userid=req.session.userid;
-  //var datas=[cart_num, userid, book_num, 1];
-  pool.getConnection(function(err,connection){
-      var sql="insert into order_detail(order_num, sell_id, book_num, quantity) values(?,?,?,?);"
-        /*connection.query("INSERT INTO cart SET cart_num=?, cust_id='?', book_num = ?, quantity = ?", 
-        [datas["cart_num"], datas[id], datas["book_num"] , 1],function(err,rows){
-            if(err) console.error("err : "+err);
-            //console.log("rows : " + JSON.stringify(rows));
-
-            res.redirect('/orders/cart');
-            connection.release();
-        });*/
-        connection.query(sql, [datas["order_num"], userid, datas["book_num"] , '?'], function(err,rows){
-            if(err) console.error("err : "+err);
-            //console.log("rows : " + JSON.stringify(rows));
-
-            res.redirect('/orders/orderList');
-            connection.release();
-        });
-    });
-}
-});
-
 router.get('/sellorderList', function(req,res,next) {
   if(!req.session.userid)
   {
@@ -364,7 +331,6 @@ router.post('/sellorderList', function(req,res,next){
         [datas["cart_num"], datas[id], datas["book_num"] , 1],function(err,rows){
             if(err) console.error("err : "+err);
             //console.log("rows : " + JSON.stringify(rows));
-
             res.redirect('/orders/cart');
             connection.release();
         });*/
@@ -372,7 +338,7 @@ router.post('/sellorderList', function(req,res,next){
             if(err) console.error("err : "+err);
             //console.log("rows : " + JSON.stringify(rows));
 
-            res.redirect('/orders/sellorderList');
+            res.redirect('/orders/orderList');
             connection.release();
         });
     });

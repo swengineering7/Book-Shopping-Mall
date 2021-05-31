@@ -21,7 +21,6 @@
                 }else if(type === 'minus'){
                 number = parseInt(number) - 1;
                 }//수량이 음수면 경고 메세지 출력하기
-
                 // if(number < 0){
                 //     alert('수량은 음수가 될 수 없습니다.');
                 //     //근데 화면에는 여전히 -1이 출력됨!
@@ -30,13 +29,10 @@
                 // 결과 출력
                 resultElement.innerText = number;
             }
-
             function popupOpen(){
                 var popUrl = "payment.html";
                 var popOption = "width=370, height=360, resizable=no, scrollbars=no, status=no;";
-
                 window.open(popUrl,"",popOption);
-
             }
         </script>
     </head>
@@ -59,7 +55,6 @@
 						</td>
 					</tr>
 <% }else{ %>
-
     <%
                 for(var i=0; i<rows.length; i++){
                     var oneItem = rows[i];
@@ -84,7 +79,6 @@
                 }
 %>
             </table>
-            <input type='reset'>
             <tr>
                 <td colspan = "2">
                     <!-- <button type = "submit">결제방식</button> -->
