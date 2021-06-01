@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= title %></title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <style>
+            body{margin:0px; padding:0px;background-color:white;}
+            table{font-size:15px;}
+            input{height:30px; width:100%;}
+            textarea{height:70px; width:100%;}
+            .header{background-color:black; position:fixed; width:100%; top:0; left:0; z-index:1;}
+            ul.nav{float:right; list-style:none; width:45%; height:20px;}
+            ul.nav li{float:left; color:white;}
+            ul.nav a{line-height:20px; color:#ffffff; padding:0 15px; text-decoration:none;}
+      
+            .bottom{line-height:50px; height:50px; width:100%; background-repeat:repeat; background-attachment: scroll; background-position:0% 0%; background-color:black;position:fixed; bottom:0pt; left:0pt;}
+            .button{background-color:white; border:0px; color:black;text-decoration:none;}
+            .button:hover{font-weight:bold; background-color:lightgray;}
+            .log-but{border:1px solid black; width:95px; height:50px;}
+            .log-but:hover{font-weight:bold;}
+            a{text-decoration:none; color:black;}
+            th, td { border-bottom: 1px solid #444444; padding: 10px; }
+    </style>
+  </head>
+    <body>
+      <div class="header">
+        <div>
+          <ul class="nav">
+            <li style="float:right; margin-right:20px;"><a href='/'>메인페이지</a></li>
+          </ul>
+        </div>
+      </div>
+      <div style="text-align:center; margin-top:80px; font-size:20px;">
+        마이페이지
+      </div>
+      <table style="margin:0 auto; width:80%; margin-top:15px; height:400px; border-top:1px solid black;">
+        <tr>
+          <td style="text-align:center; width:100px; border-right:1px solid black;"><strong>아이디</strong></td>
+          <td>&ensp;&ensp;<%=row.sell_id%></td>
+        </tr>
+        <tr>
+          <td style="text-align:center; border-right:1px solid black;"><strong>이름</strong></td>
+          <td>&ensp;&ensp;<%=row.sell_name%></td>
+        </tr>
+        <tr>
+          <td style="text-align:center; border-right:1px solid black;"><strong>이메일</strong></td>
+          <td>&ensp;&ensp;<%=row.sell_email%></td>
+        </tr>
+        <tr>
+          <td style="text-align:center; border-right:1px solid black;"><strong>전화번호</strong></td>
+          <td>&ensp;&ensp;<%=row.sell_phone_num%></td>
+        </tr>
+        <tr>
+          <td style="text-align:center; border-right:1px solid black;"><strong>판매이력</strong></td>
+          <td>
+            &ensp;&ensp;<button type="button" onClick="location.href='/orders/sellList'">판매내역 확인</button>
+            &ensp;&ensp;<button type="button" onClick="location.href='/sellbookList'">판매상품 확인</button>
+          </td>
+        </tr>
+      </table>
+      <div style="float:left; margin-left:1130px; margin-top:10px;">
+        <button type="button">상품등록</button>
+      </div>
+      <div style="float:left;margin-left:1210px; margin-top:-24px;">
+        <button type="button" onClick="location.href='sellupdate'">정보수정</button>
+      </div>
+      <div style="height:200px;">
+      </div>
+      <div class="bottom" style="color:white;">
+        <div style="float:left; margin-left:25px;"><strong>CONTACT</strong>&emsp;031-909-9999</div>
+        <div style="float:right; margin-right:30px;"><strong>주소</strong>&emsp;서울특별시 노원구 월계3동 광운대학교</div>
+      </div>
+    </body>
+</html>

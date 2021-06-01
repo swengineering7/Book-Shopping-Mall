@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title><%= title %></title>
+        <meta charset='utf-8'>
+        <link rel='stylesheet' href='/stylesheets/style.css' />
+        <script src = "/javascripts/jquery-3.6.0.min.js"></script>
+        <script>
+            function date_to_str(format)
+
+    {
+
+    var year = format.getFullYear();
+
+    var month = format.getMonth() + 1;
+
+    if(month<10) month = '0' + month;
+
+    var date = format.getDate();
+
+    if(date<10) date = '0' + date;
+
+    var hour = format.getHours();
+
+    if(hour<10) hour = '0' + hour;
+
+    var min = format.getMinutes();
+
+    if(min<10) min = '0' + min;
+
+    var sec = format.getSeconds();
+
+    if(sec10) sec = '0' + sec;
+
+    
+
+    return year + "-" + month + "-" + date + " " + hour + ":" + min + ":" + sec;
+
+}
+        </script>
+        <style>
+            body{margin:0px; padding:0px;background-color:white;}
+            table{font-size:15px;}
+            input{height:30px; width:100%;}
+            textarea{height:70px; width:100%;}
+            .header{background-color:black; position:fixed; width:100%; top:0; left:0; z-index:1;}
+            ul.nav{float:right; list-style:none; width:45%; height:20px;}
+            ul.nav li{float:left; color:white;}
+            ul.nav a{line-height:20px; color:#ffffff; padding:0 15px; text-decoration:none;}
+      
+            .bottom{line-height:50px; height:50px; width:100%; background-repeat:repeat; background-attachment: scroll; background-position:0% 0%; background-color:black;position:fixed; bottom:0pt; left:0pt;}
+            .button{background-color:white; border:0px; color:black;text-decoration:none;}
+            .button:hover{font-weight:bold; background-color:lightgray;}
+            .log-but{border:1px solid black; width:95px; height:50px;}
+            .log-but:hover{font-weight:bold;}
+            a{text-decoration:none; color:black;}
+            th, td { border-bottom: 1px solid #444444; padding: 10px; }
+        </style>   
+    </head>
+    <body>
+        <div class="header">
+            <div>
+              <ul class="nav">
+                <li style="float:right; margin-right:20px;"><a href='/'>메인페이지</a></li>
+              </ul>
+            </div>
+        </div>
+        <div style="margin-top:90px; margin-left:210px; width:130px; font-size:30px; margin-bottom:10px;">
+            판매 내역
+        </div>
+        <form action = "/orders/orderList" method="post">
+            <table width = "1000px"style="margin:0 auto; margin-top:20px; text-align:center;">
+                <tr style="font-weight:bold;">
+                    <td>구매자 아이디</td>
+                    <td>상품정보</td>
+                    <td>결제시간</td>
+                    <td>결제금액</td>
+                </tr>
+<%              if(rows.length == 0) { %>
+               <tr>
+                  <td colspan="6">
+                     <center>판매된 상품이 없습니다.</center>
+                  </td>
+               </tr>
+<% }else{ %>
+
+    <%
+                for(var i=0; i<rows.length; i++){
+                    var oneItem = rows[i];
+    %>
+                <tr>
+                    <td><%=oneItem.cust_id%></a></td>
+                    <td><a href="/book/detail/read/<%=oneItem.book_num%>"><%=oneItem.book_title%></a></td>
+                    <td><%=moment(oneItem.order_date).format("YYYY년 MM월 DD일, h:mm:ss A")%></td>
+                    <td><%= oneItem.order_price%> 원</td>
+                </tr>
+    <%
+                    }
+    %>
+<%
+                }
+%>
+            </table>
+            <div style="float:left;margin-left:1050px; margin-top:10px;">
+                <button type = "submit"><a href = "/sellpage">판매자 마이페이지로 이동</button>
+            </div>
+        </form>
+        <div style="height:100px;">
+        </div>
+        <div class="bottom" style="color:white;">
+            <div style="float:left; margin-left:25px;"><strong>CONTACT</strong>&emsp;031-909-9999</div>
+            <div style="float:right; margin-right:30px;"><strong>주소</strong>&emsp;서울특별시 노원구 월계3동 광운대학교</div>
+        </div>
+    </body>
+</html>
