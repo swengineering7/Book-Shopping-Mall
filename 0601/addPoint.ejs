@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>포인트 충전하기</title>
+
+</head>
+<body>
+    <form id="addPoint" action="/addPoint" method="post" onsubmit="return blankCheck(this)">
+        <input type="hidden" name="cust_point" value = "<%=rows.cust_point%>">
+        현재 포인트 : <%= rows.cust_point%> <br>
+        포인트 : <input type="number" name="add_point" id="add_point" maxlength="10" autofocus><br>
+        
+        <input type="submit" value="포인트 충전">
+    </form>
+
+    <script src="/javascripts/jquery-3.6.0.min.js"></script>
+    <script>
+    function blankCheck(f){
+    	var cust_point=f.cust_point.value;
+        var cust_pwd=f.cust_pwd.value;
+        cust_point=cust_point.trim();
+        cust_pwd=cust_pwd.trim();
+        if(cust_point.length<1){
+        	alert("포인트를 입력하세요");
+            return false;
+        }
+        else if(cust_pwd.length<1)
+        {
+            alert("비밀번호를 입력하세요");
+            return false;
+        }
+        return true;
+    }
+    </script>
+ </body>
+ </html>
