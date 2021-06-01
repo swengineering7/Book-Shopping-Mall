@@ -12,20 +12,20 @@
         <!-- id = "bookDetailRead" form에 추가? -->
         <form action = "/book/detail/update" method = "get">
             <table width = "1200" height = "400" border = "3">
-                <input type="hidden" name="book_num" value = "<%=row.book_num %>"/>
-                <input type="hidden" name="review_num" value="<%= row.review_num %>"/>
+                <input type="hidden" name="book_num" value = "<%=rows[0].book_num %>"/>
+                <input type="hidden" name="review_num" value="<%=rows[0].review_num %>"/>
                 <tr>
                     <!-- <td rowspan = "6">표지</td> -->
-                    <td rowspan = "6"><img src="/images/<%= row.image %>" alt="" width="200px" height="100px"></td>
-                    <td colspan = "3">제목 <%=row.book_title %></td>
-                    <td colspan = "2">장르 <%=row.book_genre %> </td>
+                    <td rowspan = "6"><img src="/images/<%= rows[0].image %>" alt="" width="200px" height="100px"></td>
+                    <td colspan = "3">제목 <%=rows[0].book_title %></td>
+                    <td colspan = "2">장르 <%=rows[0].book_genre %> </td>
                 </tr>
                 <tr>
-                    <td colspan = "3">저자 <%=row.author %></td>
-                    <td colspan = "2">출판사 <%=row.publisher %></td>
+                    <td colspan = "3">저자 <%=rows[0].author %></td>
+                    <td colspan = "2">출판사 <%=rows[0].publisher %></td>
                 </tr>
                 <tr>
-                    <td colspan = "5">가격 <%=row.book_price %></td>
+                    <td colspan = "5">가격 <%=rows[0].book_price %></td>
                     <!-- <td rowspan = "2">
                         <input type='button'onclick='count("plus")'value='+'/>
                         <input type='button'onclick='count("minus")'value='-'/>
@@ -34,7 +34,7 @@
                     <!-- oneclick 추가 -->
                 </tr>
                 <tr>
-                    <td colspan = "5" rowspan = "3">줄거리 <%=row.book_content %></td>
+                    <td colspan = "5" rowspan = "3">줄거리 <%=rows[0].book_content %></td>
                 </tr>
             </table>
                 <br></br>
@@ -45,49 +45,47 @@
                 </tr>
         </form>
         <form action = "/orders/buy" method = "post">
-            <input type = "button" id = "즉시구매" name = "즉시구매" value = "즉시구매" onclick="handleInsert('<%= JSON.stringify(row) %>')">
+            <input type = "button" id = "즉시구매" name = "즉시구매" value = "즉시구매" onclick="handleInsert('<%= JSON.stringify(rows) %>')">
         </form>
         <form action = "/orders/cart" method = "post">
-            <input type = "button" id = "장바구니" name = "장바구니" value = "장바구니" onclick="handleclick('<%= JSON.stringify(row) %>')">
+            <input type = "button" id = "장바구니" name = "장바구니" value = "장바구니" onclick="handleclick('<%= JSON.stringify(rows) %>')">
         </form>
         <form action="/book/detail/delete" method="post">
-            <input type="hidden" name="book_num" value="<%= row.book_num %>"/>
-            <input type="hidden" name="review_num" value="<%= row.review_num %>"/>
-            <input type="hidden" name="image" value="<%= row.image %>"/>
+            <input type="hidden" name="book_num" value="<%= rows[0].book_num %>"/>
+            <input type="hidden" name="review_num" value="<%= rows[0].review_num %>"/>
+            <input type="hidden" name="image" value="<%= rows[0].image %>"/>
             <button type="submit">글 삭제</button>
         </form>
-
         <form action = "/book/detail/review" method = "get">
-            <input type="hidden" name="book_num" value = "<%=row.book_num %>"/>
+            <input type="hidden" name="book_num" value = "<%=rows[0].book_num %>"/>
+            <input type="hidden" name="review_num" value="<%= rows[0].review_num %>"/>
 
             <!-- 리뷰/평점 -->
             <h2 class="titleList">회원리뷰/평점</h2>
-    
-            <div class="">
-                <p>리뷰 작성 시 2%의 포인트를 제공합니다</p>
-                <button type = "submit">리뷰작성</button>
-            </div>
+             <button type = "submit">리뷰작성</button>
             <br><br>
-
-            <div class="starAvg">
-                <p>**평균별점, 이미지 표시**</p>
-            </div>
-            <br><br>
-
+<%
+                for(var i=0; i<rows.length; i++){
+                    var oneItem = rows[i];
+%>
             <div class="reviewForm">
-
-                    <ul style="list-style-type:none; padding-left:0px;">
-                        <li style="float:left; margin-right:30px;">번호 - <%=row.review_num %></li>
-                        <li style="float:left; margin-right:30px;">작성자 - <%=row.cust_id %></li>
-                        <li style="float:left; margin-right:30px;">날짜 - <%=row.review_date %></li>
-                    </ul>
-                    <br>
-
-                    <p>리뷰내용 - <%=row.review_content %></p>
-
+                <table border="1" >
+                    <tr>
+                        <td width="30px" align="center"><%=oneItem.review_num %></td><!-- 리뷰번호 -->
+                        <td width="100px" align="center"><%=oneItem.review_star %></td> <!-- 별점 -->
+                        <td width="100px" align="center"><%=oneItem.cust_id %></td> <!-- 작성자 -->
+                        <td><%=oneItem.review_date %></td> <!-- 날짜 -->
+                    </tr>
+                    <tr>
+                        <td colspan = "4"><%=oneItem.review_content %></td>
+                    </tr>
+                </table>
+                <br><br>
+<%
+           }
+%>
             </div>
         </form>
-
         <script>
             //버튼을 클릭해서 구매 수량을 +/-하는 함수
             //구매자 페이지에서만 나타나게 해야함?

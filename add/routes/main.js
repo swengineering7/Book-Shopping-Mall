@@ -558,11 +558,11 @@ router.get('/book/detail/read/:book_num', function(req,res,next) {
 
       var sql ="select review.*, book.* from review, book where review.book_num=? and book.book_num=?;";
 
-      connection.query(sql, [book_num, book_num], function(err,row){
+      connection.query(sql, [book_num, book_num], function(err,rows){
           if(err) console.error(err);
-          console.log("1개 글 조회 결과 확인 : ",row);
+          console.log("1개 글 조회 결과 확인 : ",rows);
           
-          res.render('bookDetailRead', { title: '글 조회',row:row[0]});
+          res.render('bookDetailRead', { title: '글 조회',rows: rows});
           connection.release();
       });
   });
@@ -667,7 +667,7 @@ router.post('/book/detail/review', function(req,res,next){
 
   //var review_num = req.body.review_num; // primary key
   var book_num = req.body.book_num; // foreign key
-  var cust_id = 'kw2'; // foreign key
+  var cust_id = req.session.userid; // foreign key
 
   var review_star;
   if(req.body.review_star==1) review_star=1;
