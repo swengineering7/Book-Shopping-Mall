@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title><%= title %></title>
+        <meta charset='utf-8'>
+        <link rel='stylesheet' href='/stylesheets/style.css' />
+        <script src = "/javascripts/jquery-3.6.0.min.js"></script>
+    </head>
+    <body>
+        <h1><%= title %></h1>
+        <form action = "/sellbookList" method="post">
+            <table border = "1" width = "1200" height = "400" border = "3">
+                <tr>
+                    <td>제목</td>
+                    <td>장르</td>
+                    <td>가격</td>
+                    <td>이미지</td>
+                    <td>저자</td>
+                    <td>출판사</td>
+                    <td>수량</td>
+                </tr>
+<%              if(rows.length == 0) { %>
+					<tr>
+						<td colspan="6">
+							<center>장바구니에 담으신 상품이 없습니다.</center>
+						</td>
+					</tr>
+<% }else{ %>
+
+    <%
+                for(var i=0; i<rows.length; i++){
+                    var oneItem = rows[i];
+    %>
+                <!-- <input type = "hidden" name="order_num" value = "<%=rows.order_num%>"/> -->
+                <tr>
+                    <td><%=oneItem.book_title%></td>
+                    <td><%=oneItem.book_genre%></td>
+                    <td><%=oneItem.book_price%></td>
+                    <td><img src="/images/<%= oneItem.image %>" alt="" width="200px" height="100px"></td>
+                    <td><%= oneItem.author%></td>
+                    <td><%= oneItem.publisher%></td>
+                    <td><%= oneItem.book_count%></td>                       
+                </tr>
+    <%
+                    }
+    %>
+<%
+                }
+%>
+            </table>
+            <tr>
+                <td colspan = "2">
+                    <button type = "submit"><a href = "/sellpage">판매자 마이페이지로 이동</button>
+                </td>
+            </tr>
+        </form>
+    </body>
+</html>
