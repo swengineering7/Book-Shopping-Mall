@@ -67,8 +67,6 @@ app.use('/book/detail', bookDetail);
 app.use('/orders', order);
 app.use('/board', board);
 
-
-
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));

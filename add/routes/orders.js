@@ -200,7 +200,8 @@ router.post('/mileage/update', function(req,res,next){
                   res.send('<script type="text/javascript">alert("마일리지가 부족합니다!!! 충전을 진행해주세요!!!.");location.href="/orders/buy";</script>');
                 }
           else{
-            res.redirect('/orders/buy');//결제 완료페이지로 redirect!
+            //res.redirect('/orders/buy');//결제 완료페이지로 redirect!
+            res.redirect('/orders/buyConfirm');
           }
           connection.release();
       });
@@ -396,6 +397,10 @@ router.post('/sellorderList', function(req,res,next){
         });
     });
 }
+});
+
+router.get('/buyConfirm',function(req, res, next){
+  res.render('buyConfirm', {title:'결제가 완료 되었습니다!!!'});
 });
 
 // router.get('/payment',function(req,res,next){

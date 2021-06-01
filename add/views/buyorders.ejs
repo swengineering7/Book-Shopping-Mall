@@ -60,7 +60,7 @@
                             <input type="hidden" name="order_num" value = "<%=oneItem.order_num%>">
                             <input type="hidden" name="order_price" value = "<%=oneItem.book_price%>">
                             <input type="hidden" name = "quantity" value = "<%=oneItem.quantity%>">
-                            <button type = "submit">구매</button>
+                            <button type = "submit" a href = "/orders/buyConfirm">구매</button>
                             <input type="hidden" name= "total_price" value = "<%= oneItem.total_price%>"> 
                             <!-- <button type = "submit" onclick="handleInsert('<%= JSON.stringify(oneItem) %>')"><a href= "/orders/orderList">구매</button>                        -->
                         </form>

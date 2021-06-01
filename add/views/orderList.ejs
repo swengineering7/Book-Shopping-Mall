@@ -64,7 +64,8 @@
                     <td><%=oneItem.order_num%></td>
                     <!-- <td><%=oneItem.order_date%></td> -->
                     <td><a href="/book/detail/read/<%=oneItem.book_num%>"><%=oneItem.book_title%></a></td>
-                    <td><%=oneItem.order_date%></td>
+                    <!--<td><%=oneItem.order_date%></td>-->
+                    <td><%= moment(oneItem.order_date).format("MM월 DD일, h:mm:ss A") %></td>
                     <td><%= oneItem.total_price%></td>
                     <!-- 이 밑부분도 구매/장바구니 페이지 여부에 따라 다름 -->
                     <td colspan = "2">
