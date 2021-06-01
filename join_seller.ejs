@@ -17,38 +17,38 @@
     </style>
     <script src="/javascripts/jquery-3.6.0.min.js"></script>
     <script>   
-      $(function(){   
+      $(function(){  
         $("#idCheck").click(
           function idCheck(){
               window.name="parentForm"
-              openWin=window.open("/join/idCheckCus", "childForm", "width=400, height=350");
+              openWin=window.open("/join/idCheckSell", "childForm", "width=400, height=350");
               //window.open("/join/idCheckForm", "idwin", "width=400, height=350");
             }
-        );
+        ); 
         $("#btnJoin").click(
           function(){
-            if($("#cust_id").val() == "")
+            if($("#sell_id").val() == "")
             {
               alert("아이디를 꼭 입력 하세요");
-              $("#cust_id").focus();
+              $("#sell_id").focus();
               return;              
             }
-            if($("#cust_pwd").val() == "")
+            if($("#sell_pwd").val() == "")
             {
               alert("비밀번호를 꼭 입력 하세요");
-              $("#cust_pwd").focus();
+              $("#sell_pwd").focus();
               return;              
             }
-            if($("#cust_name").val() == "")
+            if($("#sell_name").val() == "")
             {
               alert("이름을 꼭 입력 하세요");
-              $("#cust_name").focus();
+              $("#sell_name").focus();
               return;              
             }
-            if($("#cust_email").val() == "")
+            if($("#sell_email").val() == "")
             {
               alert("이메일을 꼭 입력 하세요");
-              $("#cust_email").focus();
+              $("#sell_email").focus();
               return;              
             }
             if($("#tel2").val() == "")
@@ -64,8 +64,8 @@
               return;              
             }
 
-            var cust_phone_num=$("#tel1").val()+ $("#tel2").val()+ $("#tel3").val();
-            $("#cust_phone_num").val(cust_phone_num);
+            var sell_phone_num=$("#tel1").val()+ $("#tel2").val()+ $("#tel3").val();
+            $("#sell_phone_num").val(sell_phone_num);
 
             if($("#birth1").val() == "")
             {
@@ -131,7 +131,7 @@
         </div>
       </div>
       <div style="width:100%;margin-top:90px; text-align:center; font-size:25px;">
-        <strong>구매자</strong>
+        <strong>판매자</strong>
       </div>
       <table style="width:100%;margin-top:10px; text-align:center;">
         <tr>
@@ -145,28 +145,28 @@
           </td>
         </tr>
       </table>
-      <form id="joinForm" action="/join/customer" method="post">
+      <form id="joinForm" action="/join/seller" method="post">
         <table width="400" style="margin:0px auto; margin-top:10px;">
           <tr style="height:30px;">
             <th>아이디</th>
-            <td><input type="text" name="cust_id" id="cust_id" size="12" maxlength="12" style="width:240px;"></td>
+            <td><input type="text" name="sell_id" id="sell_id" size="12" maxlength="12" style="width:240px;"></td>
             <td><input type="button" value="중복확인" id="idCheck" name="idCheck" onclick="idCheck()" style="width:70px; height:25px;"></td>
           </tr>
           <tr style="height:30px;">
             <th>비밀번호</th>
-            <td colspan="2"><input type="password" name="cust_pwd" id="cust_pwd" size="12" maxlength="12" style="width:320px;"></td>
+            <td colspan="2"><input type="password" name="sell_pwd" id="sell_pwd" size="12" maxlength="12" style="width:320px;"></td>
           </tr>
           <tr style="height:30px;">
             <th>이름</th>
-            <td colspan="2"><input type="text" name="cust_name" id="cust_name" size="10" maxlength="10" style="width:320px;"></td>
+            <td colspan="2"><input type="text" name="sell_name" id="sell_name" size="10" maxlength="10" style="width:320px;"></td>
           </tr>
           <tr style="height:30px;">
             <th>이메일</th>
-            <td colspan="2"><input type="email" name="cust_email" id="cust_email" size="30" maxlength="50" style="width:320px;"></td>
+            <td colspan="2"><input type="email" name="sell_email" id="sell_email" size="30" maxlength="50" style="width:320px;"></td>
           </tr>
           <tr style="height:30px;">
             <th>전화번호</th>
-            <td colspan="2"><input type="hidden" name="cust_phone_num" id="cust_phone_num" style="width:320px;">
+            <td colspan="2"><input type="hidden" name="sell_phone_num" id="sell_phone_num" style="width:320px;">
             <select name="tel1" id="tel1" style="width:100px;">
               <option value="010">010</option>
               <option value="011">011</option>
@@ -178,36 +178,7 @@
             <input type="text" name="tel2" id="tel2" size="4" maxlength="4" style="width:102px;">
             <input type="text" name="tel3" id="tel3" size="4" maxlength="4" style="width:102px;">
             </td>
-          </tr>
-          <tr style="height:30px;">
-            <th>주소</th>
-            <td colspan="2">
-              <input type="text" name="address" id="address" size="30" maxlength="50" style="width:320px;">
-            </td>
-          </tr>
-          <tr style="height:30px;">
-            <th>우편번호</th>
-             <td colspan="2">
-               <input type="text" name="zipcode" id="zipcode" size="5" maxlength="5" style="width:320px;">
-            </td>
-          </tr>
-          <tr style="height:30px;">
-            <th>성별</th>
-            <td colspan="2">
-              <input type="radio" name="gender" value="남" checked="checked">남
-              <input type="radio" name="gender" value="여">여
-            </td>
-          </tr>
-          <tr style="height:30px;">
-            <th>생일</th>
-            <!--td><input type="text" name="birth" id="birth" size="8" maxlength> *YYYYMMDD</td-->
-            <td colspan="2">
-            <input type="hidden" name="birthday" id="birthday">
-            <input type="text" name="birth1" id="birth1" size="4" maxlength="4" style="width:98px;">
-            <input type="text" name="birth2" id="birth2" size="2" maxlength="2" style="width:98px;">
-            <input type="text" name="birth3" id="birth3" size="2" maxlength="2" style="width:99px;">
-            </td>
-          </tr>       
+          </tr>    
           <tr style="height:50px; text-align:right;">
             <td colspan="3">
               <button type="submit" id="btnJoin" name="join" value="가입" style="width:70px;">가입</button>
