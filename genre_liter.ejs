@@ -42,24 +42,30 @@
                     <li style="float:left;">&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;</a></li>
                     <li style="float:left;"><a href='/genre_soc'>정치, 사회</a></li>
                     <li style="float:left;">&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;</a></li>
-                    <li style="float:left;"><a href='/genre_sic'>수학, 과학</a></li>
+                    <li style="float:left;"><a href='/genre_sci'>수학, 과학</a></li>
                     <li style="float:left;">&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;</a></li>
                     <li style="float:left;"><a href='/genre_art'>기술, 예술</a></li>
                   </ul>
             </div>
         </div>
         <table style="border:0; width:1000px; margin:0 auto; margin-top:30px; text-align:center;">
+            <tr style="font-size:20px; border-bottom:1px solid black; height:50px;">
+                <td>표지</td>
+                <td>책 제목</td>
+                <td>저자</td>
+                <td>출판사</td>
+                <td>가격</td>
+            </tr>
             <%
                 for(var i=0; i<5; i++){
                     var oneItem = rows[i];
 %>
                     <tr>
-                        <td style="height:150px;"><%=oneItem.book_num%></td>
-                        <td><img src="/images/<%= oneItem.image %>" alt="" width="80px" height="130px"></td>
+                        <td style="height:150px;"><img src="/images/<%= oneItem.image %>" alt="" width="80px" height="130px"></td>
                         <td><a href="/book/detail/read/<%=oneItem.book_num%>"><%=oneItem.book_title%></a></td>
                         <td><%=oneItem.author%></td>
                         <td><%=oneItem.publisher%></td>
-                        <td><%=oneItem.book_price%></td>
+                        <td><%=oneItem.book_price%> 원</td>
                     </tr>
 <%
                 }

@@ -65,7 +65,7 @@
             <li><a href='/book' style="color:white; text-decoration:none;">전체 상품 조회</a></li><br><br><br>
             <li><a href='/genre_liter' style="color:white; text-decoration:none;">문학</a></li><br><br><br>
             <li><a href='/genre_soc' style="color:white; text-decoration:none;">정치, 경제, 사회</a></li><br><br><br>
-            <li><a href='/genre_sic' style="color:white; text-decoration:none;">수학, 과학</a></li><br><br><br>
+            <li><a href='/genre_sci' style="color:white; text-decoration:none;">수학, 과학</a></li><br><br><br>
             <li><a href='/genre_art' style="color:white; text-decoration:none;">기술, 예술</a></li><br><br><br>
           </ul>
         </div>
@@ -103,33 +103,25 @@
           </div>
         </div>
       </div>
-      <div style="border:1px solid green; margin:0 auto; margin-top:50px; width:1000px; height:200px; margin-bottom:50px;">
-        <div style="border:2px solid pink; width:995px; height:30px; text-align:center; padding-top:10px;">
+      <div style="margin:0 auto; margin-top:50px; width:1000px; height:300px; margin-bottom:50px;">
+        <div style="background-color:black; color:white; font-weight:bold; font-size:15px;  vertical-align:center; height:30px; text-align:center; padding-top:10px;">
           베스트셀러
         </div>
-        <div style="border:1px solid rgb(116, 20, 36); width:995px; height:150px; margin-top:5px;">
+        <div style=" margin:0 auto; width:995px; height:170px; margin-top:5px; text-align:center; position:relative;">
           <%
-      for(var i=0; i<row.length; i++){
-          var oneItem = row[i];
+          for(var i=0; i<row.length; i++){
+              var oneItem = row[i];
 %>
-          <tr>
-            <td><a href="/book/detail/read/<%=oneItem.book_num%>"><img src="/images/<%= oneItem.image %>" alt="" width="200px" height="50px"></td>
-          </tr>
+              <div style="float:left; border:1px solid white; margin-left:100px; text-align:center;">
+                <a href="/book/detail/read/<%=oneItem.book_num%>"><img src="/images/<%= oneItem.image %>" alt="" width="80px" height="120px"></a><br><br>
+                <%=oneItem.book_title%>
+              </div>
 <%
-      }
-%>
-      <br><br>
-<%
-      for(var i=0; i<row.length; i++){
-          var oneItem = row[i];
-%>
-          <tr>
-            <td><%=oneItem.book_title%></a></td>
-          </tr>
-<%
-      }
+          }
 %>
         </div>
+      </div>
+      <div style="margin:0 auto; margin-top:20px; width:1000px; height:100px;">
       </div>
       <div style="margin:0 auto; margin-top:20px; width:1000px; height:100px;">
       </div>

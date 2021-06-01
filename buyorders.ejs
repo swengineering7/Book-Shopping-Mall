@@ -6,45 +6,12 @@
         <link rel='stylesheet' href='/stylesheets/style.css' />
         <script src = "/javascripts/jquery-3.6.0.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-        <style>
-            body{margin:0px; padding:0px;background-color:white;}
-      
-            .header{background-color:black; position:fixed; width:100%; top:0; left:0; z-index:1;}
-            ul.nav{float:right; list-style:none; width:45%; height:20px;}
-            ul.nav li{float:left; color:white;}
-            ul.nav a{line-height:20px; color:#ffffff; padding:0 15px; text-decoration:none;}
-      
-            .bottom{line-height:50px; height:50px; width:100%; background-repeat:repeat; background-attachment: scroll; background-position:0% 0%; background-color:black;position:fixed; bottom:0pt; left:0pt;}
-            .button{background-color:white; border:0px; color:black;text-decoration:none;}
-            .button:hover{font-weight:bold; background-color:lightgray;}
-            .log-but{border:1px solid black; width:95px; height:50px;}
-            .log-but:hover{font-weight:bold;}
-            a{text-decoration:none; color:black;}
-        </style>
     </head>
     <body>
         <script>
             function getData (rows) {
                 console.log(rows);
             }
-        </script>
-        <script>
-            $(document).ready(function () {
-                var $cnts = $('.cnt'); // cnt 배열
-                $cnts.change(function () { // input값이 변화가 있을 때 발생하는 이벤트
-                    for (var i = 0; i < $cnts.length; i++) {
-                        // input 값 가져오기
-                        console.log(i + ' index input - ' + $cnts.eq(i).val());
-                    }
-                });
-         
-                var $btn = $('.btn'); // btn
-                $btn.click(function () { // 클릭 이벤트
-                    for (var i = 0; i < $cnts.length; i++) {
-                        $cnts.eq(i).val(2); // input 값 선택하기
-                    }
-                });
-            });
         </script>
         <h1><%= title %></h1>
             <table border = "1" width = "1200" height = "400" border = "3">
@@ -54,14 +21,14 @@
                     <td>판매가</td>
                     <td>수량</td>
                     <td>합계</td>
-                    <td colspan = "2">선택</td>
+                    <td colspan = "3">선택</td>
                 </tr>
 <%              if(rows.length == 0) { %>
-					<tr>
-						<td colspan="6">
-							<center>장바구니에 담으신 상품이 없습니다.</center>
-						</td>
-					</tr>
+               <tr>
+                  <td colspan="5">
+                     <center>장바구니에 담으신 상품이 없습니다.</center>
+                  </td>
+               </tr>
 <% }else{ %>
     <%
                 for(var i=0; i<rows.length; i++){
@@ -69,36 +36,61 @@
     %>
                 <!-- <input type = "hidden" name="order_num" value = "<%=rows.order_num%>"/> -->
                 <tr>
+                    <input type="hidden" name="order_num" value = "<%=oneItem.order_num%>">
                     <td><%=oneItem.order_num%></td>
                     <td><a href="/book/detail/read/<%=oneItem.book_num%>"><%=oneItem.book_title%></a></td>
                     <td><%=oneItem.book_price%></td>
                     <td>
-                            <%=oneItem.quantity%>
-                        <!-- <input type='button'onclick='count("plus")'value='+'/>
-                        <input type='button'onclick='count("minus")'value='-'/>
-                        <div id='quantity'>0</div>
-                    
-                        <%=parseInt(oneItem.quantity)%>-->
-                            <input type = "number" name = "quantity" id= "quantity" size="10" maxlength="10">
-                            <br><br>
-                            <button type = "submit" id="submitBtn">구매 수량 결정</button>                        
-                        <!-- <script>
-                            $("#quantity").click(function () {
-                            alert($("#quantity").val());
-                            });
-                            //return $("#quantity").val();
-                        </script> -->
+                        <form action = "/orders/quantity/update" method="post">
+                            <input type="hidden" name="order_date" value = "<%=oneItem.order_date%>">
+                            <input type="hidden" name="book_num" value = "<%=oneItem.book_num%>">
+                            <input type="hidden" name="order_num" value = "<%=oneItem.order_num%>">
+                            <input type="hidden" name="order_price" value = "<%=oneItem.book_price%>">
+                            <input id="input" name = "quantity" type="number" value = "<%=oneItem.quantity%>"><!--원래는 type="text"-->
+                            <a id="val"></a><!--원래는 <a> 태그 사이에 <%=oneItem.quantity%> 있었음(확인용)-->
+                            <button type = "submit">구매 수량 결정</button>
+                            <input type="hidden" name= "total_price" value = "<%= oneItem.total_price%>">
+                            <td><%=oneItem.total_price%></td>                        
+                        </form>
                     </td>
-                    <!-- <%=oneItem.order_price%> -->
-                    <td><%= oneItem.order_price = (oneItem.book_price * oneItem.quantity) %></td>
-                    <td colspan = "2">
-                        <button type = "submit"><a href= "/orders/orderList">구매</button>
+                    <td colspan = "3">
+                        <form action = "/orders/mileage/update" method = "POST">
+                            <input type="hidden" name="order_date" value = "<%=oneItem.order_date%>">
+                            <input type="hidden" name="book_num" value = "<%=oneItem.book_num%>">
+                            <input type="hidden" name="order_num" value = "<%=oneItem.order_num%>">
+                            <input type="hidden" name="order_price" value = "<%=oneItem.book_price%>">
+                            <input type="hidden" name = "quantity" value = "<%=oneItem.quantity%>">
+                            <button type = "submit" a href = "/orders/buyConfirm">구매</button>
+                            <input type="hidden" name= "total_price" value = "<%= oneItem.total_price%>"> 
+                            <!-- <button type = "submit" onclick="handleInsert('<%= JSON.stringify(oneItem) %>')"><a href= "/orders/orderList">구매</button>                        -->
+                        </form>
+                        <!--쿠폰 버튼-->
+                        <form action = "/orders/coupon/update" method="post">
+                            <input type="hidden" name="order_date" value = "<%=oneItem.order_date%>">
+                            <input type="hidden" name="book_num" value = "<%=oneItem.book_num%>">
+                            <input type="hidden" name="order_num" value = "<%=oneItem.order_num%>">
+                            <input type="hidden" name="order_price" value = "<%=oneItem.book_price%>">
+                            <input type="hidden" name = "quantity" value = "<%=oneItem.quantity%>">
+                            <button type = "submit" onclick='coupon_event()''>쿠폰 적용</button>
+                            <input type="hidden" name= "total_price" value = "<%= oneItem.total_price%>">                         
+                        </form>
                         <form action="/orders/delete/order" method="post">
                             <input type="hidden" name="order_num" value = "<%=oneItem.order_num%>">
                             <button type = "submit" onclick='button_event()'>삭제</button>
                         </form>
                     </td>
                 </tr>
+                <script>
+                    var oldVal = Number('<%=oneItem.quantity%>');
+                    $("#input").on("input", function() {
+                        var newVal = oldVal + 1;
+                        if(oldVal == newVal) {
+                            return;
+                        }
+                        //$("#val").text(newVal-1);
+                        oldVal = newVal;    
+                    });
+                </script>
     <%
                     }
     %>
@@ -106,7 +98,6 @@
                 }
 %>
             </table>
-            <input type='reset'>
             <tr>
                 <td colspan = "2">
                     <!-- <button type = "submit">결제방식</button> -->
@@ -114,38 +105,21 @@
                     <button type = "submit"><a href = "/book">상품 목록 페이지로 이동</button>
                 </td>
             </tr>
-                <script>
-                //버튼을 클릭해서 구매 수량을 +/-하는 함수
-                //구매자 페이지에서만 나타나게 해야함?
-                function count(type)  {
-                    // 결과를 표시할 element
-                    const resultElement = document.getElementById('quantity');
-                    
-                    // 현재 화면에 표시된 값
-                    let number = resultElement.innerText;
-                    
-                    // 더하기/빼기
-                    if(type === 'plus'){
-                    number = parseInt(number) + 1;
-                    }else if(type === 'minus'){
-                    number = parseInt(number) - 1;
-                    }
-                    //수량이 음수면 경고 메세지 출력하기
-                    // if(number < 0){
-                    //     alert('수량은 음수가 될 수 없습니다.');
-                    //     //근데 화면에는 여전히 -1이 출력됨!
-                    // }
-                    
-                    // 결과 출력
-                    resultElement.innerText = number;
-                }
+            <script>
                 function popupOpen(){
-                    var popUrl = "payment.html";	//팝업창에 출력될 페이지 URL
+                    var popUrl = "payment.html";   //팝업창에 출력될 페이지 URL
                     var popOption = "width=370, height=360, resizable=no, scrollbars=no, status=no;";    //팝업창 옵션(optoin)
                     window.open(popUrl,"",popOption);
                 }
                 function button_event(){
                     if (confirm("정말 삭제하시겠습니까??") == true){    //확인
+                        document.form.submit();
+                    }else{   //취소
+                        return;
+                    }
+                }
+                function coupon_event(){
+                    if (confirm("쿠폰을 적용하시겠습니까?") == true){    //확인
                         document.form.submit();
                     }else{   //취소
                         return;
@@ -167,6 +141,13 @@
                 }
                 inputSelector.addEventListener('change', handleChange);
                 inputSelector.addEventListener('click', handleClick);
+            </script>
+            <script>
+                const handleInsert = (row) => {
+                    axios.post('http://localhost:3000/orders/mileage/update',{params: row})
+                    .then(() => location.href = '/orders/buy').then(() => console.log('fdsfasd'));
+                            
+                    }
             </script>
     </body>
 </html>

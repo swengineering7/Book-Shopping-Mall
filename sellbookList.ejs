@@ -4,9 +4,43 @@
         <title><%= title %></title>
         <meta charset='utf-8'>
         <link rel='stylesheet' href='/stylesheets/style.css' />
+        <script src = "/javascripts/jquery-3.6.0.min.js"></script>
+        <script>
+            function date_to_str(format)
+
+    {
+
+    var year = format.getFullYear();
+
+    var month = format.getMonth() + 1;
+
+    if(month<10) month = '0' + month;
+
+    var date = format.getDate();
+
+    if(date<10) date = '0' + date;
+
+    var hour = format.getHours();
+
+    if(hour<10) hour = '0' + hour;
+
+    var min = format.getMinutes();
+
+    if(min<10) min = '0' + min;
+
+    var sec = format.getSeconds();
+
+    if(sec10) sec = '0' + sec;
+
+    
+
+    return year + "-" + month + "-" + date + " " + hour + ":" + min + ":" + sec;
+
+}
+        </script>
         <style>
             body{margin:0px; padding:0px;background-color:white;}
-            table{font-size:15px; text-align:center;}
+            table{font-size:15px;}
             input{height:30px; width:100%;}
             textarea{height:70px; width:100%;}
             .header{background-color:black; position:fixed; width:100%; top:0; left:0; z-index:1;}
@@ -21,18 +55,7 @@
             .log-but:hover{font-weight:bold;}
             a{text-decoration:none; color:black;}
             th, td { border-bottom: 1px solid #444444; padding: 10px; }
-        </style>
-        <script src = "/javascripts/jquery-3.6.0.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-        <script>
-            function button_event(){
-                if (confirm("정말 삭제하시겠습니까??") == true){    //확인
-                    document.form.submit();
-                }else{   //취소
-                    return;
-                }
-            }
-        </script>
+        </style>   
     </head>
     <body>
         <div class="header">
@@ -43,14 +66,18 @@
             </div>
         </div>
         <div style="margin-top:90px; margin-left:210px; width:130px; font-size:30px; margin-bottom:10px;">
-            장바구니
+            판매 내역
         </div>
-            <table width = "1000px" style="margin:0 auto; margin-top:20px;">
-                <tr style="height:30px; text-align:center;">
-                    <td>표지</td>
-                    <td>상품정보</td>
-                    <td>판매가</td>
-                    <td colspan = "2">선택</td>
+        <form action = "/sellbookList" method="post">
+            <table width = "1000px"style="margin:0 auto; margin-top:20px; text-align:center;">
+                <tr>
+                    <td>제목</td>
+                    <td>장르</td>
+                    <td>가격</td>
+                    <td>이미지</td>
+                    <td>저자</td>
+                    <td>출판사</td>
+                    <td>수량</td>
                 </tr>
 <%              if(rows.length == 0) { %>
                <tr>
@@ -59,23 +86,20 @@
                   </td>
                </tr>
 <% }else{ %>
+
     <%
                 for(var i=0; i<rows.length; i++){
                     var oneItem = rows[i];
     %>
-                <!-- <input type = "hidden" name="cart_num" value = "<%=rows.cart_num%>"/> -->
-                <tr>
-                    <td><img src="/images/<%= oneItem.image %>" alt="" width="80px" height="130px"></td>
-                    <td><a href="/book/detail/read/<%=oneItem.book_num%>"><%=oneItem.book_title%></a></td>
-                    <td><%=oneItem.book_price%> 원</td>
-                    <!-- 이 밑부분도 구매/장바구니 페이지 여부에 따라 다름 -->
-                    <td colspan = "2">
-                        <form action="/orders/delete/cart" method="post">
-                            <input type="hidden" name="cart_num" value = "<%=oneItem.cart_num%>">
-                            <button type = "submit" onclick='button_event()'>장바구니에서 삭제</button>
-                        </form>
-                    </td>
-                </tr>
+    <tr>
+        <td><%=oneItem.book_title%></td>
+        <td><%=oneItem.book_genre%></td>
+        <td><%=oneItem.book_price%></td>
+        <td><img src="/images/<%= oneItem.image %>" alt="" width="80px" height="130px"></td>
+        <td><%= oneItem.author%></td>
+        <td><%= oneItem.publisher%></td>
+        <td><%= oneItem.book_count%></td>                       
+    </tr>
     <%
                     }
     %>
@@ -83,23 +107,15 @@
                 }
 %>
             </table>
-        <div style="width:1000px; margin:0 auto; margin-top:10px; text-align:right;">
-            <form action = "/orders/buyall" method = "post">
-                <button type = "submit" id = "buyall" name = "buyall">전체 상품 구매</button>
-            </form>
-        </div>
-        <script>
-            const handleInsert = (row) => {
-                axios.post('http://localhost:3000/orders/buy',{params: row})
-                .then(() => location.href = '/orders/buy').then(() => console.log('fdsfasd'));
-                
-            }
-        </script>
-        <div style="height:200px;">
+            <div style="float:left;margin-left:1050px;">
+                <button type = "submit"><a href = "/sellpage">판매자 마이페이지로 이동</button>
+            </div>
+        </form>
+        <div style="height:100px;">
         </div>
         <div class="bottom" style="color:white;">
             <div style="float:left; margin-left:25px;"><strong>CONTACT</strong>&emsp;031-909-9999</div>
             <div style="float:right; margin-right:30px;"><strong>주소</strong>&emsp;서울특별시 노원구 월계3동 광운대학교</div>
-          </div>
+        </div>
     </body>
 </html>
