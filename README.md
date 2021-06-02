@@ -1,10 +1,8 @@
-# Book-Shopping-Mall
-Repository for Book Shopping Mall (Web Application)
-
+# Web Application Development using Node.js, Express, and MySQL
 ---------------------------------------
-2021년 소프트웨어공학 3차 프로젝트 7조
+# 2021년 소프트웨어공학 3차 프로젝트 7조
 ---------------------------------------
-**광운책방**
+# **광운책방**
 ---------------------------------------
 2018202064 손승현
 
@@ -14,4 +12,4 @@ Repository for Book Shopping Mall (Web Application)
 
 2014722004 박경원
 
-![메인페이지](https://user-images.githubusercontent.com/55887179/120492986-84f53b80-c3f5-11eb-884f-68c468931cac.jpg)
+![메인페이지](https://user-images.githubusercontent.com/55887179/120493730-2b414100-c3f6-11eb-979c-138af117c54a.jpg)
