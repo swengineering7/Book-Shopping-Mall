@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= title %></title>
+    <meta charset='utf-8'>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Nanum+Myeongjo:wght@700&display=swap" rel="stylesheet">
+    <style>
+      *{font-family: 'Nanum Myeongjo', serif;}
+      body{margin:0px; padding:0px;background-color:ghostwhite;}
+
+      .header{background-color:black; position:fixed; width:100%; top:0; left:0; z-index:1;}
+      ul.nav{float:right; list-style:none; width:45%; height:20px;}
+      ul.nav li{float:left; color:white;}
+      ul.nav a{line-height:20px; color:#ffffff; padding:0 15px; text-decoration:none;}
+
+      .bottom{line-height:50px; height:50px; width:100%; background-repeat:repeat; background-attachment: scroll; background-position:0% 0%; background-color:black;position:fixed; bottom:0pt; left:0pt;}
+      .button{background-color:white; border:0px; color:black;text-decoration:none;}
+      .button:hover{font-weight:bold; background-color:lightgray;}
+    
+         /* INPUT 가리기 */
+   .section input[id*="slide"] {display:none;}
+
+/* 슬라이드 영역 - max-width 크기를 조절해주면 됩니다*/
+.section .slidewrap {max-width:1000px; overflow:hidden;}
+.section .slidelist {white-space:nowrap; font-size:0;}
+.section .slidelist > li {display:inline-block; vertical-align:middle; width:100%; transition:all .5s;}
+.section .slidelist > li > a {display:block; position:relative;}
+.section .slidelist > li > a img {width:100%;}
+
+/* 좌우로 넘기는 LABEL버튼에 대한 스타일 */
+.section .slidelist label {position:absolute; z-index:1; top:35%; transform:translateY(-50%); padding:50px; cursor:pointer;}
+.section .slidelist .left {left:5px;background:url('https://static.wixstatic.com/media/2f3f5b_bca4bbe612624da686b16282642d82a1~mv2.png/v1/fill/w_323,h_223,al_c,lg_1,q_85/%EC%99%BC%EC%AA%BD%ED%99%94%EC%82%B4%ED%91%9C%5D.webp') center center / 100% no-repeat;}
+.section .slidelist .right {right:5px;background:url('https://static.wixstatic.com/media/2f3f5b_09c00771f63745879916aa772f2c3c4d~mv2.png/v1/fill/w_323,h_225,al_c,lg_1,q_85/%ED%99%94%EC%82%B4%ED%91%9C.webp') center center / 100% no-repeat;}
+
+/* INPUT 체크되면 변화값이 li까지 전달되는 스타일 */
+.section input[id="slide01"]:checked ~ .slidewrap .slidelist > li {transform:translateX(0%);}
+.section input[id="slide02"]:checked ~ .slidewrap .slidelist > li {transform:translateX(-100%);}
+.section input[id="slide03"]:checked ~ .slidewrap .slidelist > li {transform:translateX(-200%);}
+    </style>
+  </head>
+    <body>
+      <div class="header">
+        <div>
+          <ul class="nav">
+            <li style="float:right; margin-right:20px;"><a href='/logout'>로그아웃</a></li>
+            <li style="float:right;"><a href='/sellpage'>마이페이지</a></li>
+            <li style="float:right;"><%= name %> 님 환영합니다!</a></li>
+          </ul>
+        </div>
+      </div>
+      <div style="margin:0 auto; margin-top:80px; width:1000px; height:100px;">
+        <div style="float: left; width:200px; padding-top:10px; text-align:center; height:90px; margin-top:15px;font-family: 'Nanum Myeongjo', serif;">
+          <a href='/' style="text-decoration:none; color: black; font-size:40px;">광운책방</a>
+        </div>
+        <div style="float: left; width:775px; height:98px; margin-left:20px;">
+          <div style="height:40px; width:770px; position: absolute; margin-top:50px; transform: translateY(-50%); float:left; border:1px solid black; background:black">
+            <input type= "text" style="width:700px; height:20px; padding:10px; border:0px; outline:none; float:left;">
+            <input type="button" style="width:50px; height:100%; border:0px; background:black; outline:none; float:right; color:#ffffff" value="검색">
+          </div>
+        </div>
+      </div>
+      <div style="border:1px solid white; margin:0 auto; margin-top:20px; width:1000px; height:400px;">
+        <div style="border:1px solid white; float: left; width:200px; height:395px; background-color:black;">
+          <ul style="color:white; list-style:none; text-align:center; margin-top:30px; margin-left:-32px; font-family: 'Nanum Myeongjo', serif;">
+            <br><br>
+            <li><a href='/book' style="color:white; text-decoration:none;">전체 상품 조회</a></li><br><br><br>
+            <li><a href='/genre_liter' style="color:white; text-decoration:none;">문학</a></li><br><br><br>
+            <li><a href='/genre_soc' style="color:white; text-decoration:none;">정치, 경제, 사회</a></li><br><br><br>
+            <li><a href='/genre_sci' style="color:white; text-decoration:none;">수학, 과학</a></li><br><br><br>
+            <li><a href='/genre_art' style="color:white; text-decoration:none;">기술, 예술</a></li><br><br><br>
+          </ul>
+        </div>
+        <div class="section" style="border:1px solid white; float: left; width:775px; height:395px; margin-left:20px;">
+          <input type="radio" name="slide" id="slide01" checked>
+          <input type="radio" name="slide" id="slide02">
+          <input type="radio" name="slide" id="slide03">     
+          <div style="border:2px solid white; float:left; width:40px; height:395px; position:absolute; z-index:1; background-color:white;">
+
+          </div>
+          <div class="slidewrap" style="border:1px solid white; width:775px; height:395px; float:left; position:relative;">
+            <ul class="slidelist">
+              <li>
+                <a>
+                  <label for="slide03" class="left"></label>
+                  <img src="/images/slide1.png">
+                  <label for="slide02" class="right"></label>
+                </a>
+              </li>
+              <li>
+                <a>
+                  <label for="slide01" class="left"></label>
+                  <img src="/images/slide2.png">
+                  <label for="slide03" class="right"></label>
+                </a>
+              </li>
+              <li>
+                <a>
+                  <label for="slide02" class="left"></label>
+                  <img src="/images/slide3.png">
+                  <label for="slide01" class="right"></label>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div style="margin:0 auto; margin-top:50px; width:1000px; height:300px; margin-bottom:50px;">
+        <div style="background-color:black; color:white; font-weight:bold; font-size:15px;  vertical-align:center; height:30px; text-align:center; padding-top:10px;">
+          베스트셀러
+        </div>
+        <div style="border:2px solid black; border-style:double; margin:0 auto; width:995px; height:180px; padding-top:20px; margin-top:20px; text-align:center; position:relative;">
+          <div style="float: left; margin-left:13px;"><img src="/images/book/1-1.jpg" style=" width:80px; height:120px;"><br><br>개</div>
+          <div style="float: left; margin-left:140px; width:80px; height:120px;"><img src="/images/book/4-4.jpg" style=" width:80px; height:120px;"><br><br>모두의 SQL</div>
+          <div style="float: left; margin-left:140px; width:80px; height:120px;"><img src="/images/book/3-4.jpg" style=" width:80px; height:120px;"><br><br>슈퍼매쓰</div>
+          <div style="float: left; margin-left:140px; width:80px; height:120px;"><img src="/images/book/1-5.jpg" style=" width:80px; height:120px;"><br><br>로드워크</div>
+          <div style="float: left; margin-left:140px; width:80px; height:120px;"><img src="/images/book/2-1.jpg" style=" width:80px; height:120px;"><br><br>멸종</div>
+        </div>
+      </div>
+      <div style="margin:0 auto; margin-top:20px; width:1000px; height:100px;">
+      </div>
+      <div style="margin:0 auto; margin-top:20px; width:1000px; height:100px;">
+      </div>
+      <div class="bottom" style="color:white;">
+        <div style="float:left; margin-left:25px;"><strong>CONTACT</strong>&emsp;031-909-9999</div>
+        <div style="float:right; margin-right:30px;"><strong>주소</strong>&emsp;서울특별시 노원구 월계3동 광운대학교</div>
+      </div>
+    </body>
+</html>

@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= title %></title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Nanum+Myeongjo:wght@700&display=swap" rel="stylesheet">
+    <style>
+            body{margin:0px; padding:0px;background-color:white;}
+            table{font-size:15px;}
+            textarea{height:70px; width:100%;}
+            .header{background-color:black; position:fixed; width:100%; top:0; left:0; z-index:1;}
+            ul.nav{float:right; list-style:none; width:45%; height:20px;}
+            ul.nav li{float:left; color:white;}
+            ul.nav a{line-height:20px; color:#ffffff; padding:0 15px; text-decoration:none;}
+      
+            .bottom{line-height:50px; height:50px; width:100%; background-repeat:repeat; background-attachment: scroll; background-position:0% 0%; background-color:black;position:fixed; bottom:0pt; left:0pt;}
+            .button{background-color:white; border:0px; color:black;text-decoration:none;}
+            .button:hover{font-weight:bold; background-color:lightgray;}
+            .log-but{border:1px solid black; width:95px; height:50px;}
+            .log-but:hover{font-weight:bold;}
+            a{text-decoration:none; color:black;}
+            th, td { border-bottom: 1px solid #444444; padding: 10px; }
+    </style>
+    <script src="/javascripts/jquery-3.6.0.min.js"></script>
+    <script>
+      $(function(){
+        $("#addPoint").click(
+          function(){
+              window.name="parentForm"
+              openWin=window.open("/addPoint", "childForm", "width=400, height=350");
+              //window.open("/join/idCheckForm", "idwin", "width=400, height=350");
+            }
+        );
+
+        $("#addPwd").click(
+          function(){
+              window.name="parentForm"
+              openWin=window.open("/addPwd", "childForm", "width=400, height=350");
+              //window.open("/join/idCheckForm", "idwin", "width=400, height=350");
+            }
+        );
+      });
+    </script>
+  </head>
+    <body>
+      <div class="header">
+        <div>
+          <ul class="nav">
+            <li style="float:right; font-family: 'Nanum Myeongjo', serif; margin-right:20px;"><a href='/'>메인페이지</a></li>
+          </ul>
+        </div>
+      </div>
+      <div style="text-align:center; margin-top:80px; font-family: 'Nanum Myeongjo', serif; font-size:20px;">
+        마이페이지
+      </div>
+      <table style="margin:0 auto; font-family: 'Nanum Myeongjo', serif; width:80%; margin-top:30px; height:400px; border-top:1px solid black;">
+        <tr>
+          <td style="text-align:center; width:100px; border-right:1px solid black;"><strong>아이디</strong></td>
+          <td>&ensp;&ensp;<%=row.cust_id%></td>
+        </tr>
+        <tr>
+          <td style="text-align:center; border-right:1px solid black;"><strong>이름</strong></td>
+          <td>&ensp;&ensp;<%=row.cust_name%></td>
+        </tr>
+        <tr>
+          <td style="text-align:center; border-right:1px solid black;"><strong>이메일</strong></td>
+          <td>&ensp;&ensp;<%=row.cust_email%></td>
+        </tr>
+        <tr>
+          <td style="text-align:center; border-right:1px solid black;"><strong>우편번호</strong></td>
+          <td>&ensp;&ensp;<%=row.zipcode%></td>
+        </tr>
+        <tr>
+          <td style="text-align:center; border-right:1px solid black;"><strong>주소</strong></td>
+          <td>&ensp;&ensp;<%=row.address%></td>
+        </tr>
+        <tr>
+          <td style="text-align:center; border-right:1px solid black;"><strong>전화번호</strong></td>
+          <td>&ensp;&ensp;<%=row.cust_phone_num%></td>
+        </tr>
+        <tr>
+          <td style="text-align:center; border-right:1px solid black;"><strong>포인트</strong></td>
+          <td>&ensp;&ensp;<%=row.cust_point%></td>
+        </tr>
+        <tr>
+          <td style="text-align:center; border-right:1px solid black;"><strong>생년월일</strong></td>
+          <td>&ensp;&ensp;<%=row.birthday%></td>
+        </tr>
+        <tr>
+          <td style="text-align:center; border-right:1px solid black;"><strong>성별</strong></td>
+          <td>&ensp;&ensp;
+            <% if(row.gender==1) {%>
+              남자
+            <% } %>
+            <% if(row.gender==2) {%>
+              여자
+            <% } %>
+            </td>
+        </tr>
+        <tr>
+          <td style="text-align:center; border-right:1px solid black;"><strong>구매이력</strong></td>
+          <td>
+            &ensp;&ensp;<button type="button" onClick="location.href='/orders/orderList'">구매내역 확인</button>
+          </td>
+        </tr>
+        <tr>
+          <td style="text-align:center; border-right:1px solid black;"><strong>포인트 충전</strong></td>
+          <td>
+            &ensp;&ensp;<input type="button" value="충전하기" id="addPwd" name="addPwd" onclick="location.href='/addPoint'">
+          </td>
+        </tr>
+      </table>
+      <br>
+      <button type="button" onClick="location.href='custupdate'" style="margin-left:1195px; margin-bottom:100px;">정보수정</button>
+      <div class="bottom" style="color:white;">
+        <div style="float:left; margin-left:25px;"><strong>CONTACT</strong>&emsp;031-909-9999</div>
+        <div style="float:right; margin-right:30px;"><strong>주소</strong>&emsp;서울특별시 노원구 월계3동 광운대학교</div>
+      </div>
+    </body>
+</html>

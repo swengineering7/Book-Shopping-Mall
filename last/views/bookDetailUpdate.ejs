@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script src = "/javascripts/jquery-3.6.0.min.js"></script>
+        <title><%= title %></title>
+        <link rel = 'stylesheet' href='/stylesheets/style.css'/>
+        <link rel="preconnect" href="https://fonts.gstatic.com">
+        <link href="https://fonts.googleapis.com/css2?family=Nanum+Myeongjo:wght@700&display=swap" rel="stylesheet">
+        <style>
+            body{margin:0px; padding:0px;background-color:white;}
+            table{font-size:15px;}
+            input{height:30px; width:100%;}
+            textarea{height:70px; width:100%;}
+            .header{background-color:black; position:fixed; width:100%; top:0; left:0; z-index:1;}
+            ul.nav{float:right; list-style:none; width:45%; height:20px;}
+            ul.nav li{float:left; color:white;}
+            ul.nav a{line-height:20px; color:#ffffff; padding:0 15px; text-decoration:none;}
+      
+            .bottom{line-height:50px; height:50px; width:100%; background-repeat:repeat; background-attachment: scroll; background-position:0% 0%; background-color:black;position:fixed; bottom:0pt; left:0pt;}
+            .button{background-color:white; border:0px; color:black;text-decoration:none;}
+            .button:hover{font-weight:bold; background-color:lightgray;}
+            .log-but{border:1px solid black; width:95px; height:50px;}
+            .log-but:hover{font-weight:bold;}
+            a{text-decoration:none; color:black;}
+            th, td { border-bottom: 1px solid #444444; padding: 10px; }
+        </style>
+    </head>
+    <body>
+        <div class="header">
+            <div>
+              <ul class="nav">
+                <li style="float:right; font-family: 'Nanum Myeongjo', serif; margin-right:20px;"><a href='/'>메인페이지</a></li>
+              </ul>
+            </div>
+        </div>
+        <div style="font-family: 'Nanum Myeongjo', serif; margin-top:90px; margin-left:210px; width:130px; font-size:30px; margin-bottom:10px;">
+            상품 수정
+        </div>
+        <form action = "/book/detail/update" method="post" onsubmit="return onWriteSubmit()" enctype="multipart/form-data">
+            <table style="width:1000px; margin:0 auto; height:500px;">
+                <input type="hidden" name="book_num" value = "<%=row.book_num%>"/>
+                <tr>
+                    <th>제목</th>
+                    <td><input type = "text" name = "title" id = "title" value = "<%=row.book_title%>" required/> </td>
+                </tr>
+                <tr>
+                    <th>장르</th>
+                    <td>
+                    <!-- <input type = "hidden" name = "genre" id = "genre"> -->
+                        <select name = "genre" id = "genre"  value = "<%=row.book_genre%>">
+                            <option value = "문학">문학</option>
+                            <option value = "정치, 경제, 사회">정치, 경제, 사회</option>
+                            <option value = "수학, 과학">수학, 과학</option>
+                            <option value = "기술, 예술">기술, 예술</option>
+                        </select>
+                    </td>
+                    <!-- <td><input type = "text" name = "genre" id = "genre" value = "<%=row.book_genre%>" required/> </td> -->
+                </tr>
+                <tr>
+                    <th>가격</th>
+                    <td><input type = "number" name = "price" id= "price" value = "<%=row.book_price%>" required/></td>
+                </tr>
+                <tr>
+                    <td style="text-align:center;"><strong>줄거리</strong></td>
+                    <td><textarea type = "content" name="content" col = "50" row = "40" required><%=row.book_content%></textarea></td>
+                </tr>
+                <tr>
+                    <th>이미지</th>
+                    <td>
+                        <img src="/images/<%=row.image%>" style="width:180px; height:270px;">
+                        <br>
+                        <input type="file" id="image" name="image"/>
+                    </td>
+                </tr>
+                <tr>
+                    <th>저자</th>
+                    <td><input type = "text" name = "author" id = "author"  value = "<%=row.author%>" required/> </td>
+                </tr>
+                <tr>
+                    <th>출판사</th>
+                    <td><input type = "text" name = "publisher" id = "publisher"  value = "<%=row.publisher%>" required/> </td>
+                </tr>
+                <tr>
+                    <td colspan = "2" style="text-align:right;">
+                        <button type = "submit">수정 완료!</button>
+                    </td>
+                </tr>
+            </table>
+        </form>
+        <script>
+            function onWriteSubmit(){
+                if($("#title").val().trim() == ""){
+                    var message = "제목을 입력해 주세요.";
+                    $("#title").val("");
+                    $("#title").focus();
+                    alert(message);
+                    return false;
+                }
+                // if($("#genre").val().trim() == ""){
+                //     var message = "장르를 입력해 주세요.";
+                //     $("#genre").val("");
+                //     $("#genre").focus();
+                //     alert(message);
+                //     return false;
+                // }
+                if($("#content").val().trim() == ""){
+                    var message = "본문 내용을 입력하세요.";
+                    $("#content").val("");
+                    $("#content").focus();
+                    alert(message);
+                    return false;
+                }
+            }
+        </script>
+        <div style="margin:0 auto; margin-top:20px; width:1000px; height:200px;">
+        </div>
+        <div class="bottom" style="color:white;">
+            <div style="float:left; margin-left:25px;"><strong>CONTACT</strong>&emsp;031-909-9999</div>
+            <div style="float:right; margin-right:30px;"><strong>주소</strong>&emsp;서울특별시 노원구 월계3동 광운대학교</div>
+        </div>
+    </body>
+</html>

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= title %></title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Nanum+Myeongjo:wght@700&display=swap" rel="stylesheet">
+    <style>
+        body{margin:0px; padding:0px;background-color:white;}
+        table{font-size:15px; text-align:center;}
+        textarea{height:70px; width:100%;}
+        .header{background-color:black; position:fixed; width:100%; top:0; left:0; z-index:1;}
+        ul.nav{float:right; list-style:none; width:45%; height:20px;}
+        ul.nav li{float:left; color:white;}
+        ul.nav a{line-height:20px; color:#ffffff; padding:0 15px; text-decoration:none;}
+  
+        .bottom{line-height:50px; height:50px; width:100%; background-repeat:repeat; background-attachment: scroll; background-position:0% 0%; background-color:black;position:fixed; bottom:0pt; left:0pt;}
+        .button{background-color:white; border:0px; color:black;text-decoration:none;}
+        .button:hover{font-weight:bold;}
+        .log-but{border:1px solid black; width:95px; height:50px;}
+        .log-but:hover{font-weight:bold;}
+        a{text-decoration:none; color:black;}
+        th, td { border-bottom: 1px solid #444444; padding: 10px; }
+    </style>
+
+  </head>
+    <body>
+        <div class="header">
+            <div>
+              <ul class="nav">
+                <li style="float:right;font-family: 'Nanum Myeongjo', serif; margin-right:20px;"><a href='/'>메인페이지</a></li>
+              </ul>
+            </div>
+        </div>
+        <div style="text-align:center; font-family: 'Nanum Myeongjo', serif;margin-top:80px; font-size:20px;">
+            구매자 계정 관리
+        </div>
+        <table style="width:1000px; font-family: 'Nanum Myeongjo', serif;margin:0 auto; margin-top:30px;">
+<%
+        for(var i=0; i<rows.length; i++){
+          var oneItem=rows[i];
+%>
+        <tr>
+          <td><%=oneItem.cust_id%></td>
+          <td><%=oneItem.cust_name%></td>
+          <td>
+            <form action="/delete/customer" method="post" onsubmit="return confirm('<%=oneItem.cust_id%> 를 삭제하시겠습니까?');">
+              <input type="hidden" name="delete_id" value = "<%=oneItem.cust_id%>">
+              <button class="button" type = "submit" >탈퇴 처리</button>
+            </form>
+          </td>
+        </tr>
+<%
+      }
+%>
+      </table>
+      <div style="float:left;margin-left:1160px; margin-top:10px;">
+        <button type="button" onClick="location.href='/empage'">이전</button>
+      </div>
+      <div class="bottom" style="color:white;">
+        <div style="float:left; margin-left:25px;"><strong>CONTACT</strong>&emsp;031-909-9999</div>
+        <div style="float:right; margin-right:30px;"><strong>주소</strong>&emsp;서울특별시 노원구 월계3동 광운대학교</div>
+      </div>
+    </body>
+</html>

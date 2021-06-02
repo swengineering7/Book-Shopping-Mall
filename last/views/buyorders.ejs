@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title><%= title %></title>
+        <meta charset='utf-8'>
+        <link rel='stylesheet' href='/stylesheets/style.css' />
+        <link rel="preconnect" href="https://fonts.gstatic.com">
+        <link href="https://fonts.googleapis.com/css2?family=Nanum+Myeongjo:wght@700&display=swap" rel="stylesheet">
+        <script src = "/javascripts/jquery-3.6.0.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+        <style>
+            body{margin:0px; padding:0px;background-color:white;}
+            table{font-size:15px; text-align:center;}
+            textarea{height:70px; width:100%;}
+            .header{background-color:black; position:fixed; width:100%; top:0; left:0; z-index:1;}
+            ul.nav{float:right; list-style:none; width:45%; height:20px;}
+            ul.nav li{float:left; color:white;}
+            ul.nav a{line-height:20px; color:#ffffff; padding:0 15px; text-decoration:none;}
+      
+            .bottom{line-height:50px; height:50px; width:100%; background-repeat:repeat; background-attachment: scroll; background-position:0% 0%; background-color:black;position:fixed; bottom:0pt; left:0pt;}
+            .button{background-color:white; border:0px; color:black;text-decoration:none;}
+            .button:hover{font-weight:bold; background-color:lightgray;}
+            .log-but{border:1px solid black; width:95px; height:50px;}
+            .log-but:hover{font-weight:bold;}
+            a{text-decoration:none; color:black;}
+            th, td { border-bottom: 1px solid #444444; padding: 10px; }
+        </style>
+    </head>
+    <body>
+        <script>
+            function getData (rows) {
+                console.log(rows);
+            }
+        </script>
+        <div class="header">
+            <div>
+              <ul class="nav">
+                <li style="float:right; font-family: 'Nanum Myeongjo', serif; margin-right:20px;"><a href='/'>메인페이지</a></li>
+              </ul>
+            </div>
+        </div>
+        <div style="text-align:center; font-family: 'Nanum Myeongjo', serif; margin:0 auto; margin-left:210px; width:1000px; font-size:30px; margin-bottom:10px; margin-top:90px;">
+            구매
+        </div>
+        <table width = "1000px" style="margin:0 auto; margin-top:20px;">
+            <tr style="height:30px; font-family: 'Nanum Myeongjo', serif; text-align:center;">
+                <td>책 이름</td>
+                <td>판매가</td>
+                <td>수량</td>
+                <td>합계</td>
+                <td colspan = "3">선택</td>
+            </tr>
+<%              if(rows.length == 0) { %>
+					<tr>
+						<td colspan="5">
+							<center>구매하실 상품이 없습니다.</center>
+						</td>
+					</tr>
+<% }else{ %>
+    <%
+                for(var i=0; i<rows.length; i++){
+                    var oneItem = rows[i];
+    %>
+                <!-- <input type = "hidden" name="order_num" value = "<%=rows.order_num%>"/> -->
+                <tr>
+                    <td><a href="/book/detail/read/<%=oneItem.book_num%>"><%=oneItem.book_title%></a></td>
+                    <td><%=oneItem.book_price%></td>
+                    <td>
+                        <form action = "/orders/quantity/update" method="post">
+                            <input type="hidden" name="order_date" value = "<%=oneItem.order_date%>">
+                            <input type="hidden" name="book_num" value = "<%=oneItem.book_num%>">
+                            <input type="hidden" name="order_num" value = "<%=oneItem.order_num%>">
+                            <input type="hidden" name="order_price" value = "<%=oneItem.book_price%>">
+                            <input id="input" name = "quantity" type="number" value = "<%=oneItem.quantity%>"><!--원래는 type="text"-->
+                            <a id="val"></a><!--원래는 <a> 태그 사이에 <%=oneItem.quantity%> 있었음(확인용)-->
+                            <button type = "submit">구매 수량 결정</button>
+                            <input type="hidden" name= "total_price" value = "<%= oneItem.total_price%>">
+                            <td><%=oneItem.total_price%></td>                        
+                        </form>
+                    </td>
+                    <td colspan = "3">
+                        <!--쿠폰 버튼-->
+                        <form action = "/orders/coupon/update" method="post">
+                            <input type="hidden" name="order_date" value = "<%=oneItem.order_date%>">
+                            <input type="hidden" name="book_num" value = "<%=oneItem.book_num%>">
+                            <input type="hidden" name="order_num" value = "<%=oneItem.order_num%>">
+                            <input type="hidden" name="order_price" value = "<%=oneItem.book_price%>">
+                            <input type="hidden" name = "quantity" value = "<%=oneItem.quantity%>">
+                            <button type = "submit" onclick='coupon_event()''>쿠폰 적용</button>
+                            <input type="hidden" name= "total_price" value = "<%= oneItem.total_price%>">                         
+                        </form>
+                        <form action="/orders/delete/order" method="post">
+                            <input type="hidden" name="order_num" value = "<%=oneItem.order_num%>">
+                            <!--<button type = "submit" onclick='button_event()'>삭제</button>-->
+                        </form>
+                    </td>
+                </tr>
+                <script>
+                    var oldVal = Number('<%=oneItem.quantity%>');
+                    $("#input").on("input", function() {
+                        var newVal = oldVal + 1;
+                        if(oldVal == newVal) {
+                            return;
+                        }
+                        //$("#val").text(newVal-1);
+                        oldVal = newVal;    
+                    });
+                </script>
+    <%
+                    }
+    %>
+<%
+                }
+%>
+            </table>
+            <div style="margin:0 auto; margin-top:10px; margin-left:1000px;">
+                <form action = "/orders/buyall" method = "post">
+                    <button type = "submit"><a href = "/book">상품 목록 페이지로 이동</button>
+                </form>
+            </div>
+            <div style="margin:0 auto; margin-top:10px; margin-left:1170px; margin-top:-24px;">
+                <form action = "/orders/mileage/update" method = "POST">
+                    <input type="hidden" name="order_date" value = "<%=oneItem.order_date%>">
+                    <input type="hidden" name="book_num" value = "<%=oneItem.book_num%>">
+                    <input type="hidden" name="order_num" value = "<%=oneItem.order_num%>">
+                    <input type="hidden" name="order_price" value = "<%=oneItem.book_price%>">
+                    <input type="hidden" name = "quantity" value = "<%=oneItem.quantity%>">
+                    <input type="hidden" name= "total_price" value = "<%= oneItem.total_price%>"> 
+                    <input type="hidden" name= "cust_point" value = "<%= oneItem.cust_point%>"> 
+                    <input type="hidden" name= "cust_id" value = "<%= oneItem.cust_id%>"> 
+                    <button type = "submit" a href = "/orders/buyConfirm">구매</button>
+                    <!-- <button type = "submit" onclick="handleInsert('<%= JSON.stringify(oneItem) %>')"><a href= "/orders/orderList">구매</button>                        -->
+                </form>
+            </div>
+            <script>
+                function popupOpen(){
+                    var popUrl = "payment.html";	//팝업창에 출력될 페이지 URL
+                    var popOption = "width=370, height=360, resizable=no, scrollbars=no, status=no;";    //팝업창 옵션(optoin)
+                    window.open(popUrl,"",popOption);
+                }
+                function button_event(){
+                    if (confirm("정말 삭제하시겠습니까??") == true){    //확인
+                        document.form.submit();
+                    }else{   //취소
+                        return;
+                    }
+                }
+                function coupon_event(){
+                    if (confirm("쿠폰을 적용하시겠습니까?") == true){    //확인
+                        document.form.submit();
+                    }else{   //취소
+                        return;
+                    }
+                }
+                const inputSelector = document.querySelector('#quantity');
+                let stateValue = "";
+                function handleChange (e) {
+                    stateValue = e.target.value;
+                }
+                function handleClick () {
+                    // axios.post('http://localhost:3000/orders/buy',{params: })
+                    // {
+                        // book_price: rows.book_price,
+                        // 
+                        // 
+                        // quantity: stateValue
+                    // }
+                }
+                inputSelector.addEventListener('change', handleChange);
+                inputSelector.addEventListener('click', handleClick);
+            </script>
+            <script>
+                const handleInsert = (row) => {
+                    axios.post('http://localhost:3000/orders/mileage/update',{params: row})
+                    .then(() => location.href = '/orders/buy').then(() => console.log('fdsfasd'));
+                            
+                    }
+            </script>
+            <div class="bottom" style="color:white;">
+                <div style="float:left; margin-left:25px;"><strong>CONTACT</strong>&emsp;031-909-9999</div>
+                <div style="float:right; margin-right:30px;"><strong>주소</strong>&emsp;서울특별시 노원구 월계3동 광운대학교</div>
+              </div>
+    </body>
+</html>

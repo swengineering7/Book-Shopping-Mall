@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title><%= title %></title>
+        <meta charset = 'utf-8'>
+        <link rel = 'stylesheet' href='/stylesheets/style.css'/>
+        <link rel="preconnect" href="https://fonts.gstatic.com">
+        <link href="https://fonts.googleapis.com/css2?family=Nanum+Myeongjo:wght@700&display=swap" rel="stylesheet">
+        <script src = "/javascripts/jquery-3.6.0.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+        <script>
+            function button_event(){
+                if (confirm("정말 삭제하시겠습니까??") == true){
+                    document.form.submit();
+                }else{
+                    return;
+                }
+            }
+        </script>
+        <style>
+            body{margin:0px; padding:0px;background-color:white;}
+            table{font-size:15px; text-align:center;}
+            input{height:30px; width:100%;}
+            textarea{height:70px; width:100%;}
+            .header{background-color:black; position:fixed; width:100%; top:0; left:0; z-index:1;}
+            ul.nav{float:right; list-style:none; width:45%; height:20px;}
+            ul.nav li{float:left; color:white;}
+            ul.nav a{line-height:20px; color:#ffffff; padding:0 15px; text-decoration:none;}
+      
+            .bottom{line-height:50px; height:50px; width:100%; background-repeat:repeat; background-attachment: scroll; background-position:0% 0%; background-color:black;position:fixed; bottom:0pt; left:0pt;}
+            .button{background-color:white; border:0px; color:black;text-decoration:none;}
+            .button:hover{font-weight:bold; background-color:lightgray;}
+            .log-but{border:1px solid black; width:95px; height:50px;}
+            .log-but:hover{font-weight:bold;}
+            a{text-decoration:none; color:black;}
+            th, td { border-bottom: 1px solid #444444; padding: 10px; }
+          </style>
+    </head>
+    <body>
+        <div class="header">
+            <div>
+              <ul class="nav">
+                <li style="float:right; margin-right:20px; font-family: 'Nanum Myeongjo', serif;"><a href='/'>메인페이지</a></li>
+              </ul>
+            </div>
+        </div>
+        <div style="font-family: 'Nanum Myeongjo', serif; margin-top:90px; margin-left:203px; width:130px; font-size:30px; margin-bottom:20px;">
+            상품 상세
+        </div>
+        <!-- id = "bookDetailRead" form에 추가? -->
+        <form action = "/book/detail/update" method = "get">
+            <table width = "1000px" border = "3" style="margin:0 auto; border-collapse:collapse;">
+                <input type="hidden" name="book_num" value = "<%=rows[0].book_num %>"/>
+                <input type="hidden" name="review_num" value = "<%=rows[0].review_num %>"/>
+                <tr>
+                    <!-- <td rowspan = "6">표지</td> -->
+                    <td rowspan = "4" style="width:200px; height:300px;"><img src="/images/<%= rows[0].image %>" alt="" width="170px" height="280px"></td>
+                    <td colspan="4" style="font-size:25px; padding-left:20px;"><strong><%=rows[0].book_title %></strong></td>
+                </tr>
+                <tr>
+                    <td colspan="4" style="font-size:20px; padding-left:20px;"><%=rows[0].book_genre %> </td>
+                </tr>
+                <tr>
+                    <td style="width:100px; text-align:center;">출판사</td>
+                    <td style="padding-left:20px;"><%=rows[0].publisher %></td>
+                    <td style="width:100px; text-align:center;">저자</td>
+                    <td style="padding-left:20px;"><%=rows[0].author %></td>
+                </tr>
+                <tr>
+                    <td colspan = "5" style="padding-left:20px;"><%=rows[0].book_price %> 원</td>
+                </tr>
+                <tr>
+                    <td colspan = "5" style="height:100px; padding-left:20px;"><%=rows[0].book_content %></td>
+                </tr>
+            </table>
+            <div style="margin:0 auto; margin-top:10px; margin-left:203px; text-align:left; float:left;">
+                <button type = "submit">수정</button>
+            </div>
+        </form>
+        <div style="width:100px; margin-left:393px; margin-top:10px; float:left; margin-left:10px;">
+            <form action="/book/detail/delete" method="post">
+                <input type="hidden" name="book_num" value="<%= rows[0].book_num %>"/>
+                <button type="submit" onclick='button_event()'>글 삭제</button>
+            </form>
+        </div>
+        <div style=" margin-left:970px; float:left; margin-top:-25px; text-align:right;">
+            <button type="button" onClick="location.href='/book'">상품 리스트로 돌아가기</button>
+        </div>
+        <div style="width:80px; margin-left:1121px; float:left; margin-top:-25px; text-align:right;">
+            <form action = "/orders/cart" method = "post">
+                <input type="hidden" name="book_num" id="book_num" value="<%= rows[0].book_num %>"/>
+                <button type="submit">장바구니</button>
+                <!--input type = "button" id = "장바구니" name = "장바구니" value = "장바구니" onclick="handleclick('<%= JSON.stringify(rows) %>')"-->
+            </form>
+        </div>
+        <div style="width:1000px; margin:0 auto; margin-top:80px; height:400px;">
+            <hr style="width:1000px; margin-bottom:30px;">
+            <form action = "/book/detail/review" method = "get">
+                <input type="hidden" name="book_num" value = "<%=rows[0].book_num %>"/>
+                <input type="hidden" name="review_num" value = "<%=rows[0].review_num %>"/>
+                <% if(rows.length == 0) { %>
+                    <tr>
+                       <td colspan="6">
+                          <center>리뷰가 없습니다.</center>
+                       </td>
+                    </tr>
+     <% }else{ %>
+        
+    <%
+    var total_star=0;
+    for(var i=0; i<rows.length; i++){
+        total_star += (rows[i].review_star*1);
+    }
+    total_star = total_star/(rows.length);
+    %>
+                <!-- 리뷰/평점 -->
+                <strong style="font-size:20px;">리뷰 / 평점</strong>
+                <div style="float:right;">
+                    <button type = "submit">리뷰작성</button>
+                </div><br><br>
+                <div class="starAvg" style="font-size:15px;">
+                    별점 평균 : <%=total_star.toFixed(1)%>
+                </div>
+                <table style="width:1000px; margin:0 auto; margin-bottom:30px; margin-top:20px;font-weight:bold;">
+                    <tr>
+                        <td style="width:200px;">별점</td>
+                        <td style="width:200px;">작성자</td>
+                        <td style="width:200px;">날짜</td>
+                        <td>리뷰 내용</td>
+                    </tr>
+                </table>
+
+                <%
+                for(var i=0; i<rows.length; i++){
+                    var oneItem = rows[i];
+%>
+                <br><br>
+
+                <div class="reviewForm">
+                    <table style="width:1000px; margin:0 auto; margin-top:-70px;">   
+                        <tr>
+                            <!--td width="100px" align="center"><%=oneItem.review_star %></td--> <!-- 별점 -->
+                            <td style="width:200px;">
+                            <%if(oneItem.review_star==1) {%>
+                                ★☆☆☆☆
+                            <%}%>
+                            <%if(oneItem.review_star==2) {%>
+                                ★★☆☆☆
+                            <%}%>
+                            <%if(oneItem.review_star==3) {%>
+                                ★★★☆☆
+                            <%}%>
+                            <%if(oneItem.review_star==4) {%>
+                                ★★★★☆
+                            <%}%>
+                            <%if(oneItem.review_star==5) {%>
+                                ★★★★★
+                            <%}%>                        
+                            </td>
+                            <td width="200px" align="center"><%=oneItem.cust_id %></td> <!-- 작성자 -->
+                            <td style="width:200px;"><%=moment(oneItem.review_date).format("YYYY년 MM월 DD일") %></td> <!-- 날짜 -->
+                            <td colspan = "4"><%=oneItem.review_content %></td> <!-- 내용 -->
+                        </tr>
+                    </table>
+                    <br><br>
+    <%
+               }
+    %>
+    <%
+               }
+    %>
+                </div>
+            </form>
+        </div>
+        
+        <script>
+            const handleInsert = (row) => {
+                axios.post('http://localhost:3000/orders/buy',{params: row})
+                .then(() => location.href = '/orders/buy').then(() => console.log('fdsfasd'));
+                
+            }
+            // const handleclick = (item) => {
+            //     axios
+            //     .post('http://localhost:3000/orders/cart', {params: {...item}})
+            //     .then(res => console.log(item));
+            // };
+            const handleclick = (row) => {
+                axios.post('http://localhost:3000/orders/cart',{params: row})
+                .then(() => location.href = '/orders/cart').then(() => console.log('fdsfasd'));
+            };
+        </script>
+        <div style="height:200px;"></div>
+        <div class="bottom" style="color:white;">
+            <div style="float:left; margin-left:25px;"><strong>CONTACT</strong>&emsp;031-909-9999</div>
+            <div style="float:right; margin-right:30px;"><strong>주소</strong>&emsp;서울특별시 노원구 월계3동 광운대학교</div>
+        </div>
+    </body>
+</html>

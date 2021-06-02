@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title><%= title %></title>
+        <meta charset = 'utf-8'>
+        <link rel = 'stylesheet' href='/stylesheets/style.css'/>
+        <link rel="preconnect" href="https://fonts.gstatic.com">
+        <link href="https://fonts.googleapis.com/css2?family=Nanum+Myeongjo:wght@700&display=swap" rel="stylesheet">
+        <style>
+            body{margin:0px; padding:0px;background-color:white;}
+            table{font-size:15px;}
+            input{height:30px; width:100%;}
+            textarea{height:70px; width:100%;}
+            .header{background-color:black; position:fixed; width:100%; top:0; left:0; z-index:1;}
+            ul.nav{float:right; list-style:none; width:45%; height:20px;}
+            ul.nav li{float:left; color:white;}
+            ul.nav a{line-height:20px; color:#ffffff; padding:0 15px; text-decoration:none;}
+      
+            .bottom{line-height:50px; height:50px; width:100%; background-repeat:repeat; background-attachment: scroll; background-position:0% 0%; background-color:black;position:fixed; bottom:0pt; left:0pt;}
+            .button{background-color:white; border:0px; color:black;text-decoration:none;}
+            .button:hover{font-weight:bold; background-color:lightgray;}
+            .log-but{border:1px solid black; width:95px; height:50px;}
+            .log-but:hover{font-weight:bold;}
+            a{text-decoration:none; color:black;}
+            th, td { border-bottom: 1px solid #444444; padding: 10px; }
+        </style>
+        <script src = "/javascripts/jquery-3.6.0.min.js"></script>
+        <script>
+            $(function(){
+                $("#btnJoin").click(
+                    function(){
+                        if($("#title").val() == ""){
+                            alert("제목을 꼭 입력 하세요");
+                            $("#title").focus();
+                            return;
+                        }
+                        // var genre = $("#genre").val()
+                        if($("#author").val() == ""){
+                            alert("저자를 꼭 입력 하세요");
+                            $("#passwd").focus();
+                            return;
+                        }
+                        if($("#publisher").val() == ""){
+                            alert("출판사를 꼭 입력 하세요");
+                            $("#name").focus();
+                            return;
+                        }
+                        if($("#content").val() == ""){
+                            alert("줄거리를 꼭 입력 하세요");
+                            $("#content").focus();
+                            return;
+                        }
+                        if($("#price").val() == ""){
+                            alert("가격을 꼭 입력하세요");
+                            $("#price").focus();
+                            return;
+                        }
+                        if(isNaN($("#price").val())){
+                            alert("가격은 숫자만 입력하세요");
+                            $("#priceb").focus();
+                            return;
+                        }
+                        $("#bookDetailWrite").submit();
+                });
+            });
+        </script>
+    </head>
+    <body>
+        <div class="header">
+            <div>
+              <ul class="nav">
+                <li style="float:right; font-family: 'Nanum Myeongjo', serif; margin-right:20px;"><a href='/'>메인페이지</a></li>
+              </ul>
+            </div>
+        </div>
+        <div style="font-family: 'Nanum Myeongjo', serif; margin-top:90px; margin-left:210px; width:130px; font-size:30px; margin-bottom:10px;">
+            상품 추가
+        </div>
+        <form id = "bookDetailWrite" action = "/book/detail/write" method="post" onsubmit="return onWriteSubmit()" enctype="multipart/form-data">
+            <table style="width:1000px; font-family: 'Nanum Myeongjo', serif; margin:0 auto; height:500px;">
+                <tr>
+                    <th>제목</th>
+                    <td><input type = "text" name = "title" id = "title" size = "100" maxlength = "100"> </td>
+                </tr>
+                <tr>
+                    <th>장르</th>
+                    <td>
+                        <!-- <input type = "hidden" name = "genre" id = "genre"> -->
+                        <select name = "genre" id = "genre">
+                            <option value = "문학">문학</option>
+                            <option value = "정치, 경제, 사회">정치, 경제, 사회</option>
+                            <option value = "수학, 과학">수학, 과학</option>
+                            <option value = "기술, 예술">기술, 예술</option>
+                        </select>
+                    </td>
+                    <!-- <td><input type = "text" name = "genre" id = "genre" size = "10" maxlength = "10"> </td> -->
+                </tr>
+                <tr>
+                    <th>가격</th>
+                    <td><input type = "number" name = "price" id= "price" size="10" maxlength="10"></td>
+                </tr>
+                <tr>
+                    <th>줄거리</th>
+                    <td><textarea type = "content" name = "content" col = "50" row = "40" required></textarea></td>
+                </tr>
+                <tr>
+                    <th>이미지</th>
+                    <td><input type="file" id="image" name="image" required/></td>
+                </tr>
+                <tr>
+                    <th>저자</th>
+                    <td><input type = "text" name = "author" id = "author" size = "50" maxlength = "50"> </td>
+                </tr>
+                <tr>
+                    <th>출판사</th>
+                    <td><input type = "text" name = "publisher" id = "publisher" size = "50" maxlength = "50"> </td>
+                </tr>
+                <tr>
+                    <td colspan="2" style="text-align:right; ">
+                        <!-- <input type = "button" id = "btnJoin" name = "join" value = "등록"> -->
+                        <button type = "submit">글쓰기</button>
+                    </td>
+                </tr>
+            </table>
+        </form>
+        <div style="height:100px;">
+
+        </div>
+        <div class="bottom" style="color:white;">
+            <div style="float:left; margin-left:25px;"><strong>CONTACT</strong>&emsp;031-909-9999</div>
+            <div style="float:right; margin-right:30px;"><strong>주소</strong>&emsp;서울특별시 노원구 월계3동 광운대학교</div>
+        </div>
+    </body>
+</html>

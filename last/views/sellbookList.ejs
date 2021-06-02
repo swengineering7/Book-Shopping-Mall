@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title><%= title %></title>
+        <meta charset='utf-8'>
+        <link rel='stylesheet' href='/stylesheets/style.css' />
+        <link rel="preconnect" href="https://fonts.gstatic.com">
+        <link href="https://fonts.googleapis.com/css2?family=Nanum+Myeongjo:wght@700&display=swap" rel="stylesheet">
+        <script src = "/javascripts/jquery-3.6.0.min.js"></script>
+        <style>
+            body{margin:0px; padding:0px;background-color:white;}
+            table{font-size:15px;}
+            input{height:30px; width:100%;}
+            textarea{height:70px; width:100%;}
+            .header{background-color:black; position:fixed; width:100%; top:0; left:0; z-index:1;}
+            ul.nav{float:right; list-style:none; width:45%; height:20px;}
+            ul.nav li{float:left; color:white;}
+            ul.nav a{line-height:20px; color:#ffffff; padding:0 15px; text-decoration:none;}
+      
+            .bottom{line-height:50px; height:50px; width:100%; background-repeat:repeat; background-attachment: scroll; background-position:0% 0%; background-color:black;position:fixed; bottom:0pt; left:0pt;}
+            .button{background-color:white; border:0px; color:black;text-decoration:none;}
+            .button:hover{font-weight:bold; background-color:lightgray;}
+            .log-but{border:1px solid black; width:95px; height:50px;}
+            .log-but:hover{font-weight:bold;}
+            a{text-decoration:none; color:black;}
+            th, td { border-bottom: 1px solid #444444; padding: 10px; }
+        </style>   
+    </head>
+    <body>
+        <div class="header">
+            <div>
+              <ul class="nav">
+                <li style="float:right; font-family: 'Nanum Myeongjo', serif; margin-right:20px;"><a href='/'>메인페이지</a></li>
+              </ul>
+            </div>
+        </div>
+        <div style="margin-top:90px; font-family: 'Nanum Myeongjo', serif; margin-left:210px; width:130px; font-size:30px; margin-bottom:10px;">
+            등록 상품
+        </div>
+        <form action = "/sellbookList" method="post">
+            <table width = "1000px"style="margin:0 auto; margin-top:20px; text-align:center; font-family: 'Nanum Myeongjo', serif;">
+                <tr>
+                    <td>제목</td>
+                    <td>장르</td>
+                    <td>가격</td>
+                    <td>이미지</td>
+                    <td>저자</td>
+                    <td>출판사</td>
+                    <td>수량</td>
+                </tr>
+<%              if(rows.length == 0) { %>
+               <tr>
+                  <td colspan="6">
+                     <center>등록된 상품이 없습니다.</center>
+                  </td>
+               </tr>
+<% }else{ %>
+
+    <%
+                for(var i=0; i<rows.length; i++){
+                    var oneItem = rows[i];
+    %>
+    <tr>
+        <td><%=oneItem.book_title%></td>
+        <td><%=oneItem.book_genre%></td>
+        <td><%=oneItem.book_price%></td>
+        <td><img src="/images/<%= oneItem.image %>" alt="" width="80px" height="130px"></td>
+        <td><%= oneItem.author%></td>
+        <td><%= oneItem.publisher%></td>
+        <td><%= oneItem.book_count%></td>                       
+    </tr>
+    <%
+                    }
+    %>
+<%
+                }
+%>
+            </table>
+            <div style="float:left;margin-left:1040px; margin-top:10px;">
+                <button type = "submit"><a href = "/sellpage">마이페이지로 이동</button>
+            </div>
+        </form>
+        <div style="height:100px;">
+        </div>
+        <div class="bottom" style="color:white;">
+            <div style="float:left; margin-left:25px;"><strong>CONTACT</strong>&emsp;031-909-9999</div>
+            <div style="float:right; margin-right:30px;"><strong>주소</strong>&emsp;서울특별시 노원구 월계3동 광운대학교</div>
+        </div>
+    </body>
+</html>

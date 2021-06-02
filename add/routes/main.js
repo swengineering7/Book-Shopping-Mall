@@ -4,7 +4,6 @@ var bodyParser = require('body-parser');
 var session = require('express-session');
 var passport = require('passport');
 
-
 // set mail //
 const nodemailer = require('nodemailer');
 var transporter = nodemailer.createTransport({
@@ -722,24 +721,5 @@ router.post('/book/detail/delete', function(req, res, next) {
       });    
   });
 });
-
-// router.get('/bestseller', function(req,res,next) {
-//   var book_num = req.params.book_num;
-
-//   pool.getConnection(function(err,connection){
-//       //use the connection
-
-//       var sql ="SELECT b.book_num, b.book_title, b.image, SUM(quantity) FROM orders AS O inner join book AS B on b.book_num = o.book_num GROUP BY book_num ORDER BY SUM(quantity) DESC";
-
-//       connection.query(sql, [book_num], function(err,row){
-//           if(err) console.error(err);
-//           console.log("베스트셀러 결과 확인 : ",row);
-          
-//           res.render('main', { title: '베스트셀러 조회!',row:row});
-//           //일단은 bestseller가 아닌 main으로 render
-//           connection.release();
-//       });
-//   });
-// });
 
 module.exports = router;
