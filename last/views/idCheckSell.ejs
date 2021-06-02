@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>idCheckCSell.jsp</title>
+<link rel="preconnect" href="https://fonts.gstatic.com">
+<link href="https://fonts.googleapis.com/css2?family=Nanum+Myeongjo:wght@700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <form id="idCheckSell" action="/join/idCheckSell" method="post" onsubmit="return blankCheck(this)">
+        아이디 : <input type="text" name="id" id="id" maxlength="10" autofocus>
+        <input type="submit" value="중복확인">
+    </form>
+    
+    <script>
+    function blankCheck(f){
+    	var id=f.id.value;
+        id=id.trim();
+        if(id.length<1){
+        	alert("아이디를 입력해주십시오.");
+            return false;
+        }//if end
+        opener.document.getElementById("sell_id").value=document.getElementById("id").value;
+        return true;
+    }//blankCheck() end
+    </script>
+ </body>
+ </html>

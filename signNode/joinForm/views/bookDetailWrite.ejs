@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title><%= title %></title>
+        <meta charset = 'utf-8'>
+        <link rel = 'stylesheet' href='/stylesheets/style.css'/>
+        <script src = "/javascripts/jquery-3.6.0.min.js"></script>
+        <script>
+            $(function(){
+                $("#btnJoin").click(
+                    function(){
+                        if($("#title").val() == ""){
+                            alert("제목을 꼭 입력 하세요");
+                            $("#title").focus();
+                            return;
+                        }
+
+                        // var genre = $("#genre").val()
+
+                        if($("#author").val() == ""){
+                            alert("저자를 꼭 입력 하세요");
+                            $("#passwd").focus();
+                            return;
+                        }
+                        if($("#publisher").val() == ""){
+                            alert("출판사를 꼭 입력 하세요");
+                            $("#name").focus();
+                            return;
+                        }
+                        if($("#content").val() == ""){
+                            alert("줄거리를 꼭 입력 하세요");
+                            $("#content").focus();
+                            return;
+                        }
+                        if($("#price").val() == ""){
+                            alert("가격을 꼭 입력하세요");
+                            $("#price").focus();
+                            return;
+                        }
+                        if(isNaN($("#price").val())){
+                            alert("가격은 숫자만 입력하세요");
+                            $("#priceb").focus();
+                            return;
+                        }
+
+                        $("#bookDetailWrite").submit();
+                });
+            });
+        </script>
+    </head>
+    <body>
+        <h1><%=title %></h1>
+        <form id = "bookDetailWrite" action = "/book/detail/write" method="post" onsubmit="return onWriteSubmit()" enctype="multipart/form-data">
+            <table width = "500" border = "2">
+                <tr>
+                    <th>제목</th>
+                    <td><input type = "text" name = "title" id = "title" size = "200" maxlength = "200"> </td>
+                </tr>
+                <tr>
+                    <th>장르</th>
+                    <td>
+                        <!-- <input type = "hidden" name = "genre" id = "genre"> -->
+                        <select name = "genre" id = "genre">
+                            <option value = "문학">문학</option>
+                            <option value = "정치, 경제, 사회">정치, 경제, 사회</option>
+                            <option value = "수학, 과학">수학, 과학</option>
+                            <option value = "기술, 예술">기술, 예술</option>
+                        </select>
+                    </td>
+                    <!-- <td><input type = "text" name = "genre" id = "genre" size = "10" maxlength = "10"> </td> -->
+                </tr>
+                <tr>
+                    <th>가격</th>
+                    <td><input type = "number" name = "price" id= "price" size="10" maxlength="10"></td>
+                </tr>
+                <tr>
+                    <th>줄거리</th>
+                    <td><textarea type = "content" name = "content" col = "50" row = "40" required></textarea></td>
+                </tr>
+                <tr>
+                    <th>이미지</th>
+                    <td><input type="file" id="image" name="image" required/></td>
+                </tr>
+                <tr>
+                    <th>저자</th>
+                    <td><input type = "text" name = "author" id = "author" size = "50" maxlength = "50"> </td>
+                </tr>
+                <tr>
+                    <th>출판사</th>
+                    <td><input type = "text" name = "publisher" id = "publisher" size = "50" maxlength = "50"> </td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <!-- <input type = "button" id = "btnJoin" name = "join" value = "등록"> -->
+                        <button type = "submit">글쓰기</button>
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </body>
+</html>

@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title><%= title %></title>
+        <meta charset = 'utf-8'>
+        <link rel = 'stylesheet' href='/stylesheets/style.css'/>
+        <link rel="preconnect" href="https://fonts.gstatic.com">
+        <link href="https://fonts.googleapis.com/css2?family=Nanum+Myeongjo:wght@700&display=swap" rel="stylesheet">
+        <script src = "/javascripts/jquery-3.6.0.min.js"></script>
+        <style type="text/css">
+            body{margin:0px; padding:0px;background-color:white;}
+            table{font-size:15px;}
+            textarea{height:100px; width:100%; resize: none;}
+            .header{background-color:black; position:fixed; width:100%; top:0; left:0; z-index:1;}
+            ul.nav{float:right; list-style:none; width:45%; height:20px;}
+            ul.nav li{float:left; color:white;}
+            ul.nav a{line-height:20px; color:#ffffff; padding:0 15px; text-decoration:none;}
+      
+            .bottom{line-height:50px; height:50px; width:100%; background-repeat:repeat; background-attachment: scroll; background-position:0% 0%; background-color:black;position:fixed; bottom:0pt; left:0pt;}
+            .button{background-color:white; border:0px; color:black;text-decoration:none;}
+            .button:hover{font-weight:bold; background-color:lightgray;}
+            .log-but{border:1px solid black; width:95px; height:50px;}
+            .log-but:hover{font-weight:bold;}
+            a{text-decoration:none; color:black;}
+            th, td { border-bottom: 1px solid #444444; padding: 10px; }
+        </style>
+    <script>
+        $(function(){
+          $("#btnJoin").click(
+            function(){
+  
+              if($("#review_content").val() =="")
+              {
+                alert("리뷰 내용을 입력 하세요");
+                $("#review_content").focus();
+                return false;              
+              }
+
+              $("#bookDetailReview").submit();
+              });
+          });
+      </script>
+
+    </head>
+    <body>
+        <div class="header">
+            <div>
+              <ul class="nav">
+                <li style="font-family: 'Nanum Myeongjo', serif; float:right; margin-right:20px;"><a href='/'>메인페이지</a></li>
+              </ul>
+            </div>
+        </div>
+        <div style="font-family: 'Nanum Myeongjo', serif; margin-top:90px; margin-left:210px; width:130px; font-size:30px; margin-bottom:30px;">
+            리뷰 작성
+        </div>
+        <div style="width:1000px; margin:0 auto; height:800px;">
+            <div style="width:200px; float:left; text-align:center;">
+                <img src="/images/<%= row.image %>" alt="" width="150px" height="225px">
+            </div>
+            <div style="width:750px; float:left; height:280px; border-left:1px solid black; padding-left:20px;">
+                <form id="bookDetailReview" action="/book/detail/review" method="post">
+                    <input type="hidden" name="review_num" value = "<%=row.review_num %>"/>
+                    <input type="hidden" name="book_num" value = "<%=row.book_num %>"/>
+        
+                    <strong style="font-family: 'Nanum Myeongjo', serif;">별점</strong><br><br>
+                    <input type="radio" name="review_star" value="1">★☆☆☆☆
+                    <input type="radio" name="review_star" value="2">★★☆☆☆
+                    <input type="radio" name="review_star" value="3">★★★☆☆
+                    <input type="radio" name="review_star" value="4">★★★★☆
+                    <input type="radio" name="review_star" value="5" checked="checked">★★★★★
+
+                    <hr style="width:750px;margin-top:30px;">
+                
+                    <br><br><strong style="font-family: 'Nanum Myeongjo', serif;">리뷰 내용</strong><br><br>
+                    <textarea type = "content" name="review_content" cols="40" rows="10" required></textarea>
+                    <div style="text-align:right; margin-top:40px;">
+                        <button type="submit" id="btnJoin" name="review" value="리뷰등록">등록</button>
+                    </div>     
+                </form>
+            </div>
+        </div>
+        <button type="button" onClick="location.href='custupdate'" style="margin-left:1195px; margin-bottom:100px;">정보수정</button>
+        <div class="bottom" style="color:white;">
+            <div style="float:left; margin-left:25px;"><strong>CONTACT</strong>&emsp;031-909-9999</div>
+            <div style="float:right; margin-right:30px;"><strong>주소</strong>&emsp;서울특별시 노원구 월계3동 광운대학교</div>
+        </div>
+    </body>
+</html>
